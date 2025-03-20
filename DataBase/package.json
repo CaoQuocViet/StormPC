@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@sequelize/postgres": "^7.0.0-alpha.45",
+    "sequelize": "^6.37.6"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
+}
