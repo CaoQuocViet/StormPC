@@ -1,0 +1,46 @@
+# Build files
+/bin/
+/obj/
+/[Oo]ut/
+/[Aa]rtifacts/
+/[Dd]ebug/
+/[Rr]elease/
+/x64/
+/x86/
+/ARM/
+/ARM64/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.VC.db
+*.VC.opendb
+*.ipch
+.vscode/
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+*.sln.cache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Windows Package Files
+/Packages/
+/AppPackages/
+/Package.StoreAssociation.xml
+/AppxManifest.xml
+
+# NuGet
+*.nupkg
+project.lock.json
+# NuGet v3's project.json files produces this file, which should be ignored.
+/project.assets.json
+/packages/
+.nuget/
+
+# Rider
+.idea/
