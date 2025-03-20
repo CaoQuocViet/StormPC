@@ -1,0 +1,98 @@
+#
+link
+name
+user rating
+Price
+Sales Package
+Model Number
+Part Number
+Model Name
+Series
+Color
+Type
+Suitable For
+Power Supply
+Battery Cell
+MS Office Provided
+Dedicated Graphic Memory Type
+Dedicated Graphic Memory Capacity
+Processor Brand
+Processor Name
+Processor Generation
+SSD
+SSD Capacity
+RAM
+RAM Type
+Processor Variant
+Clock Speed
+Expandable Memory
+Cache
+Graphic Processor
+Number of Cores
+OS Architecture
+Operating System
+Supported Operating System
+Mic In
+USB Port
+HDMI Port
+Touchscreen
+Screen Size
+Screen Resolution
+Screen Type
+Speakers
+Internal Mic
+Sound Properties
+Wireless LAN
+Bluetooth
+Dimensions
+Weight
+Disk Drive
+Finger Print Sensor
+Keyboard
+Backlit Keyboard
+Additional Features
+Warranty Summary
+Warranty Service Type
+Covered in Warranty
+Not Covered in Warranty
+Domestic Warranty
+Ethernet
+Web Camera
+Pointer Device
+Included Software
+Battery Backup
+Chipset
+Memory Slots
+RAM Frequency
+RJ45
+Sound Chip
+Brightness
+Laptop Bag
+Other Accessories
+International Warranty
+Wireless WAN
+Recovery Options
+RPM
+Hardware Interface
+Face Recognition
+System Architecture
+Refresh Rate
+Antivirus
+Multi Card Slot
+Lock Port
+NFC Support
+HDD Capacity
+Stylus Included
+TGP
+VGA Port
+Color Gamut
+Security Chip
+Inbuilt 4G LTE
+Cloud Storage
+S-video
+Dock Port
+Firewire Port
+RJ11
+Read/Write Speed
+EMMC Storage Capacity
+Optane Memory
