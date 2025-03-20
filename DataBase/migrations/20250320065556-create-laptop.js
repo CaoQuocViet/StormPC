@@ -33,6 +33,19 @@ module.exports = {
       ReleaseYear: {
         type: Sequelize.INTEGER
       },
+      Description: {
+        type: Sequelize.TEXT
+      },
+      Discount: {
+        type: Sequelize.DECIMAL,
+        allowNull: false
+      },
+      DiscountEndDate: {
+        type: Sequelize.DATE
+      },
+      DiscountStartDate: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE

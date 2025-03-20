@@ -18,6 +18,10 @@ CREATE TABLE "Laptops" (
   "ScreenSize" decimal(3,1),
   "OperatingSystem" varchar(50),
   "ReleaseYear" integer
+  "Description" text,
+  "Discount" decimal NOT NULL,
+  "DiscountEndDate" datetime,
+  "DiscountStartDate" datetime
 );
 
 CREATE TABLE "LaptopSpecs" (

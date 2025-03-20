@@ -21,7 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     ModelName: DataTypes.STRING,
     ScreenSize: DataTypes.DECIMAL,
     OperatingSystem: DataTypes.STRING,
-    ReleaseYear: DataTypes.INTEGER
+    ReleaseYear: DataTypes.INTEGER,
+    Description: DataTypes.TEXT,
+    Discount: DataTypes.DECIMAL,
+    DiscountEndDate: DataTypes.DATE,
+    DiscountStartDate: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Laptop',
