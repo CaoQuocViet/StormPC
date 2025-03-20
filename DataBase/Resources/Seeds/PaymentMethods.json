@@ -1,0 +1,12 @@
+{
+  "PaymentMethods": [
+    {"PaymentMethodID": 1, "MethodName": "Thẻ ATM nội địa"},
+    {"PaymentMethodID": 2, "MethodName": "Ví MoMo"},
+    {"PaymentMethodID": 3, "MethodName": "VNPay"},
+    {"PaymentMethodID": 4, "MethodName": "ZaloPay"},
+    {"PaymentMethodID": 5, "MethodName": "Thẻ tín dụng/ghi nợ"},
+    {"PaymentMethodID": 6, "MethodName": "Chuyển khoản ngân hàng"},
+    {"PaymentMethodID": 7, "MethodName": "Thanh toán khi nhận hàng (COD)"},
+    {"PaymentMethodID": 8, "MethodName": "ShopeePay"}
+  ]
+}

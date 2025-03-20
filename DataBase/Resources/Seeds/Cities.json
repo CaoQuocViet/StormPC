@@ -1,0 +1,21 @@
+{
+  "Cities": [
+    {"CityCode": "HCM", "CityName": "Hồ Chí Minh"},
+    {"CityCode": "HAN", "CityName": "Hà Nội"},
+    {"CityCode": "DAN", "CityName": "Đà Nẵng"},
+    {"CityCode": "CTO", "CityName": "Cần Thơ"},
+    {"CityCode": "HAP", "CityName": "Hải Phòng"},
+    {"CityCode": "NTH", "CityName": "Nha Trang"},
+    {"CityCode": "BMT", "CityName": "Buôn Ma Thuột"},
+    {"CityCode": "HUE", "CityName": "Huế"},
+    {"CityCode": "VUT", "CityName": "Vũng Tàu"},
+    {"CityCode": "QNH", "CityName": "Quy Nhơn"},
+    {"CityCode": "TNH", "CityName": "Thái Nguyên"},
+    {"CityCode": "BDG", "CityName": "Bình Dương"},
+    {"CityCode": "DLT", "CityName": "Đà Lạt"},
+    {"CityCode": "PTO", "CityName": "Phan Thiết"},
+    {"CityCode": "PLK", "CityName": "Pleiku"},
+    {"CityCode": "HUI", "CityName": "Hưng Yên"},
+    {"CityCode": "BMT", "CityName": "Bắc Ninh"}
+  ]
+}

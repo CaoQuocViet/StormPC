@@ -1,0 +1,10 @@
+{
+  "OrderStatuses": [
+    {"StatusID": 1, "StatusName": "Pending"},
+    {"StatusID": 2, "StatusName": "Processing"},
+    {"StatusID": 3, "StatusName": "Shipped"},
+    {"StatusID": 4, "StatusName": "Delivered"},
+    {"StatusID": 5, "StatusName": "Cancelled"},
+    {"StatusID": 6, "StatusName": "Refunded"}
+  ]
+}

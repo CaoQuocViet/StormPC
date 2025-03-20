@@ -1,0 +1,13 @@
+{
+    "Brands": [
+        {"BrandID": 1, "BrandName": "Dell"},
+        {"BrandID": 2, "BrandName": "Asus"},
+        {"BrandID": 3, "BrandName": "Lenovo"},
+        {"BrandID": 4, "BrandName": "HP"},
+        {"BrandID": 5, "BrandName": "Razer"},
+        {"BrandID": 6, "BrandName": "LG"},
+        {"BrandID": 7, "BrandName": "Acer"},
+        {"BrandID": 8, "BrandName": "MSI"},
+        {"BrandID": 9, "BrandName": "Gigabyte"}
+    ]
+}
