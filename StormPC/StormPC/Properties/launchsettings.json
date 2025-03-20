@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "StormPC (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "StormPC (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
