@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "vietcq",
+    "password": "123456789000",
+    "database": "stormpc_db",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5444
+  }
+}

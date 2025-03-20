@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: stormpc_container
+    environment:
+      POSTGRES_USER: vietcq
+      POSTGRES_PASSWORD: 123456789000
+      POSTGRES_DB: stormpc_db
+    ports:
+      - "5444:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    command: 
+      - "postgres"
+      - "-c"
+      - "listen_addresses=*"
+
+volumes:
+  postgres_data: 
