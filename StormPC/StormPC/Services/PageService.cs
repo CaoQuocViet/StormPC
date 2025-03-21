@@ -3,8 +3,18 @@
 using Microsoft.UI.Xaml.Controls;
 
 using StormPC.Contracts.Services;
-using StormPC.ViewModels;
-using StormPC.Views;
+using StormPC.ViewModels.ActivityLog;
+using StormPC.ViewModels.BaseData;
+using StormPC.ViewModels.Dashboard;
+using StormPC.ViewModels.Orders;
+using StormPC.ViewModels.Settings;
+using StormPC.ViewModels.Shell;
+using StormPC.Views.ActivityLog;
+using StormPC.Views.BaseData;
+using StormPC.Views.Dashboard;
+using StormPC.Views.Orders;
+using StormPC.Views.Settings;
+using StormPC.Views.Shell;
 
 namespace StormPC.Services;
 
@@ -14,9 +24,26 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<MainViewModel, MainPage>();
-        Configure<BlankViewModel, BlankPage>();
-        Configure<Blank1ViewModel, Blank1Page>();
+        Configure<ShellViewModel, ShellPage>();
+        
+        // Dashboard pages
+        Configure<DashboardViewModel, DashboardPage>();
+        Configure<InventoryReportViewModel, InventoryReportPage>();
+        Configure<RevenueReportViewModel, RevenueReportPage>();
+        Configure<CustomerReportViewModel, CustomerReportPage>();
+        
+        // Base Data pages
+        Configure<CategoriesViewModel, CategoriesPage>();
+        Configure<ProductsViewModel, ProductsPage>();
+        
+        // Orders pages
+        Configure<OrderListViewModel, OrderListPage>();
+        Configure<OrderDetailViewModel, OrderDetailPage>();
+        
+        // Activity Log page
+        Configure<ActivityLogViewModel, ActivityLogPage>();
+        
+        // Settings page
         Configure<SettingsViewModel, SettingsPage>();
     }
 

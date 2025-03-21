@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using StormPC.Activation;
 using StormPC.Contracts.Services;
 using StormPC.Views;
+using StormPC.Views.Shell;
 
 namespace StormPC.Services;
 

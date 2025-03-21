@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 using StormPC.Contracts.Services;
 using StormPC.Helpers;
 using StormPC.ViewModels;
+using StormPC.ViewModels.Settings;
 
 namespace StormPC.Services;
 
