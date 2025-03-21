@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Media;
 using StormPC.Contracts.Services;
 using StormPC.Helpers;
 using StormPC.ViewModels.Shell;
+using StormPC.ViewModels.BaseData;
 
 using Windows.System;
 
@@ -77,5 +78,55 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
 
         args.Handled = result;
+    }
+
+    private void NavSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            var currentPage = NavigationFrame.Content;
+            
+            // Kiểm tra nếu đang ở trang Products
+            if (currentPage is Views.BaseData.ProductsPage productsPage)
+            {
+                var viewModel = productsPage.ViewModel as ProductsViewModel;
+                if (viewModel != null)
+                {
+                    // Gọi phương thức tìm kiếm từ ViewModel
+                    viewModel.SearchProducts(sender.Text);
+                }
+            }
+            // Có thể thêm các trang khác có chức năng tìm kiếm ở đây
+        }
+    }
+
+    private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        var currentPage = NavigationFrame.Content;
+        
+        // Xử lý khi người dùng nhấn Enter hoặc click nút tìm kiếm
+        if (currentPage is Views.BaseData.ProductsPage productsPage)
+        {
+            var viewModel = productsPage.ViewModel as ProductsViewModel;
+            if (viewModel != null)
+            {
+                viewModel.SearchProducts(args.QueryText);
+            }
+        }
+    }
+
+    private void NavSearchBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        var currentPage = NavigationFrame.Content;
+        
+        // Xử lý khi người dùng chọn một gợi ý
+        if (currentPage is Views.BaseData.ProductsPage productsPage)
+        {
+            var viewModel = productsPage.ViewModel as ProductsViewModel;
+            if (viewModel != null && args.SelectedItem is string selectedItem)
+            {
+                viewModel.SearchProducts(selectedItem);
+            }
+        }
     }
 } 

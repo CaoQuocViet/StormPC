@@ -15,7 +15,7 @@
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
-            <Image Source="/Assets/WindowIcon.ico"
+            <Image Source="/Assets/img/icon/WindowIcon-512.ico"
                    HorizontalAlignment="Left"
                    Width="16"
                    Height="16" />
@@ -33,6 +33,16 @@
                         IsSettingsVisible="True"
                         PaneTitle="Storm PC"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
+            
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox x:Name="NavSearchBox"
+                               QueryIcon="Find"
+                               PlaceholderText="Tìm kiếm..."
+                               TextChanged="NavSearchBox_TextChanged"
+                               QuerySubmitted="NavSearchBox_QuerySubmitted"
+                               SuggestionChosen="NavSearchBox_SuggestionChosen"/>
+            </NavigationView.AutoSuggestBox>
+
             <NavigationView.MenuItems>
                 <!-- Dashboard -->
                 <NavigationViewItem>

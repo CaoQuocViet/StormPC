@@ -1,11 +1,19 @@
 using Microsoft.UI.Xaml.Controls;
 
+using StormPC.ViewModels.BaseData;
+
 namespace StormPC.Views.BaseData;
 
 public sealed partial class ProductsPage : Page
 {
-    public ProductsPage()
+    public ProductsViewModel ViewModel
     {
-        this.InitializeComponent();
+        get;
+    }
+
+    public ProductsPage(ProductsViewModel viewModel)
+    {
+        ViewModel = viewModel;
+        InitializeComponent();
     }
 } 
