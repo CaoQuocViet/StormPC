@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 
 using StormPC.Contracts.Services;
-using StormPC.ViewModels;
+using StormPC.ViewModels.Dashboard;
 
 namespace StormPC.Activation;
 
@@ -22,7 +22,7 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
 
     protected async override Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
-        _navigationService.NavigateTo(typeof(MainViewModel).FullName!, args.Arguments);
+        _navigationService.NavigateTo(typeof(DashboardViewModel).FullName!, args.Arguments);
 
         await Task.CompletedTask;
     }

@@ -9,8 +9,18 @@ using StormPC.Core.Services;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
-using StormPC.ViewModels;
-using StormPC.Views;
+using StormPC.ViewModels.ActivityLog;
+using StormPC.ViewModels.BaseData;
+using StormPC.ViewModels.Dashboard;
+using StormPC.ViewModels.Orders;
+using StormPC.ViewModels.Settings;
+using StormPC.ViewModels.Shell;
+using StormPC.Views.ActivityLog;
+using StormPC.Views.BaseData;
+using StormPC.Views.Dashboard;
+using StormPC.Views.Orders;
+using StormPC.Views.Settings;
+using StormPC.Views.Shell;
 
 namespace StormPC;
 
@@ -54,8 +64,6 @@ public partial class App : Application
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-            // Other Activation Handlers
-
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
@@ -69,16 +77,38 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<ShellViewModel>();
+            services.AddTransient<ShellPage>();
+            
+            // Dashboard
+            services.AddTransient<DashboardViewModel>();
+            services.AddTransient<DashboardPage>();
+            services.AddTransient<InventoryReportViewModel>();
+            services.AddTransient<InventoryReportPage>();
+            services.AddTransient<RevenueReportViewModel>();
+            services.AddTransient<RevenueReportPage>();
+            services.AddTransient<CustomerReportViewModel>();
+            services.AddTransient<CustomerReportPage>();
+            
+            // Base Data
+            services.AddTransient<CategoriesViewModel>();
+            services.AddTransient<CategoriesPage>();
+            services.AddTransient<ProductsViewModel>();
+            services.AddTransient<ProductsPage>();
+            
+            // Orders
+            services.AddTransient<OrderListViewModel>();
+            services.AddTransient<OrderListPage>();
+            services.AddTransient<OrderDetailViewModel>();
+            services.AddTransient<OrderDetailPage>();
+            
+            // Activity Log
+            services.AddTransient<ActivityLogViewModel>();
+            services.AddTransient<ActivityLogPage>();
+            
+            // Settings
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-            services.AddTransient<Blank1ViewModel>();
-            services.AddTransient<Blank1Page>();
-            services.AddTransient<BlankViewModel>();
-            services.AddTransient<BlankPage>();
-            services.AddTransient<MainViewModel>();
-            services.AddTransient<MainPage>();
-            services.AddTransient<ShellPage>();
-            services.AddTransient<ShellViewModel>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
