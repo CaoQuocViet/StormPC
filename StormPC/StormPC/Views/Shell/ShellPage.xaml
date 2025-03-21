@@ -37,33 +37,30 @@
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox x:Name="NavSearchBox"
                                QueryIcon="Find"
-                               PlaceholderText="Tìm kiếm..."
-                               TextChanged="NavSearchBox_TextChanged"
-                               QuerySubmitted="NavSearchBox_QuerySubmitted"
-                               SuggestionChosen="NavSearchBox_SuggestionChosen"/>
+                               PlaceholderText="Tìm kiếm..."/>
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.MenuItems>
                 <!-- Dashboard -->
                 <NavigationViewItem>
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
+                        <ImageIcon Source="/Assets/img/icon/taskbar-icon/report.png" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>Báo cáo</NavigationViewItem.Content>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Kho hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.InventoryReportViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE719;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/inventory-report.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem Content="Doanh thu" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.RevenueReportViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D4;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/revenue-report.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem Content="Khách hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.CustomerReportViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/customer-report.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
@@ -72,18 +69,18 @@
                 <!-- Orders -->
                 <NavigationViewItem>
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7BF;"/>
+                        <ImageIcon Source="/Assets/img/icon/taskbar-icon/orders.png" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>Đơn hàng</NavigationViewItem.Content>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Danh sách đơn hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Orders.OrderListViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71D;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/order-list.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem Content="Chi tiết đơn hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Orders.OrderDetailViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C3;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/order-detail.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
@@ -92,18 +89,18 @@
                 <!-- Base Data -->
                 <NavigationViewItem>
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8FD;"/>
+                        <ImageIcon Source="/Assets/img/icon/taskbar-icon/base-data.png" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>Dữ liệu cơ sở</NavigationViewItem.Content>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Loại sản phẩm" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.BaseData.CategoriesViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F9;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/categories.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem Content="Sản phẩm" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.BaseData.ProductsViewModel">
                             <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C1;"/>
+                                <ImageIcon Source="/Assets/img/icon/taskbar-icon/products.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
@@ -112,7 +109,7 @@
                 <!-- Activity Log -->
                 <NavigationViewItem helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.ActivityLog.ActivityLogViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE81C;"/>
+                        <ImageIcon Source="/Assets/img/icon/taskbar-icon/activity-log.png" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.Content>Nhật ký hoạt động</NavigationViewItem.Content>
                 </NavigationViewItem>
@@ -120,4 +117,4 @@
             <Frame x:Name="NavigationFrame" />
         </NavigationView>
     </Grid>
-</Page> 
+</Page>
