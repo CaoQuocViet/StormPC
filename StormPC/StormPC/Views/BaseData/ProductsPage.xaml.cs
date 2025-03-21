@@ -11,9 +11,8 @@ public sealed partial class ProductsPage : Page
         get;
     }
 
-    public ProductsPage(ProductsViewModel viewModel)
+    public ProductsPage()
     {
-        ViewModel = viewModel;
         InitializeComponent();
     }
 } 
