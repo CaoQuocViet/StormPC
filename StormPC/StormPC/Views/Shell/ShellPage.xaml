@@ -1,0 +1,113 @@
+<Page
+    x:Class="StormPC.Views.Shell.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:StormPC.Helpers"
+    xmlns:behaviors="using:StormPC.Behaviors"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    Loaded="OnLoaded">
+
+    <Grid>
+        <Grid x:Name="AppTitleBar"
+              Canvas.ZIndex="1"
+              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+              IsHitTestVisible="True"
+              VerticalAlignment="Top">
+            <Image Source="/Assets/WindowIcon.ico"
+                   HorizontalAlignment="Left"
+                   Width="16"
+                   Height="16" />
+            <TextBlock x:Name="AppTitleBarText"
+                       VerticalAlignment="Center"
+                       TextWrapping="NoWrap"
+                       Style="{StaticResource CaptionTextBlockStyle}"
+                       Margin="28,0,0,0"/>
+        </Grid>
+        <NavigationView x:Name="NavigationViewControl"
+                        Canvas.ZIndex="0"
+                        IsBackButtonVisible="Visible"
+                        IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+                        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+                        IsSettingsVisible="True"
+                        PaneTitle="Storm PC"
+                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
+            <NavigationView.MenuItems>
+                <!-- Dashboard -->
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.DashboardViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>Báo cáo</NavigationViewItem.Content>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Kho hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.InventoryReportViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE719;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem Content="Doanh thu" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.RevenueReportViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D4;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem Content="Khách hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.CustomerReportViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+
+                <!-- Orders -->
+                <NavigationViewItem>
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7BF;"/>
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>Đơn hàng</NavigationViewItem.Content>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Danh sách đơn hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Orders.OrderListViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE71D;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem Content="Chi tiết đơn hàng" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Orders.OrderDetailViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+
+                <!-- Base Data -->
+                <NavigationViewItem>
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8FD;"/>
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>Dữ liệu cơ sở</NavigationViewItem.Content>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Loại sản phẩm" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.BaseData.CategoriesViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F9;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem Content="Sản phẩm" helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.BaseData.ProductsViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7C1;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+
+                <!-- Activity Log -->
+                <NavigationViewItem helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.ActivityLog.ActivityLogViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE81C;"/>
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>Nhật ký hoạt động</NavigationViewItem.Content>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="NavigationFrame" />
+        </NavigationView>
+    </Grid>
+</Page> 
