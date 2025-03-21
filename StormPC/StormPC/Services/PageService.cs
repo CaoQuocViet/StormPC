@@ -26,8 +26,7 @@ public class PageService : IPageService
     {
         Configure<ShellViewModel, ShellPage>();
         
-        // Dashboard pages
-        Configure<DashboardViewModel, DashboardPage>();
+        // Report pages
         Configure<InventoryReportViewModel, InventoryReportPage>();
         Configure<RevenueReportViewModel, RevenueReportPage>();
         Configure<CustomerReportViewModel, CustomerReportPage>();

@@ -80,9 +80,7 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ShellPage>();
             
-            // Dashboard
-            services.AddTransient<DashboardViewModel>();
-            services.AddTransient<DashboardPage>();
+            // Report
             services.AddTransient<InventoryReportViewModel>();
             services.AddTransient<InventoryReportPage>();
             services.AddTransient<RevenueReportViewModel>();

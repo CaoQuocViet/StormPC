@@ -35,7 +35,7 @@
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <NavigationView.MenuItems>
                 <!-- Dashboard -->
-                <NavigationViewItem helpers:NavigationHelper.NavigateTo="StormPC.ViewModels.Dashboard.DashboardViewModel">
+                <NavigationViewItem>
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
                     </NavigationViewItem.Icon>
