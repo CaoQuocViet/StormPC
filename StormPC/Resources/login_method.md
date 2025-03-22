@@ -21,8 +21,19 @@
 - Ứng dụng nhỏ, không có nhiều người truy cập.
 - Không cần thay đổi admin thường xuyên.
 
+## NẾU:
 
+### Lần đầu mở phần mềm
+- Nhập thôn tin đăng nhập
+- Bấm đăng nhập thì thông tin đăng nhập đó sẽ được lưu thành thông tin đăng nhập cho lần sau
+- Có tùy chọn đăng nhập bằng Windows Hello
 
+### Quên mật khẩu
+- Chọn nút "Quên mật khẩu"
+- Đăng nhập Windows Hello
+- Nhập lại thông tin đăng nhập như lần đầu tiên
+
+// Lưu ý thông tin đăng nhập phải được tuyệt đối mã hóa và không nhúng trong mã nguồn
 ======================================================================
 
 # Hướng dẫn triển khai đăng nhập bằng Windows Hello
@@ -197,3 +208,165 @@ private async Task<bool> ShowWindowsHelloSetupDialog()
 - Không lưu trữ thông tin nhạy cảm khác trong ứng dụng client
 - Trong ứng dụng thực tế, sử dụng challenge từ server để tránh tấn công replay
 - Kết hợp với các phương thức xác thực khác để đảm bảo tính khả dụng
+
+# Phương pháp xác thực cho StormPC
+
+## 💡 Cách thực hiện
+
+### 1. Lưu trữ thông tin đăng nhập
+- Sử dụng Windows Data Protection API (DPAPI) để lưu trữ thông tin đăng nhập
+- Mã hóa mật khẩu bằng Argon2id trước khi lưu trữ
+- Lưu token phiên làm việc cho đăng nhập tự động
+
+### 2. Quy trình đăng nhập lần đầu
+1. Hiển thị form thiết lập thông tin admin:
+   - Username
+   - Password (có kiểm tra độ mạnh)
+   - Tùy chọn bật Windows Hello
+2. Tạo và lưu trữ:
+   - Hash mật khẩu với Argon2id
+   - Mã hóa thông tin với DPAPI
+   - Thiết lập Windows Hello (nếu được chọn)
+3. Tạo file backup key được mã hóa để khôi phục
+
+### 3. Quy trình đăng nhập thông thường
+1. Kiểm tra Windows Hello đã được thiết lập:
+   - Nếu có, hiển thị tùy chọn đăng nhập Windows Hello
+   - Nếu không, hiển thị form đăng nhập thông thường
+2. Sau khi đăng nhập thành công:
+   - Tạo và lưu token phiên làm việc
+   - Hỏi thiết lập Windows Hello (nếu chưa có)
+3. Rate limiting cho đăng nhập thất bại:
+   - Giới hạn 5 lần thử/phút
+   - Khóa tạm thời 5 phút sau 5 lần thất bại
+
+### 4. Quy trình khôi phục mật khẩu
+1. Yêu cầu xác thực Windows Hello (nếu đã thiết lập)
+2. Hoặc sử dụng backup key để xác thực
+3. Cho phép thiết lập lại thông tin đăng nhập mới
+
+## 📊 Code triển khai chính
+
+```csharp
+public class SecureStorage
+{
+    private static readonly string CREDENTIAL_PATH = "StormPC_Admin";
+    private static readonly string BACKUP_KEY_PATH = "StormPC_Backup";
+
+    // Lưu thông tin đăng nhập sử dụng DPAPI
+    public static void SaveCredentials(string username, string password)
+    {
+        // Hash password với Argon2id
+        string passwordHash = HashPassword(password);
+        
+        // Tạo và mã hóa dữ liệu
+        var data = $"{username}:{passwordHash}";
+        byte[] encrypted = ProtectedData.Protect(
+            Encoding.UTF8.GetBytes(data),
+            null,
+            DataProtectionScope.CurrentUser
+        );
+        
+        // Lưu vào file
+        File.WriteAllBytes(CREDENTIAL_PATH, encrypted);
+        
+        // Tạo backup key
+        CreateBackupKey(username, passwordHash);
+    }
+
+    // Kiểm tra thông tin đăng nhập
+    public static bool VerifyCredentials(string username, string password)
+    {
+        var (storedUsername, storedHash) = LoadCredentials();
+        if (storedUsername != username) return false;
+        
+        return VerifyPassword(password, storedHash);
+    }
+
+    // Tạo token phiên làm việc
+    public static string CreateSessionToken()
+    {
+        var token = GenerateSecureToken();
+        // Lưu token với thời hạn
+        SaveSessionToken(token, DateTime.Now.AddHours(8));
+        return token;
+    }
+
+    // Kiểm tra token hợp lệ
+    public static bool ValidateSessionToken(string token)
+    {
+        return LoadAndVerifySessionToken(token);
+    }
+}
+
+public class LoginManager
+{
+    private readonly SecureStorage _storage;
+    private readonly WindowsHelloAuth _windowsHello;
+    private int _failedAttempts = 0;
+    private DateTime _lastFailedAttempt;
+
+    public async Task<bool> Login(string username, string password)
+    {
+        // Kiểm tra rate limiting
+        if (IsRateLimited()) return false;
+
+        // Thử đăng nhập Windows Hello
+        if (_windowsHello.IsEnabled && await _windowsHello.Authenticate())
+        {
+            return await CompleteLogin();
+        }
+
+        // Đăng nhập thông thường
+        if (_storage.VerifyCredentials(username, password))
+        {
+            ResetFailedAttempts();
+            return await CompleteLogin();
+        }
+
+        // Xử lý đăng nhập thất bại
+        HandleFailedLogin();
+        return false;
+    }
+
+    private async Task<bool> CompleteLogin()
+    {
+        var token = _storage.CreateSessionToken();
+        // Lưu thông tin phiên làm việc
+        return true;
+    }
+
+    private bool IsRateLimited()
+    {
+        if (_failedAttempts >= 5 && 
+            DateTime.Now - _lastFailedAttempt < TimeSpan.FromMinutes(5))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void HandleFailedLogin()
+    {
+        _failedAttempts++;
+        _lastFailedAttempt = DateTime.Now;
+    }
+}
+```
+
+## ⚡ Ưu điểm của giải pháp
+
+✅ Bảo mật cao với DPAPI và Argon2id
+✅ Tích hợp tốt với Windows Hello
+✅ Có cơ chế khôi phục đáng tin cậy
+✅ UX thân thiện với người dùng
+✅ Dễ dàng bảo trì và nâng cấp
+
+## 🔒 Các biện pháp bảo mật
+
+1. Sử dụng DPAPI cho việc lưu trữ an toàn
+2. Argon2id cho việc hash mật khẩu
+3. Rate limiting chống brute force
+4. Token phiên làm việc có thời hạn
+5. Backup key được mã hóa
+6. Log các hoạt động đăng nhập bất thường
