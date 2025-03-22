@@ -9,12 +9,14 @@ using StormPC.ViewModels.Dashboard;
 using StormPC.ViewModels.Orders;
 using StormPC.ViewModels.Settings;
 using StormPC.ViewModels.Shell;
+using StormPC.ViewModels.Login;
 using StormPC.Views.ActivityLog;
 using StormPC.Views.BaseData;
 using StormPC.Views.Dashboard;
 using StormPC.Views.Orders;
 using StormPC.Views.Settings;
 using StormPC.Views.Shell;
+using StormPC.Views.Login;
 
 namespace StormPC.Services;
 
@@ -25,6 +27,10 @@ public class PageService : IPageService
     public PageService()
     {
         Configure<ShellViewModel, ShellPage>();
+        
+        // Login pages
+        Configure<LoginViewModel, LoginPage>();
+        Configure<FirstTimeSetupViewModel, FirstTimeSetupPage>();
         
         // Report pages
         Configure<InventoryReportViewModel, InventoryReportPage>();

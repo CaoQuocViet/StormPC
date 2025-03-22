@@ -6,18 +6,22 @@ using StormPC.Activation;
 using StormPC.Contracts.Services;
 using StormPC.Core.Contracts.Services;
 using StormPC.Core.Services;
+using StormPC.Core.Services.Security;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
+using StormPC.Services.Login;
 using StormPC.ViewModels.ActivityLog;
 using StormPC.ViewModels.BaseData;
 using StormPC.ViewModels.Dashboard;
+using StormPC.ViewModels.Login;
 using StormPC.ViewModels.Orders;
 using StormPC.ViewModels.Settings;
 using StormPC.ViewModels.Shell;
 using StormPC.Views.ActivityLog;
 using StormPC.Views.BaseData;
 using StormPC.Views.Dashboard;
+using StormPC.Views.Login;
 using StormPC.Views.Orders;
 using StormPC.Views.Settings;
 using StormPC.Views.Shell;
@@ -75,10 +79,23 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
+            
+            // Security Services
+            services.AddSingleton<ISecureStorageService, SecureStorageService>();
+            services.AddSingleton<IPasswordHashService, Argon2PasswordService>();
+            services.AddSingleton<ISessionService, SessionService>();
+            services.AddSingleton<ILoginService, LoginService>();
+            services.AddSingleton<IWindowsHelloService, WindowsHelloService>();
 
             // Views and ViewModels
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ShellPage>();
+            
+            // Login
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<LoginPage>();
+            services.AddTransient<FirstTimeSetupViewModel>();
+            services.AddTransient<FirstTimeSetupPage>();
             
             // Report
             services.AddTransient<InventoryReportViewModel>();
