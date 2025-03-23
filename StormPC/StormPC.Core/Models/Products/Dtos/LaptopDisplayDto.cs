@@ -20,4 +20,8 @@ public class LaptopDisplayDto
     public int RAM { get; set; }
     public int Storage { get; set; }
     public string StorageType { get; set; } = null!;
+
+    public string FormattedPrice { get; set; } = string.Empty;
+    public string FormattedDiscount { get; set; } = string.Empty;
+    public int OptionsCount { get; set; }
 } 
