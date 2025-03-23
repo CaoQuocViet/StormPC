@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:StormPC.Core.Helpers"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -44,7 +45,10 @@
                      SelectionMode="Single">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal"/>
+                        <ItemsWrapGrid x:Name="ProductsWrapGrid" 
+                                     MaximumRowsOrColumns="4" 
+                                     Orientation="Horizontal"
+                                     HorizontalAlignment="Center" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
                 <GridView.ItemContainerStyle>
@@ -53,113 +57,362 @@
                         <Setter Property="Padding" Value="0" />
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewItem">
+                                    <Grid>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="HoverContent.Visibility" Value="Collapsed" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState x:Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="HoverContent.Visibility" Value="Visible" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="HoverContent.Visibility" Value="Collapsed" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <ContentPresenter x:Name="ContentPresenter" />
+                                        
+                                        <Grid x:Name="HoverContent" 
+                                              Background="#CC000000" 
+                                              Visibility="Collapsed"
+                                              CornerRadius="12">
+                                            <ContentPresenter Content="{Binding}">
+                                                <ContentPresenter.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+
+                                                            <!-- Product Details -->
+                                                            <StackPanel Grid.Row="0" Margin="20" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding ModelName}" 
+                                                                         FontWeight="SemiBold" 
+                                                                         FontSize="20"
+                                                                         TextWrapping="Wrap"
+                                                                         Foreground="White"
+                                                                         TextAlignment="Center"
+                                                                         Margin="0,0,0,20"/>
+
+                                                                <Grid ColumnSpacing="12" RowSpacing="12">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+
+                                                                    <TextBlock Text="Thương hiệu:" 
+                                                                             Foreground="#99FFFFFF"
+                                                                             FontWeight="SemiBold"/>
+                                                                    <TextBlock Grid.Column="1" 
+                                                                             Text="{Binding BrandName}"
+                                                                             Foreground="White"
+                                                                             FontWeight="SemiBold"/>
+
+                                                                    <TextBlock Grid.Row="1" 
+                                                                             Text="CPU:" 
+                                                                             Foreground="#99FFFFFF"
+                                                                             FontWeight="SemiBold"/>
+                                                                    <TextBlock Grid.Row="1" 
+                                                                             Grid.Column="1" 
+                                                                             Text="{Binding CPU}"
+                                                                             Foreground="White"
+                                                                             TextWrapping="Wrap"/>
+
+                                                                    <TextBlock Grid.Row="2" 
+                                                                             Text="RAM:" 
+                                                                             Foreground="#99FFFFFF"
+                                                                             FontWeight="SemiBold"/>
+                                                                    <StackPanel Grid.Row="2" 
+                                                                              Grid.Column="1" 
+                                                                              Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding RAM}" 
+                                                                                 Foreground="White"/>
+                                                                        <TextBlock Text=" GB" 
+                                                                                 Foreground="White"/>
+                                                                    </StackPanel>
+
+                                                                    <TextBlock Grid.Row="3" 
+                                                                             Text="Ổ cứng:" 
+                                                                             Foreground="#99FFFFFF"
+                                                                             FontWeight="SemiBold"/>
+                                                                    <StackPanel Grid.Row="3" 
+                                                                              Grid.Column="1" 
+                                                                              Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Storage}" 
+                                                                                 Foreground="White"/>
+                                                                        <TextBlock Text=" GB " 
+                                                                                 Foreground="White"/>
+                                                                        <TextBlock Text="{Binding StorageType}" 
+                                                                                 Foreground="White"/>
+                                                                    </StackPanel>
+
+                                                                    <TextBlock Grid.Row="4" 
+                                                                             Grid.ColumnSpan="2"
+                                                                             Margin="0,12,0,0"
+                                                                             HorizontalAlignment="Center">
+                                                                        <Run Text="Giá từ: " 
+                                                                             Foreground="#99FFFFFF"/>
+                                                                        <Run Text="{Binding FormattedPrice}" 
+                                                                             FontSize="20" 
+                                                                             Foreground="#00FF93"
+                                                                             FontWeight="SemiBold"/>
+                                                                        <Run Text=" VNĐ" 
+                                                                             Foreground="#99FFFFFF"/>
+                                                                    </TextBlock>
+                                                                </Grid>
+                                                            </StackPanel>
+
+                                                            <!-- Action Buttons -->
+                                                            <StackPanel Grid.Row="1" 
+                                                                      Orientation="Horizontal" 
+                                                                      HorizontalAlignment="Center"
+                                                                      Margin="0,0,0,20"
+                                                                      Spacing="12">
+                                                                <Button Style="{ThemeResource AccentButtonStyle}"
+                                                                        Padding="16,8"
+                                                                        CornerRadius="4">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <FontIcon Glyph="&#xE70F;" FontSize="12"/>
+                                                                        <TextBlock Text="Chỉnh sửa" Margin="8,0,0,0"/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                                <Button Background="#E81123"
+                                                                        Foreground="White"
+                                                                        Padding="16,8"
+                                                                        CornerRadius="4">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <FontIcon Glyph="&#xE74D;" FontSize="12"/>
+                                                                        <TextBlock Text="Xóa" Margin="8,0,0,0"/>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ContentPresenter.ContentTemplate>
+                                            </ContentPresenter>
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </GridView.ItemContainerStyle>
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="380" Height="240" 
+                        <Grid Width="280" Height="420" 
                               Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                               BorderBrush="{ThemeResource SystemBaseLowColor}" 
                               BorderThickness="1" 
                               CornerRadius="12">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Normal State -->
+                            <Grid x:Name="NormalState">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="280"/> <!-- Image height -->
+                                    <RowDefinition Height="Auto"/> <!-- Product name -->
+                                    <RowDefinition Height="*"/> <!-- Spacing -->
+                                    <RowDefinition Height="Auto"/> <!-- Price -->
+                                    <RowDefinition Height="Auto"/> <!-- Options count -->
+                                    <RowDefinition Height="16"/> <!-- Bottom spacing -->
+                                </Grid.RowDefinitions>
 
-                            <!-- Product Image -->
-                            <Border Grid.RowSpan="2" Background="#f5f5f7" CornerRadius="12,0,0,12" Padding="12">
-                                <Grid>
-                                    <Image Source="{Binding Picture}" 
-                                           Width="120" 
-                                           Height="180" 
-                                           Stretch="UniformToFill"/>
-                                    <Border Background="{ThemeResource SystemAccentColor}" 
-                                            CornerRadius="6" 
-                                            VerticalAlignment="Bottom"
-                                            HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding ReleaseYear}" 
-                                                   FontWeight="SemiBold" 
-                                                   FontSize="11" 
-                                                   Margin="6,2" 
-                                                   Foreground="White"/>
-                                    </Border>
-                                </Grid>
-                            </Border>
+                                <!-- Product Image -->
+                                <Border Grid.Row="0" Background="White" CornerRadius="12,12,0,0">
+                                    <Grid>
+                                        <Image Source="{Binding Picture}" 
+                                               Stretch="Uniform"
+                                               Margin="20"/>
+                                        <!-- Discount Badge -->
+                                        <Border Background="#E81123" 
+                                                CornerRadius="6" 
+                                                VerticalAlignment="Top"
+                                                HorizontalAlignment="Right"
+                                                Margin="0,12,12,0">
+                                            <TextBlock Margin="8,4" Foreground="White">
+                                                <Run Text="-"/>
+                                                <Run Text="{Binding FormattedDiscount}"/>
+                                                <Run Text="%"/>
+                                            </TextBlock>
+                                        </Border>
+                                        <!-- Year Badge -->
+                                        <Border Background="{ThemeResource SystemAccentColor}" 
+                                                CornerRadius="6" 
+                                                VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Left"
+                                                Margin="12,0,0,12">
+                                            <TextBlock Text="{Binding ReleaseYear}" 
+                                                       FontWeight="SemiBold" 
+                                                       FontSize="12" 
+                                                       Margin="8,4" 
+                                                       Foreground="White"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
 
-                            <!-- Product Details -->
-                            <StackPanel Grid.Column="1" Margin="16,16,16,10">
-                                <TextBlock Text="{Binding ModelName}" 
-                                           FontWeight="SemiBold" 
-                                           FontSize="18"
-                                           TextWrapping="Wrap"
-                                           MaxLines="2"
-                                           Foreground="{ThemeResource SystemAccentColor}"/>
+                                <!-- Product Name -->
+                                <TextBlock Grid.Row="1" 
+                                         Text="{Binding ModelName}" 
+                                         FontWeight="SemiBold" 
+                                         FontSize="18"
+                                         TextWrapping="Wrap"
+                                         MaxLines="2"
+                                         Margin="16,12"
+                                         Foreground="{ThemeResource SystemAccentColor}"/>
 
-                                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                    <TextBlock Text="Thương hiệu: " FontWeight="SemiBold" Opacity="0.7"/>
-                                    <TextBlock Text="{Binding BrandName}" 
-                                               Foreground="#0078D7" 
-                                               FontWeight="Medium"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                    <TextBlock Text="CPU: " FontWeight="SemiBold" Opacity="0.7"/>
-                                    <TextBlock Text="{Binding CPU}" TextWrapping="Wrap"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                    <TextBlock Text="RAM: " FontWeight="SemiBold" Opacity="0.7"/>
-                                    <TextBlock>
-                                        <Run Text="{Binding RAM}"/>
-                                        <Run Text="GB"/>
-                                    </TextBlock>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                    <TextBlock Text="Ổ cứng: " FontWeight="SemiBold" Opacity="0.7"/>
-                                    <TextBlock>
-                                        <Run Text="{Binding Storage}"/>
-                                        <Run Text="GB"/>
-                                        <Run Text="{Binding StorageType}"/>
-                                    </TextBlock>
-                                </StackPanel>
-
-                                <TextBlock Margin="0,8,0,0">
+                                <!-- Price -->
+                                <TextBlock Grid.Row="3" 
+                                         Margin="16,0,16,8"
+                                         HorizontalAlignment="Left">
                                     <Run Text="Giá từ: " FontWeight="SemiBold"/>
-                                    <Run Text="{Binding LowestPrice}" FontSize="16" Foreground="#0078D7"/>
+                                    <Run Text="{Binding FormattedPrice}" 
+                                         FontSize="16" 
+                                         Foreground="#0078D7"
+                                         FontWeight="SemiBold"/>
                                     <Run Text=" VNĐ"/>
                                 </TextBlock>
-                            </StackPanel>
 
-                            <!-- Action Buttons -->
-                            <StackPanel Grid.Row="1" Grid.Column="1" 
-                                        Orientation="Horizontal" 
-                                        HorizontalAlignment="Right" 
-                                        Margin="0,0,12,8">
-                                <Button Style="{ThemeResource AccentButtonStyle}"
-                                        Margin="0,0,8,0"
-                                        Padding="12,6"
-                                        CornerRadius="4">
-                                    <StackPanel Orientation="Horizontal">
-                                        <FontIcon Glyph="&#xE70F;" FontSize="12"/>
-                                        <TextBlock Text="Chỉnh sửa" Margin="8,0,0,0"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Background="#E81123"
-                                        Foreground="White"
-                                        Padding="12,6"
-                                        CornerRadius="4">
-                                    <StackPanel Orientation="Horizontal">
-                                        <FontIcon Glyph="&#xE74D;" FontSize="12"/>
-                                        <TextBlock Text="Xóa" Margin="8,0,0,0"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
+                                <!-- Options Count -->
+                                <TextBlock Grid.Row="4" 
+                                         Margin="16,0,16,0"
+                                         HorizontalAlignment="Left"
+                                         Foreground="#ADD8E6">
+                                    <Run Text="+"/>
+                                    <Run Text="{Binding OptionsCount}"/>
+                                    <Run Text=" tùy chọn khác"/>
+                                </TextBlock>
+                            </Grid>
+
+                            <!-- Hover State with Details -->
+                            <Grid x:Name="HoverState" 
+                                  Background="#4D000000" 
+                                  Visibility="Collapsed"
+                                  CornerRadius="12">
+                                <StackPanel Margin="20" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding ModelName}" 
+                                             FontWeight="SemiBold" 
+                                             FontSize="20"
+                                             TextWrapping="Wrap"
+                                             Foreground="White"
+                                             TextAlignment="Center"
+                                             Margin="0,0,0,20"/>
+
+                                    <Grid ColumnSpacing="12" RowSpacing="12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="Thương hiệu:" 
+                                                 Foreground="#99FFFFFF"
+                                                 FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="1" 
+                                                 Text="{Binding BrandName}"
+                                                 Foreground="White"
+                                                 FontWeight="SemiBold"/>
+
+                                        <TextBlock Grid.Row="1" 
+                                                 Text="CPU:" 
+                                                 Foreground="#99FFFFFF"
+                                                 FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Row="1" 
+                                                 Grid.Column="1" 
+                                                 Text="{Binding CPU}"
+                                                 Foreground="White"
+                                                 TextWrapping="Wrap"/>
+
+                                        <TextBlock Grid.Row="2" 
+                                                 Text="RAM:" 
+                                                 Foreground="#99FFFFFF"
+                                                 FontWeight="SemiBold"/>
+                                        <StackPanel Grid.Row="2" 
+                                                  Grid.Column="1" 
+                                                  Orientation="Horizontal">
+                                            <TextBlock Text="{Binding RAM}" 
+                                                     Foreground="White"/>
+                                            <TextBlock Text=" GB" 
+                                                     Foreground="White"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Row="3" 
+                                                 Text="Ổ cứng:" 
+                                                 Foreground="#99FFFFFF"
+                                                 FontWeight="SemiBold"/>
+                                        <StackPanel Grid.Row="3" 
+                                                  Grid.Column="1" 
+                                                  Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Storage}" 
+                                                     Foreground="White"/>
+                                            <TextBlock Text=" GB " 
+                                                     Foreground="White"/>
+                                            <TextBlock Text="{Binding StorageType}" 
+                                                     Foreground="White"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Row="4" 
+                                                 Text="Số tùy chọn:" 
+                                                 Foreground="#99FFFFFF"
+                                                 FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Row="4" 
+                                                 Grid.Column="1"
+                                                 Foreground="White">
+                                            <Run Text="{Binding LaptopSpecs.Count}"/>
+                                            <Run Text=" phiên bản"/>
+                                        </TextBlock>
+
+                                        <!-- Action Buttons -->
+                                        <StackPanel Grid.Row="5" 
+                                                  Grid.ColumnSpan="2"
+                                                  Orientation="Horizontal" 
+                                                  HorizontalAlignment="Center"
+                                                  Margin="0,24,0,0"
+                                                  Spacing="12">
+                                            <Button Style="{ThemeResource AccentButtonStyle}"
+                                                    Padding="16,8"
+                                                    CornerRadius="4">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Glyph="&#xE70F;" FontSize="12"/>
+                                                    <TextBlock Text="Chỉnh sửa" Margin="8,0,0,0"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Background="#E81123"
+                                                    Foreground="White"
+                                                    Padding="16,8"
+                                                    CornerRadius="4">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Glyph="&#xE74D;" FontSize="12"/>
+                                                    <TextBlock Text="Xóa" Margin="8,0,0,0"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
                         </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
