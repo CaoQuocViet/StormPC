@@ -1,0 +1,71 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using StormPC.Core.Services.Login;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+namespace StormPC.ViewModels.Login;
+
+public partial class FirstTimeViewModel : ObservableObject
+{
+    private readonly AuthenticationService _authService;
+
+    [ObservableProperty]
+    private string _username = string.Empty;
+
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+
+    public FirstTimeViewModel(AuthenticationService authService)
+    {
+        _authService = authService;
+    }
+
+    [RelayCommand]
+    private async Task CreateAdminAccountAsync(string password)
+    {
+        ErrorMessage = string.Empty;
+
+        // Validation
+        if (string.IsNullOrEmpty(Username))
+        {
+            ErrorMessage = "Username is required";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(password))
+        {
+            ErrorMessage = "Password is required";
+            return;
+        }
+
+        if (password.Length < 8)
+        {
+            ErrorMessage = "Password must be at least 8 characters long";
+            return;
+        }
+
+        try
+        {
+            var success = await _authService.CreateAdminAccount(Username, password);
+            if (!success)
+            {
+                ErrorMessage = "Failed to create admin account. Please try again.";
+            }
+        }
+        catch (System.Exception ex)
+        {
+            ErrorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+
+    public bool IsPasswordValid(string password, string confirmPassword)
+    {
+        if (password != confirmPassword)
+        {
+            ErrorMessage = "Passwords do not match";
+            return false;
+        }
+        return true;
+    }
+} 
