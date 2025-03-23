@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using StormPC.Activation;
 using StormPC.Contracts.Services;
 using StormPC.Core.Contracts.Services;
+using StormPC.Core.Infrastructure.Database.Configurations;
+using StormPC.Core.Infrastructure.Database.Contexts;
+using StormPC.Core.Infrastructure.Database.Services;
 using StormPC.Core.Services;
 using StormPC.Core.Services.Login;
+using StormPC.Core.Services.Products;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
@@ -65,6 +70,13 @@ public partial class App : Application
         {
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+
+            // Database Configuration
+            services.AddSingleton<IDatabaseConfigurationService, DatabaseConfigurationService>();
+            services.AddDbContext<StormPCDbContext>();
+
+            // Product Services
+            services.AddScoped<IProductService, ProductService>();
 
             // Login Services
             services.AddSingleton<SecureStorageService>();
