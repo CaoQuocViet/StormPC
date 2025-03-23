@@ -34,6 +34,20 @@ module.exports = {
         updatedAt: now
       },
       {
+        VariantID: '12768-3',
+        LaptopID: '12768',
+        CPU: 'Intel Core i7-1360P',
+        GPU: 'Intel Iris Xe Graphics',
+        RAM: 16,
+        Storage: 2048,
+        StorageType: 'SSD',
+        Color: 'Silver',
+        Price: 160000000,
+        StockQuantity: 8,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
         VariantID: '16354-1',
         LaptopID: '16354',
         CPU: 'Intel Core i7-14700HX',
@@ -62,6 +76,20 @@ module.exports = {
         updatedAt: now
       },
       {
+        VariantID: '16354-3',
+        LaptopID: '16354',
+        CPU: 'Intel Core i9-14900HX',
+        GPU: 'NVIDIA GeForce RTX 4090',
+        RAM: 64,
+        Storage: 4096,
+        StorageType: 'SSD',
+        Color: 'Storm Grey',
+        Price: 310000000,
+        StockQuantity: 5,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
         VariantID: '18351-1',
         LaptopID: '18351',
         CPU: 'Intel Core i7-13700H',
@@ -72,6 +100,34 @@ module.exports = {
         Color: 'Storm Blue',
         Price: 110000000,
         StockQuantity: 12,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        VariantID: '18351-2',
+        LaptopID: '18351',
+        CPU: 'Intel Core i7-13700H',
+        GPU: 'Intel Iris Xe Graphics',
+        RAM: 32,
+        Storage: 1024,
+        StorageType: 'SSD',
+        Color: 'Storm Blue',
+        Price: 140000000,
+        StockQuantity: 8,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        VariantID: '18351-3',
+        LaptopID: '18351',
+        CPU: 'Intel Core i9-13900H',
+        GPU: 'Intel Iris Xe Graphics',
+        RAM: 32,
+        Storage: 2048,
+        StorageType: 'SSD',
+        Color: 'Obsidian Black',
+        Price: 170000000,
+        StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
@@ -100,6 +156,20 @@ module.exports = {
         Color: 'Mecha Grey',
         Price: 160000000,
         StockQuantity: 15,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        VariantID: '18950-3',
+        LaptopID: '18950',
+        CPU: 'AMD Ryzen 9 7940HS',
+        GPU: 'AMD Radeon RX 7700S',
+        RAM: 64,
+        Storage: 2048,
+        StorageType: 'SSD',
+        Color: 'Eclipse Black',
+        Price: 210000000,
+        StockQuantity: 7,
         createdAt: now,
         updatedAt: now
       },
