@@ -21,7 +21,7 @@ public sealed partial class FirstTimeWindow : Window
         var appWindow = AppWindow.GetFromWindowId(windowId);
         
         // Set size
-        var size = new Windows.Graphics.SizeInt32(400, 450);
+        var size = new Windows.Graphics.SizeInt32(400, 600);
         appWindow.Resize(size);
 
         // Center on screen
@@ -34,6 +34,8 @@ public sealed partial class FirstTimeWindow : Window
         }
 
         Title = "First Time Setup - StormPC";
+
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/img/icon/WindowIcon-512.ico"));
 
         // Subscribe to command execution
         ViewModel.CreateAdminAccountCommand.PropertyChanged += CreateAdminAccountCommand_PropertyChanged;
