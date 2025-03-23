@@ -284,3 +284,6 @@ obj/
 
 .editorconfig
 .vsconfig
+.env
+.env.local
+.env.example
