@@ -6,18 +6,21 @@ using StormPC.Activation;
 using StormPC.Contracts.Services;
 using StormPC.Core.Contracts.Services;
 using StormPC.Core.Services;
+using StormPC.Core.Services.Login;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
 using StormPC.ViewModels.ActivityLog;
 using StormPC.ViewModels.BaseData;
 using StormPC.ViewModels.Dashboard;
+using StormPC.ViewModels.Login;
 using StormPC.ViewModels.Orders;
 using StormPC.ViewModels.Settings;
 using StormPC.ViewModels.Shell;
 using StormPC.Views.ActivityLog;
 using StormPC.Views.BaseData;
 using StormPC.Views.Dashboard;
+using StormPC.Views.Login;
 using StormPC.Views.Orders;
 using StormPC.Views.Settings;
 using StormPC.Views.Shell;
@@ -48,7 +51,7 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx MainWindow { get; } = new MainWindow();
+    public static WindowEx? MainWindow { get; private set; }
 
     public static UIElement? AppTitlebar { get; set; }
 
@@ -64,7 +67,15 @@ public partial class App : Application
             // Default Activation Handler
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-            // Services
+            // Login Services
+            services.AddSingleton<SecureStorageService>();
+            services.AddSingleton<AuthenticationService>();
+            services.AddTransient<FirstTimeWindow>();
+            services.AddTransient<LoginWindow>();
+            services.AddTransient<FirstTimeViewModel>();
+            services.AddTransient<LoginViewModel>();
+
+            // Other Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
@@ -79,6 +90,7 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ShellPage>();
+            services.AddTransient<MainWindow>();
             
             // Report
             services.AddTransient<InventoryReportViewModel>();
@@ -122,10 +134,21 @@ public partial class App : Application
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
     }
 
-    protected async override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        var authService = Host.Services.GetRequiredService<AuthenticationService>();
+
+        if (authService.IsFirstTimeSetup())
+        {
+            var firstTimeWindow = Host.Services.GetRequiredService<FirstTimeWindow>();
+            firstTimeWindow.Activate();
+        }
+        else
+        {
+            var loginWindow = Host.Services.GetRequiredService<LoginWindow>();
+            loginWindow.Activate();
+        }
     }
 }
