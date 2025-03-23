@@ -1,11 +1,8 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Windowing;
-using StormPC.Core.Services.Login;
-using System;
-using WinRT.Interop;
 using StormPC.ViewModels.Login;
+using WinRT.Interop;
 
 namespace StormPC.Views.Login;
 
@@ -24,7 +21,7 @@ public sealed partial class FirstTimeWindow : Window
         var appWindow = AppWindow.GetFromWindowId(windowId);
         
         // Set size
-        var size = new Windows.Graphics.SizeInt32(400, 600);
+        var size = new Windows.Graphics.SizeInt32(400, 450);
         appWindow.Resize(size);
 
         // Center on screen
@@ -65,4 +62,4 @@ public sealed partial class FirstTimeWindow : Window
             }
         }
     }
-} 
+}
