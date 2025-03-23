@@ -14,7 +14,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'White',
-        Price: 1299.99,
+        Price: 120000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -28,7 +28,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1599.99,
+        Price: 150000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
@@ -42,7 +42,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Grey',
-        Price: 1799.99,
+        Price: 170000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -56,7 +56,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Storm Grey',
-        Price: 2499.99,
+        Price: 240000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
@@ -70,7 +70,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Storm Blue',
-        Price: 1199.99,
+        Price: 110000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
@@ -84,7 +84,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Mecha Grey',
-        Price: 1299.99,
+        Price: 120000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
@@ -98,7 +98,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Mecha Grey',
-        Price: 1699.99,
+        Price: 160000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -112,7 +112,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Lunar Silver',
-        Price: 1999.99,
+        Price: 190000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
@@ -126,7 +126,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Lunar Silver',
-        Price: 2499.99,
+        Price: 240000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
@@ -140,7 +140,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Eclipse Gray',
-        Price: 2799.99,
+        Price: 270000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
@@ -154,7 +154,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Eclipse Gray',
-        Price: 3499.99,
+        Price: 340000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
@@ -168,7 +168,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Moonlight White',
-        Price: 1899.99,
+        Price: 180000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -182,7 +182,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Eclipse Gray',
-        Price: 2399.99,
+        Price: 230000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
@@ -196,7 +196,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Off Black',
-        Price: 1599.99,
+        Price: 150000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -210,7 +210,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Off Black',
-        Price: 1999.99,
+        Price: 190000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -224,7 +224,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Platinum Silver',
-        Price: 2299.99,
+        Price: 220000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
@@ -238,7 +238,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Platinum Silver',
-        Price: 2999.99,
+        Price: 290000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
@@ -252,7 +252,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Onyx Gray',
-        Price: 899.99,
+        Price: 80000000,
         StockQuantity: 30,
         createdAt: now,
         updatedAt: now
@@ -266,7 +266,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Performance Blue',
-        Price: 999.99,
+        Price: 90000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
@@ -280,7 +280,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Performance Blue',
-        Price: 1399.99,
+        Price: 130000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -294,7 +294,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 2899.99,
+        Price: 280000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
@@ -308,7 +308,7 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 3699.99,
+        Price: 360000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
@@ -322,7 +322,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1499.99,
+        Price: 140000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -336,7 +336,7 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Cosmic Black',
-        Price: 4999.99,
+        Price: 490000000,
         StockQuantity: 3,
         createdAt: now,
         updatedAt: now
@@ -350,7 +350,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Off Black',
-        Price: 2599.99,
+        Price: 250000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
@@ -364,7 +364,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Off Black',
-        Price: 3299.99,
+        Price: 320000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
@@ -378,7 +378,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Storm Grey',
-        Price: 899.99,
+        Price: 80000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
@@ -392,7 +392,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Grey',
-        Price: 1199.99,
+        Price: 110000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -406,7 +406,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Shadow Black',
-        Price: 1799.99,
+        Price: 170000000,
         StockQuantity: 18,
         createdAt: now,
         updatedAt: now
@@ -420,7 +420,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Shadow Black',
-        Price: 2299.99,
+        Price: 220000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
@@ -434,7 +434,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Obsidian Black',
-        Price: 1699.99,
+        Price: 160000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -448,7 +448,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Obsidian Black',
-        Price: 2199.99,
+        Price: 210000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
@@ -462,7 +462,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Mica Silver',
-        Price: 999.99,
+        Price: 90000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
@@ -476,7 +476,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Mica Silver',
-        Price: 1399.99,
+        Price: 130000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -490,7 +490,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Abyssal Black',
-        Price: 1999.99,
+        Price: 190000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
@@ -504,7 +504,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Abyssal Black',
-        Price: 2499.99,
+        Price: 240000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
@@ -518,7 +518,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Oatmeal',
-        Price: 1399.99,
+        Price: 130000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -532,7 +532,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Oatmeal',
-        Price: 1699.99,
+        Price: 160000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
@@ -546,7 +546,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Storm Grey',
-        Price: 1099.99,
+        Price: 100000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -560,7 +560,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Grey',
-        Price: 1299.99,
+        Price: 120000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -574,7 +574,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Onyx Grey',
-        Price: 1299.99,
+        Price: 120000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -588,7 +588,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Onyx Grey',
-        Price: 1699.99,
+        Price: 160000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -602,7 +602,7 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Core Black',
-        Price: 4499.99,
+        Price: 440000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
@@ -616,7 +616,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 999.99,
+        Price: 90000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
@@ -630,7 +630,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1299.99,
+        Price: 120000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -644,7 +644,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1399.99,
+        Price: 130000000,
         StockQuantity: 18,
         createdAt: now,
         updatedAt: now
@@ -658,7 +658,7 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1899.99,
+        Price: 180000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
@@ -672,7 +672,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Dark Shadow Grey',
-        Price: 1499.99,
+        Price: 140000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -686,7 +686,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Dark Shadow Grey',
-        Price: 1799.99,
+        Price: 170000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
@@ -700,7 +700,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Titan Grey',
-        Price: 899.99,
+        Price: 80000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
@@ -714,7 +714,7 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1299.99,
+        Price: 120000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
@@ -728,7 +728,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
-        Price: 1599.99,
+        Price: 150000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
