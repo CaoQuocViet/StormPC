@@ -1,13 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
 using StormPC.Core.Services.Login;
 using System.Threading.Tasks;
+using StormPC.Contracts.Services;
+using System;
 
 namespace StormPC.ViewModels.Login;
 
 public partial class LoginViewModel : ObservableObject
 {
     private readonly AuthenticationService _authService;
+
+    public event EventHandler? LoginSuccessful;
 
     [ObservableProperty]
     private string _username = string.Empty;
@@ -34,7 +39,12 @@ public partial class LoginViewModel : ObservableObject
         try
         {
             var (success, error) = await _authService.LoginAsync(Username, password);
-            if (!success)
+            if (success)
+            {
+                await App.GetService<IActivationService>().ActivateAsync(null!);
+                LoginSuccessful?.Invoke(this, EventArgs.Empty);
+            }
+            else
             {
                 ErrorMessage = error ?? "Login failed. Please try again.";
             }
@@ -44,4 +54,4 @@ public partial class LoginViewModel : ObservableObject
             ErrorMessage = $"An error occurred: {ex.Message}";
         }
     }
-} 
+}

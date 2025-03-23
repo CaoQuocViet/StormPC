@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StormPC.Core.Services.Login;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace StormPC.ViewModels.Login;
 
@@ -68,4 +67,4 @@ public partial class FirstTimeViewModel : ObservableObject
         }
         return true;
     }
-} 
+}
