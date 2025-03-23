@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-
 using StormPC.Activation;
 using StormPC.Contracts.Services;
 using StormPC.Core.Contracts.Services;
@@ -51,7 +50,7 @@ public partial class App : Application
         return service;
     }
 
-    public static WindowEx? MainWindow { get; private set; }
+    public static WindowEx MainWindow { get; } = new MainWindow();
 
     public static UIElement? AppTitlebar { get; set; }
 

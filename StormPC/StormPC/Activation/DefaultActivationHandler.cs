@@ -1,7 +1,8 @@
 ﻿using Microsoft.UI.Xaml;
 
 using StormPC.Contracts.Services;
-using StormPC.ViewModels.Dashboard;
+using StormPC.ViewModels;
+using StormPC.ViewModels.Shell;
 
 namespace StormPC.Activation;
 
@@ -22,8 +23,7 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
 
     protected override async Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
-        _navigationService.NavigateTo(typeof(StormPC.ViewModels.Dashboard.InventoryReportViewModel).FullName!, args.Arguments);
-
+        _navigationService.NavigateTo(typeof(ShellViewModel).FullName!, args.Arguments);
         await Task.CompletedTask;
     }
 }
