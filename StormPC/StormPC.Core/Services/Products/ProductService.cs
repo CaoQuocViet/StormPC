@@ -72,4 +72,11 @@ public class ProductService : IProductService
             .OrderBy(ls => ls.Price)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<int> GetVariantsCountAsync(string laptopId)
+    {
+        return await _dbContext.LaptopSpecs
+            .Where(spec => spec.LaptopID == laptopId)
+            .CountAsync();
+    }
 } 
