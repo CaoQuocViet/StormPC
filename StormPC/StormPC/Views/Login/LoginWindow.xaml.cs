@@ -24,7 +24,7 @@ public sealed partial class LoginWindow : Window
         var appWindow = AppWindow.GetFromWindowId(windowId);
         
         // Set size
-        var size = new Windows.Graphics.SizeInt32(400, 600);
+        var size = new Windows.Graphics.SizeInt32(400, 620);
         appWindow.Resize(size);
 
         // Center on screen
@@ -48,11 +48,11 @@ public sealed partial class LoginWindow : Window
     {
         if (ShowPasswordButton.IsChecked == true)
         {
-            var passwordBox = (PasswordBox)PasswordBox;
-            var passwordRevealMode = passwordBox.PasswordRevealMode;
-            passwordBox.PasswordRevealMode = passwordRevealMode == PasswordRevealMode.Hidden 
-                ? PasswordRevealMode.Visible 
-                : PasswordRevealMode.Hidden;
+            PasswordBox.PasswordRevealMode = PasswordRevealMode.Visible;
+        }
+        else
+        {
+            PasswordBox.PasswordRevealMode = PasswordRevealMode.Hidden;
         }
     }
 
