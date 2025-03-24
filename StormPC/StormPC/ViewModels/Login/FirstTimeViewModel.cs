@@ -15,13 +15,18 @@ public partial class FirstTimeViewModel : ObservableObject
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
+    [ObservableProperty]
+    private string _backupKey = string.Empty;
+
+    public event EventHandler? AccountCreated;
+
     public FirstTimeViewModel(AuthenticationService authService)
     {
         _authService = authService;
     }
 
     [RelayCommand]
-    private async Task CreateAdminAccountAsync(string password)
+    private async Task CreateAdminAccountAsync((string password, string confirmPassword) passwords)
     {
         ErrorMessage = string.Empty;
 
@@ -32,22 +37,34 @@ public partial class FirstTimeViewModel : ObservableObject
             return;
         }
 
-        if (string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(passwords.password))
         {
             ErrorMessage = "Password is required";
             return;
         }
 
-        if (password.Length < 8)
+        if (passwords.password.Length < 8)
         {
             ErrorMessage = "Password must be at least 8 characters long";
             return;
         }
 
+        if (passwords.password != passwords.confirmPassword)
+        {
+            ErrorMessage = "Passwords do not match";
+            return;
+        }
+
         try
         {
-            var success = await _authService.CreateAdminAccount(Username, password);
-            if (!success)
+            var success = await _authService.CreateAdminAccount(Username, passwords.password);
+            if (success)
+            {
+                // Generate backup key
+                BackupKey = await _authService.GenerateBackupKeyAsync();
+                AccountCreated?.Invoke(this, EventArgs.Empty);
+            }
+            else
             {
                 ErrorMessage = "Failed to create admin account. Please try again.";
             }
@@ -56,15 +73,5 @@ public partial class FirstTimeViewModel : ObservableObject
         {
             ErrorMessage = $"An error occurred: {ex.Message}";
         }
-    }
-
-    public bool IsPasswordValid(string password, string confirmPassword)
-    {
-        if (password != confirmPassword)
-        {
-            ErrorMessage = "Passwords do not match";
-            return false;
-        }
-        return true;
     }
 }

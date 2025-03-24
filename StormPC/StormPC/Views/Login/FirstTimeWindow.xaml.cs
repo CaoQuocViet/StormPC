@@ -1,8 +1,10 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Windowing;
 using StormPC.ViewModels.Login;
 using WinRT.Interop;
+using System.IO;
 
 namespace StormPC.Views.Login;
 
@@ -13,7 +15,8 @@ public sealed partial class FirstTimeWindow : Window
     public FirstTimeWindow()
     {
         ViewModel = App.GetService<FirstTimeViewModel>();
-        InitializeComponent();
+        ViewModel.AccountCreated += ViewModel_AccountCreated;
+        this.InitializeComponent();
 
         // Set window size and properties
         var windowHandle = WindowNative.GetWindowHandle(this);
@@ -36,32 +39,38 @@ public sealed partial class FirstTimeWindow : Window
         Title = "First Time Setup - StormPC";
 
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/img/icon/WindowIcon-512.ico"));
+    }
 
-        // Subscribe to command execution
-        ViewModel.CreateAdminAccountCommand.PropertyChanged += CreateAdminAccountCommand_PropertyChanged;
+    private async void ViewModel_AccountCreated(object? sender, EventArgs e)
+    {
+        // Show backup key dialog
+        var result = await BackupKeyDialog.ShowAsync();
+        
+        // After dialog is closed, show login window
+        var loginWindow = App.GetService<LoginWindow>();
+        loginWindow.Activate();
+        Close();
     }
 
     private async void OnCreateAdminClick(object sender, RoutedEventArgs e)
     {
         var password = PasswordBox.Password;
         var confirmPassword = ConfirmPasswordBox.Password;
+        await ViewModel.CreateAdminAccountCommand.ExecuteAsync((password, confirmPassword));
+    }
 
-        if (ViewModel.IsPasswordValid(password, confirmPassword))
+    private async void OnCopyBackupKey(object sender, ContentDialogButtonClickEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(ViewModel.BackupKey))
         {
-            await ViewModel.CreateAdminAccountCommand.ExecuteAsync(password);
+            var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            dataPackage.SetText(ViewModel.BackupKey);
+            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
         }
     }
 
-    private void CreateAdminAccountCommand_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void OnCloseBackupKeyDialog(object sender, ContentDialogButtonClickEventArgs e)
     {
-        if (e.PropertyName == "IsRunning" && !ViewModel.CreateAdminAccountCommand.IsRunning)
-        {
-            if (string.IsNullOrEmpty(ViewModel.ErrorMessage))
-            {
-                var loginWindow = App.GetService<LoginWindow>();
-                loginWindow.Activate();
-                Close();
-            }
-        }
+        BackupKeyDialog.Hide();
     }
 }

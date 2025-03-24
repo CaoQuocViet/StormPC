@@ -61,5 +61,25 @@
                 Padding="15,10"
                 HorizontalAlignment="Center"
                 Click="OnCreateAdminClick"/>
+
+        <winui:ContentDialog x:Name="BackupKeyDialog"
+                      Title="Backup Key"
+                      PrimaryButtonText="Copy"
+                      SecondaryButtonText="Close"
+                      DefaultButton="Primary"
+                      IsPrimaryButtonEnabled="True"
+                      IsSecondaryButtonEnabled="True"
+                      PrimaryButtonClick="OnCopyBackupKey"
+                      SecondaryButtonClick="OnCloseBackupKeyDialog">
+            <StackPanel>
+                <TextBlock Text="Vui lòng lưu lại backup key cẩn thận. Bạn sẽ cần dùng nó để khôi phục tài khoản khi quên thông tin đăng nhập."
+                         TextWrapping="Wrap"
+                         Margin="0,0,0,10"/>
+                <TextBox Text="{x:Bind ViewModel.BackupKey, Mode=OneWay}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         Height="100"/>
+            </StackPanel>
+        </winui:ContentDialog>
     </Grid>
 </Window> 
