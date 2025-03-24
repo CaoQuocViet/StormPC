@@ -16,7 +16,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       Description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
+      IsDeleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       createdAt: {
         allowNull: true,

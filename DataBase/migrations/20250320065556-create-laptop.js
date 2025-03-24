@@ -44,7 +44,13 @@ module.exports = {
         type: Sequelize.DATE
       },
       DiscountStartDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      IsDeleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       createdAt: {
         allowNull: true,

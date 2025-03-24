@@ -25,7 +25,13 @@ module.exports = {
         type: Sequelize.TEXT
       },
       CityCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(3),
+        allowNull: false
+      },
+      IsDeleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       createdAt: {
         allowNull: true,

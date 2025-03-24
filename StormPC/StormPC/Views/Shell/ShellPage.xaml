@@ -37,7 +37,7 @@
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox x:Name="NavSearchBox"
                                QueryIcon="Find"
-                               PlaceholderText="Tìm kiếm..."/>
+                               PlaceholderText="Tìm kiếm nâng cao..."/>
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.MenuItems>
