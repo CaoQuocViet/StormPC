@@ -15,11 +15,11 @@ public class LaptopDisplayDto
 
     // Cheapest spec information
     public decimal LowestPrice { get; set; }
-    public string CPU { get; set; } = null!;
-    public string? GPU { get; set; }
+    public string CPU { get; set; } = "N/A";
+    public string GPU { get; set; } = "N/A";
     public int RAM { get; set; }
     public int Storage { get; set; }
-    public string StorageType { get; set; } = null!;
+    public string StorageType { get; set; } = "N/A";
 
     public string FormattedPrice { get; set; } = string.Empty;
     public string FormattedDiscount { get; set; } = string.Empty;

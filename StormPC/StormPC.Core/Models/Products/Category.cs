@@ -29,5 +29,5 @@ public class Category
     public ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
 
     [NotMapped]
-    public int ProductCount => Laptops?.Count(l => !l.IsDeleted) ?? 0;
+    public int ProductCount { get; set; }
 } 
