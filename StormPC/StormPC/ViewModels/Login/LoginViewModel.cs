@@ -11,6 +11,8 @@ namespace StormPC.ViewModels.Login;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly AuthenticationService _authService;
+    private readonly SecureStorageService _secureStorage;
+    private const string REMEMBERED_LOGIN_KEY = "remembered_login";
 
     public event EventHandler? LoginSuccessful;
 
@@ -18,11 +20,39 @@ public partial class LoginViewModel : ObservableObject
     private string _username = string.Empty;
 
     [ObservableProperty]
+    private string _password = string.Empty;
+
+    [ObservableProperty]
     private string _errorMessage = string.Empty;
 
-    public LoginViewModel(AuthenticationService authService)
+    [ObservableProperty]
+    private bool _rememberMe;
+
+    [ObservableProperty]
+    private bool _isPasswordViewable = true;
+
+    public LoginViewModel(AuthenticationService authService, SecureStorageService secureStorage)
     {
         _authService = authService;
+        _secureStorage = secureStorage;
+        LoadRememberedLogin();
+    }
+
+    private void LoadRememberedLogin()
+    {
+        var rememberedLogin = _secureStorage.LoadSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY);
+        if (rememberedLogin != null && rememberedLogin.ExpiresAt > DateTime.UtcNow)
+        {
+            Username = rememberedLogin.Username;
+            Password = rememberedLogin.Password;
+            RememberMe = true;
+            IsPasswordViewable = false;
+        }
+        else
+        {
+            // Clear expired remembered login
+            _secureStorage.SaveSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY, null);
+        }
     }
 
     [RelayCommand]
@@ -41,6 +71,22 @@ public partial class LoginViewModel : ObservableObject
             var (success, error) = await _authService.LoginAsync(Username, password);
             if (success)
             {
+                if (RememberMe)
+                {
+                    var rememberedLogin = new RememberedLogin
+                    {
+                        Username = Username,
+                        Password = password,
+                        LastLoginTime = DateTime.UtcNow,
+                        ExpiresAt = DateTime.UtcNow.AddHours(1) // Remember for 1 hour
+                    };
+                    _secureStorage.SaveSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY, rememberedLogin);
+                }
+                else
+                {
+                    _secureStorage.SaveSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY, null);
+                }
+
                 await App.GetService<IActivationService>().ActivateAsync(null!);
                 LoginSuccessful?.Invoke(this, EventArgs.Empty);
             }
@@ -54,4 +100,12 @@ public partial class LoginViewModel : ObservableObject
             ErrorMessage = $"An error occurred: {ex.Message}";
         }
     }
+}
+
+public class RememberedLogin
+{
+    public string Username { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public DateTime LastLoginTime { get; set; }
+    public DateTime ExpiresAt { get; set; }
 }

@@ -1,5 +1,6 @@
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Windowing;
 using StormPC.ViewModels.Login;
 using WinRT.Interop;
@@ -38,6 +39,21 @@ public sealed partial class LoginWindow : Window
         Title = "Login - StormPC";
 
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/img/icon/WindowIcon-512.ico"));
+
+        // Setup password visibility toggle
+        ShowPasswordButton.Click += ShowPasswordButton_Click;
+    }
+
+    private void ShowPasswordButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ShowPasswordButton.IsChecked == true)
+        {
+            var passwordBox = (PasswordBox)PasswordBox;
+            var passwordRevealMode = passwordBox.PasswordRevealMode;
+            passwordBox.PasswordRevealMode = passwordRevealMode == PasswordRevealMode.Hidden 
+                ? PasswordRevealMode.Visible 
+                : PasswordRevealMode.Hidden;
+        }
     }
 
     private void ViewModel_LoginSuccessful(object? sender, EventArgs e)

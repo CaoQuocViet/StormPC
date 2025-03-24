@@ -8,6 +8,22 @@
     mc:Ignorable="d">
 
     <Grid Margin="20">
+        <Grid.Resources>
+            <Style x:Key="TransparentToggleButton" TargetType="ToggleButton">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="8,4"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="{ThemeResource SymbolThemeFontFamily}"/>
+                <Setter Property="Width" Value="32"/>
+                <Setter Property="Height" Value="32"/>
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -37,9 +53,25 @@
                      Padding="5"/>
 
             <TextBlock Text="Password" Margin="0,0,0,5"/>
-            <winui:PasswordBox x:Name="PasswordBox"
-                        Margin="0,0,0,15"
-                        Padding="5"/>
+            <Grid>
+                <winui:PasswordBox x:Name="PasswordBox"
+                            Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
+                            Margin="0,0,0,15"
+                            Padding="5"/>
+                <ToggleButton x:Name="ShowPasswordButton"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,5,15"
+                            Style="{StaticResource TransparentToggleButton}"
+                            IsEnabled="{x:Bind ViewModel.IsPasswordViewable, Mode=OneWay}">
+                    <FontIcon Glyph="&#xE7B3;" FontSize="16"/>
+                </ToggleButton>
+            </Grid>
+
+            <CheckBox x:Name="RememberMeCheckBox"
+                     Content="Remember me"
+                     Margin="0,0,0,15"
+                     IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}"/>
 
             <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
                       Foreground="Red"
@@ -49,7 +81,7 @@
 
         <Button Grid.Row="3"
                 Content="Login"
-                Padding="30,10"
+                Style="{StaticResource AccentButtonStyle}"
                 HorizontalAlignment="Center"
                 Click="OnLoginClick"/>
     </Grid>
