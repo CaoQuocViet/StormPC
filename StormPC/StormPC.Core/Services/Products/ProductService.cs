@@ -12,6 +12,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
     public async Task<IEnumerable<LaptopDisplayDto>> GetAllLaptopsForDisplayAsync()
     {
         var laptops = await _dbContext.Set<Laptop>()
+            .Where(l => !l.IsDeleted)
             .Include(l => l.Brand)
             .Include(l => l.Category)
             .Include(l => l.Specs)
@@ -21,7 +22,13 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
 
         foreach (var laptop in laptops)
         {
+            if (laptop.Brand == null || laptop.Category == null)
+            {
+                continue;
+            }
+
             var cheapestSpec = laptop.Specs
+                .Where(s => s != null)
                 .OrderBy(s => s.Price)
                 .FirstOrDefault();
 
@@ -43,11 +50,11 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
                 Discount = laptop.Discount,
                 DiscountEndDate = laptop.DiscountEndDate,
                 LowestPrice = cheapestSpec.Price,
-                CPU = cheapestSpec.CPU,
-                GPU = cheapestSpec.GPU,
+                CPU = cheapestSpec.CPU ?? "N/A",
+                GPU = cheapestSpec.GPU ?? "N/A",
                 RAM = cheapestSpec.RAM,
                 Storage = cheapestSpec.Storage,
-                StorageType = cheapestSpec.StorageType
+                StorageType = cheapestSpec.StorageType ?? "N/A"
             });
         }
 
@@ -57,6 +64,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
     public async Task<Laptop?> GetLaptopByIdAsync(string id)
     {
         return await _dbContext.Set<Laptop>()
+            .Where(l => !l.IsDeleted)
             .Include(l => l.Brand)
             .Include(l => l.Category)
             .Include(l => l.Specs)
