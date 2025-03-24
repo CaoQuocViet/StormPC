@@ -16,7 +16,7 @@ public sealed partial class LoginWindow : Window
     {
         ViewModel = App.GetService<LoginViewModel>();
         ViewModel.LoginSuccessful += ViewModel_LoginSuccessful;
-        InitializeComponent();
+        this.InitializeComponent();
 
         // Set window size and properties
         var windowHandle = WindowNative.GetWindowHandle(this);
@@ -41,12 +41,15 @@ public sealed partial class LoginWindow : Window
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/img/icon/WindowIcon-512.ico"));
 
         // Setup password visibility toggle
-        ShowPasswordButton.Click += ShowPasswordButton_Click;
+        if (ShowPasswordButton != null)
+        {
+            ShowPasswordButton.Click += ShowPasswordButton_Click;
+        }
     }
 
     private void ShowPasswordButton_Click(object sender, RoutedEventArgs e)
     {
-        if (ShowPasswordButton.IsChecked == true)
+        if (ShowPasswordButton?.IsChecked == true)
         {
             PasswordBox.PasswordRevealMode = PasswordRevealMode.Visible;
         }
@@ -65,5 +68,33 @@ public sealed partial class LoginWindow : Window
     {
         var password = PasswordBox.Password;
         await ViewModel.LoginCommand.ExecuteAsync(password);
+    }
+
+    private async void OnRecoverAccountTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+    {
+        await RecoverAccountDialog.ShowAsync();
+    }
+
+    private async void OnRecoverAccountConfirm(object sender, ContentDialogButtonClickEventArgs e)
+    {
+        var backupKey = BackupKeyTextBox.Text;
+        if (await ViewModel.VerifyBackupKeyAsync(backupKey))
+        {
+            ViewModel.ResetAdminAccount();
+            var firstTimeWindow = App.GetService<FirstTimeWindow>();
+            firstTimeWindow.Activate();
+            Close();
+        }
+        else
+        {
+            ViewModel.ErrorMessage = "Invalid backup key. Please try again.";
+        }
+    }
+
+    private void OnRecoverAccountCancel(object sender, ContentDialogButtonClickEventArgs e)
+    {
+        BackupKeyTextBox.Text = string.Empty;
+        ViewModel.ErrorMessage = string.Empty;
+        RecoverAccountDialog.Hide();
     }
 }

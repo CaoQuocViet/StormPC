@@ -38,6 +38,16 @@ public partial class LoginViewModel : ObservableObject
         LoadRememberedLogin();
     }
 
+    public async Task<bool> VerifyBackupKeyAsync(string backupKey)
+    {
+        return await _authService.VerifyBackupKeyAsync(backupKey);
+    }
+
+    public void ResetAdminAccount()
+    {
+        _authService.ResetAdminAccount();
+    }
+
     private void LoadRememberedLogin()
     {
         var rememberedLogin = _secureStorage.LoadSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY);
