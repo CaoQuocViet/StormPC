@@ -18,6 +18,16 @@ public class Category
     [Required]
     public bool IsDeleted { get; set; }
 
+    [Required]
+    [Column("createdAt")]
+    public DateTime CreatedAt { get; set; }
+
+    [Column("updatedAt")]
+    public DateTime? UpdatedAt { get; set; }
+
     // Navigation property
     public ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
+
+    [NotMapped]
+    public int ProductCount => Laptops?.Count(l => !l.IsDeleted) ?? 0;
 } 
