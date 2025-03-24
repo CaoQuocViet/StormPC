@@ -96,3 +96,6 @@ npx sequelize-cli db:seed:undo:all
 
 # Kết nối DB thông qua terminal
 psql postgresql://vietcq:123456789000@localhost:5444/stormpc_db
+
+# dump database
+pg_dump -U vietcq -h localhost -p 5444 -d stormpc_db -s > schema.sql
