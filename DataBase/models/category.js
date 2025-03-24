@@ -14,9 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Category.init({
-    CategoryID: DataTypes.INTEGER,
-    CategoryName: DataTypes.STRING,
-    Description: DataTypes.TEXT
+    CategoryID: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    CategoryName: DataTypes.STRING(50),
+    Description: DataTypes.TEXT,
+    IsDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'Category',

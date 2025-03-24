@@ -14,12 +14,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Customer.init({
-    CustomerID: DataTypes.INTEGER,
-    FullName: DataTypes.STRING,
-    Email: DataTypes.STRING,
-    Phone: DataTypes.STRING,
+    CustomerID: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    FullName: DataTypes.STRING(100),
+    Email: DataTypes.STRING(100),
+    Phone: DataTypes.STRING(20),
     Address: DataTypes.TEXT,
-    CityCode: DataTypes.STRING
+    CityCode: DataTypes.STRING(3),
+    IsDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'Customer',

@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Laptop.init({
-    LaptopID: DataTypes.STRING,
+    LaptopID: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
     BrandID: DataTypes.INTEGER,
     CategoryID: DataTypes.INTEGER,
     Picture: DataTypes.STRING,
@@ -25,7 +28,11 @@ module.exports = (sequelize, DataTypes) => {
     Description: DataTypes.TEXT,
     Discount: DataTypes.DECIMAL,
     DiscountEndDate: DataTypes.DATE,
-    DiscountStartDate: DataTypes.DATE
+    DiscountStartDate: DataTypes.DATE,
+    IsDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'Laptop',
