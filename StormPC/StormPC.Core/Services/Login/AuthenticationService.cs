@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Konscious.Security.Cryptography;
 using StormPC.Core.Models.Login;
 using System.Text;
+using System.IO;
 
 namespace StormPC.Core.Services.Login;
 
@@ -134,6 +135,72 @@ public class AuthenticationService
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(randomBytes);
         return Convert.ToBase64String(randomBytes);
+    }
+
+    public async Task<string> GenerateBackupKeyAsync()
+    {
+        var randomBytes = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        var backupKey = Convert.ToBase64String(randomBytes);
+        
+        // Hash the backup key
+        using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(backupKey))
+        {
+            DegreeOfParallelism = 8,
+            MemorySize = 65536,
+            Iterations = 4
+        };
+        var hash = await argon2.GetBytesAsync(32);
+        var backupKeyHash = Convert.ToBase64String(hash);
+
+        // Save the hash to the admin account
+        var users = _secureStorage.LoadSecureData<UserAccount[]>(USERS_STORAGE_KEY);
+        if (users != null)
+        {
+            var adminAccount = users.FirstOrDefault(u => u.IsAdmin);
+            if (adminAccount != null)
+            {
+                adminAccount.BackupKeyHash = backupKeyHash;
+                _secureStorage.SaveSecureData(USERS_STORAGE_KEY, users);
+            }
+        }
+
+        return backupKey;
+    }
+
+    public async Task<bool> VerifyBackupKeyAsync(string backupKey)
+    {
+        var users = _secureStorage.LoadSecureData<UserAccount[]>(USERS_STORAGE_KEY);
+        if (users == null) return false;
+
+        var adminAccount = users.FirstOrDefault(u => u.IsAdmin);
+        if (adminAccount == null || string.IsNullOrEmpty(adminAccount.BackupKeyHash)) return false;
+
+        // Hash the provided backup key
+        using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(backupKey))
+        {
+            DegreeOfParallelism = 8,
+            MemorySize = 65536,
+            Iterations = 4
+        };
+        var hash = await argon2.GetBytesAsync(32);
+        var providedHash = Convert.ToBase64String(hash);
+
+        return adminAccount.BackupKeyHash == providedHash;
+    }
+
+    public void ResetAdminAccount()
+    {
+        // Delete the secure storage file
+        var appDataPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "StormPC");
+        var storageFilePath = Path.Combine(appDataPath, "secure_storage.dat");
+        if (File.Exists(storageFilePath))
+        {
+            File.Delete(storageFilePath);
+        }
     }
 
     public UserSession? GetCurrentSession() => _currentSession;
