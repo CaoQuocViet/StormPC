@@ -10,6 +10,28 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemAccentColor}"/>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+
+        <Style x:Key="DataGridCellStyle" TargetType="TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,24 +40,31 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Quản lý loại sản phẩm" 
-                   Style="{ThemeResource TitleTextBlockStyle}" 
-                   Grid.Row="0"/>
+                  Style="{StaticResource PageTitleStyle}"/>
 
-        <Grid Grid.Row="1" Margin="0,20,0,10">
+        <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox PlaceholderText="Tìm kiếm loại sản phẩm..."
                           QueryIcon="Find"
                           Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          Width="300"
-                          HorizontalAlignment="Left"/>
+                          Height="40"
+                          Margin="0,0,12,0"/>
 
-            <Button Content="Thêm mới"
-                    Grid.Column="1"
-                    Style="{StaticResource AccentButtonStyle}"/>
+            <Button Grid.Column="1"
+                    Content="Thêm mới"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Margin="0,0,12,0"/>
+
+            <Button Grid.Column="2"
+                    Content="Xóa"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Background="#E81123"
+                    Foreground="White"/>
         </Grid>
 
         <Grid Grid.Row="2">
@@ -51,10 +80,18 @@
                                       Width="80"/>
                     <controls:DataGridTextColumn Header="Loại sản phẩm" 
                                       Binding="{Binding CategoryName}" 
-                                      Width="200"/>
+                                      Width="200">
+                        <controls:DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
+                        </controls:DataGridTextColumn.ElementStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Thông tin" 
                                       Binding="{Binding Description}" 
-                                      Width="*"/>
+                                      Width="*">
+                        <controls:DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
+                        </controls:DataGridTextColumn.ElementStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Số lượng SP" 
                                       Binding="{Binding ProductCount}" 
                                       Width="120"/>
@@ -85,32 +122,5 @@
                          Width="50" 
                          Height="50"/>
         </Grid>
-
-        <!-- Action Buttons -->
-        <StackPanel Grid.Row="1" 
-                  Grid.ColumnSpan="2"
-                  Orientation="Horizontal" 
-                  HorizontalAlignment="Center"
-                  Margin="0,24,0,0"
-                  Spacing="12">
-            <Button Style="{ThemeResource AccentButtonStyle}"
-                    Padding="16,8"
-                    CornerRadius="4">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE70F;" FontSize="12"/>
-                    <TextBlock Text="Chỉnh sửa" Margin="8,0,0,0"/>
-                </StackPanel>
-            </Button>
-            <Button Style="{ThemeResource AccentButtonStyle}"
-                    Background="#E81123"
-                    Foreground="White"
-                    Padding="16,8"
-                    CornerRadius="4">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE74D;" FontSize="12"/>
-                    <TextBlock Text="Xóa" Margin="8,0,0,0"/>
-                </StackPanel>
-            </Button>
-        </StackPanel>
     </Grid>
 </Page> 

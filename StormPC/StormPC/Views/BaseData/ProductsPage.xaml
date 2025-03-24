@@ -8,26 +8,38 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemAccentColor}"/>
+        </Style>
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
         <TextBlock Text="Quản lý sản phẩm" 
-                  FontSize="32" 
-                  FontWeight="SemiBold" 
-                  Margin="20,20" 
-                  HorizontalAlignment="Center"
-                  Foreground="{ThemeResource SystemAccentColor}"/>
+                  Style="{StaticResource PageTitleStyle}"/>
 
-        <!-- Search Bar -->
+        <!-- Search Bar and Action Buttons -->
         <Grid Grid.Row="1" Margin="20,0,20,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -35,7 +47,19 @@
                 PlaceholderText="Tìm kiếm sản phẩm..."
                 QueryIcon="Find"
                 Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}"
-                Margin="0,0,10,0"/>
+                Height="40"
+                Margin="0,0,12,0"/>
+
+            <Button Grid.Column="1"
+                    Content="Thêm mới"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Margin="0,0,12,0"/>
+
+            <Button Grid.Column="2"
+                    Content="Xóa"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Background="#E81123"
+                    Foreground="White"/>
         </Grid>
 
         <!-- Products GridView -->
@@ -419,21 +443,8 @@
             </GridView>
         </ScrollViewer>
 
-        <!-- Action Buttons -->
-        <CommandBar Grid.Row="3" 
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    IsOpen="False"
-                    DefaultLabelPosition="Right"
-                    Margin="0,15,0,25">
-            <AppBarButton Label="Thêm sản phẩm mới" 
-                         Icon="Add"
-                         Background="{ThemeResource SystemAccentColor}"
-                         Foreground="White"/>
-        </CommandBar>
-
         <!-- Loading Indicator -->
-        <Grid Grid.RowSpan="4" 
+        <Grid Grid.RowSpan="3" 
               Background="{ThemeResource SystemAltMediumLowColor}"
               Opacity="0.7"
               Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
