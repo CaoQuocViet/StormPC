@@ -34,10 +34,8 @@
 - **Trường `BackupKeyHash`** có trong model `UserAccount` nhưng chưa triển khai chức năng khôi phục tài khoản.
 
 ## 💾 Ghi Nhớ Đăng Nhập
-- **Hiện tại chưa có chức năng `Remember me`**.
-- **Cần thêm:**
-  - Checkbox `"Remember me"` trong `LoginWindow.xaml`.
-  - Trường lưu trữ thông tin đăng nhập đã mã hóa.
-  - Tự động điền username và ẩn password khi có thông tin ghi nhớ.
-  - Không cho phép xem password đã ghi nhớ.
+- Thông tin đăng nhập sẽ được ghi nhớ trong 1 tiếng
+- Sau 1 tiếng, người dùng sẽ phải đăng nhập lại
+- Thông tin ghi nhớ sẽ tự động bị xóa khi hết hạn
+- Password vẫn được mã hóa khi lưu trữ trong SecureStorageService
 
