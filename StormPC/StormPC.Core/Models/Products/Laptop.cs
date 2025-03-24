@@ -36,6 +36,9 @@ public class Laptop
 
     public DateTime? DiscountEndDate { get; set; }
 
+    [Required]
+    public bool IsDeleted { get; set; }
+
     // Navigation properties
     public Brand Brand { get; set; } = null!;
     public Category Category { get; set; } = null!;

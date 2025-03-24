@@ -30,6 +30,9 @@ public class Customer
     [MaxLength(3)]
     public string CityCode { get; set; } = null!;
 
+    [Required]
+    public bool IsDeleted { get; set; }
+
     // Navigation properties
     public City City { get; set; } = null!;
     public ICollection<Order> Orders { get; set; } = new List<Order>();

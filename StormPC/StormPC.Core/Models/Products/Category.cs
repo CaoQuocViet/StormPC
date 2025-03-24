@@ -15,6 +15,9 @@ public class Category
 
     public string? Description { get; set; }
 
+    [Required]
+    public bool IsDeleted { get; set; }
+
     // Navigation property
     public ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
 } 

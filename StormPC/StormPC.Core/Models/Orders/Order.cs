@@ -37,6 +37,9 @@ public class Order
     [MaxLength(10)]
     public string? ShippingPostalCode { get; set; }
 
+    [Required]
+    public bool IsDeleted { get; set; }
+
     // Navigation properties
     public Customer Customer { get; set; } = null!;
     public OrderStatus Status { get; set; } = null!;
