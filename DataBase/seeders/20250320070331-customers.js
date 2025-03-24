@@ -12,6 +12,7 @@ module.exports = {
         Phone: '0901234567',
         Address: '123 Lê Lợi, Phường Bến Nghé, Quận 1',
         CityCode: 'HCM',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -22,6 +23,7 @@ module.exports = {
         Phone: '0912345678',
         Address: '45 Nguyễn Huệ, Phường Bến Nghé, Quận 1',
         CityCode: 'HCM',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -32,6 +34,7 @@ module.exports = {
         Phone: '0923456789',
         Address: '67 Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1',
         CityCode: 'HCM',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -42,6 +45,7 @@ module.exports = {
         Phone: '0934567890',
         Address: '89 Lý Tự Trọng, Hoàn Kiếm',
         CityCode: 'HAN',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -52,6 +56,7 @@ module.exports = {
         Phone: '0945678901',
         Address: '234 Trần Phú, Hải Châu',
         CityCode: 'DAN',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -62,6 +67,7 @@ module.exports = {
         Phone: '0956789012',
         Address: '56 Nguyễn Văn Linh, Hải Châu',
         CityCode: 'DAN',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -72,6 +78,7 @@ module.exports = {
         Phone: '0967890123',
         Address: '78 Phan Chu Trinh, Ninh Kiều',
         CityCode: 'CTO',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -82,6 +89,7 @@ module.exports = {
         Phone: '0978901234',
         Address: '90 Lê Duẩn, Hải An',
         CityCode: 'HAP',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -92,6 +100,7 @@ module.exports = {
         Phone: '0989012345',
         Address: '123 Trần Phú, Lộc Thọ',
         CityCode: 'NTH',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -102,6 +111,7 @@ module.exports = {
         Phone: '0990123456',
         Address: '45 Nguyễn Huệ, Thành phố Huế',
         CityCode: 'HUE',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       }

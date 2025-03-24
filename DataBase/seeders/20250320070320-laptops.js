@@ -18,6 +18,7 @@ module.exports = {
         Discount:12000000,
         DiscountStartDate: '2024-03-01',
         DiscountEndDate: '2024-04-01',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -34,6 +35,7 @@ module.exports = {
         Discount:12000000,
         DiscountStartDate: '2024-03-15',
         DiscountEndDate: '2024-04-15',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -50,6 +52,7 @@ module.exports = {
         Discount:13000000,
         DiscountStartDate: '2024-03-10',
         DiscountEndDate: '2024-04-10',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -66,6 +69,7 @@ module.exports = {
         Discount:13000000,
         DiscountStartDate: '2024-03-05',
         DiscountEndDate: '2024-04-05',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -82,6 +86,7 @@ module.exports = {
         Discount:14000000,
         DiscountStartDate: '2024-03-20',
         DiscountEndDate: '2024-04-20',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -98,6 +103,7 @@ module.exports = {
         Discount:14000000,
         DiscountStartDate: '2024-03-25',
         DiscountEndDate: '2024-04-25',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -114,6 +120,7 @@ module.exports = {
         Discount:15000000,
         DiscountStartDate: '2024-03-01',
         DiscountEndDate: '2024-04-01',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -130,6 +137,7 @@ module.exports = {
         Discount:15000000,
         DiscountStartDate: '2024-03-15',
         DiscountEndDate: '2024-04-15',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -146,6 +154,7 @@ module.exports = {
         Discount:16000000,
         DiscountStartDate: '2024-03-10',
         DiscountEndDate: '2024-04-10',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -162,6 +171,7 @@ module.exports = {
         Discount:17000000,
         DiscountStartDate: '2024-03-05',
         DiscountEndDate: '2024-04-05',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -178,6 +188,7 @@ module.exports = {
         Discount:27000000,
         DiscountStartDate: '2024-03-20',
         DiscountEndDate: '2024-04-20',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -194,6 +205,7 @@ module.exports = {
         Discount:21000000,
         DiscountStartDate: '2024-03-25',
         DiscountEndDate: '2024-04-25',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -210,6 +222,7 @@ module.exports = {
         Discount:22000000,
         DiscountStartDate: '2024-03-01',
         DiscountEndDate: '2024-04-01',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -226,6 +239,7 @@ module.exports = {
         Discount:22200000,
         DiscountStartDate: '2024-03-15',
         DiscountEndDate: '2024-04-15',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -242,6 +256,7 @@ module.exports = {
         Discount:21200000,
         DiscountStartDate: '2024-03-10',
         DiscountEndDate: '2024-04-10',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -258,6 +273,7 @@ module.exports = {
         Discount:21600000,
         DiscountStartDate: '2024-03-05',
         DiscountEndDate: '2024-04-05',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -274,6 +290,7 @@ module.exports = {
         Discount:10000008,
         DiscountStartDate: '2024-03-20',
         DiscountEndDate: '2024-04-20',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -290,6 +307,7 @@ module.exports = {
         Discount:21800000,
         DiscountStartDate: '2024-03-25',
         DiscountEndDate: '2024-04-25',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -306,6 +324,7 @@ module.exports = {
         Discount:21800000,
         DiscountStartDate: '2024-03-01',
         DiscountEndDate: '2024-04-01',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -322,6 +341,7 @@ module.exports = {
         Discount:23800000,
         DiscountStartDate: '2024-03-15',
         DiscountEndDate: '2024-04-15',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -338,6 +358,7 @@ module.exports = {
         Discount:23800000,
         DiscountStartDate: '2024-03-10',
         DiscountEndDate: '2024-04-10',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -354,6 +375,7 @@ module.exports = {
         Discount:13800000,
         DiscountStartDate: '2024-03-05',
         DiscountEndDate: '2024-04-05',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -370,6 +392,7 @@ module.exports = {
         Discount:13800000,
         DiscountStartDate: '2024-03-20',
         DiscountEndDate: '2024-04-20',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -386,6 +409,7 @@ module.exports = {
         Discount:10000008,
         DiscountStartDate: '2024-03-25',
         DiscountEndDate: '2024-04-25',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -402,6 +426,7 @@ module.exports = {
         Discount:14900000,
         DiscountStartDate: '2024-03-01',
         DiscountEndDate: '2024-04-01',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -418,6 +443,7 @@ module.exports = {
         Discount:14900000,
         DiscountStartDate: '2024-03-15',
         DiscountEndDate: '2024-04-15',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -434,6 +460,7 @@ module.exports = {
         Discount:10000015,
         DiscountStartDate: '2024-03-10',
         DiscountEndDate: '2024-04-10',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -450,6 +477,7 @@ module.exports = {
         Discount:10000012,
         DiscountStartDate: '2024-03-05',
         DiscountEndDate: '2024-04-05',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -466,6 +494,7 @@ module.exports = {
         Discount:12000000,
         DiscountStartDate: '2024-03-20',
         DiscountEndDate: '2024-04-20',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       }

@@ -16,6 +16,7 @@ module.exports = {
         ShippingAddress: '123 Lê Lợi, Phường Bến Nghé, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -30,6 +31,7 @@ module.exports = {
         ShippingAddress: '45 Nguyễn Huệ, Phường Bến Nghé, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -44,6 +46,7 @@ module.exports = {
         ShippingAddress: '89 Lý Tự Trọng, Hoàn Kiếm',
         ShippingCity: 'Hà Nội',
         ShippingPostalCode: '100000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -58,6 +61,7 @@ module.exports = {
         ShippingAddress: '234 Trần Phú, Hải Châu',
         ShippingCity: 'Đà Nẵng',
         ShippingPostalCode: '550000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -72,6 +76,7 @@ module.exports = {
         ShippingAddress: '78 Phan Chu Trinh, Ninh Kiều',
         ShippingCity: 'Cần Thơ',
         ShippingPostalCode: '900000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -86,6 +91,7 @@ module.exports = {
         ShippingAddress: '90 Lê Duẩn, Hải An',
         ShippingCity: 'Hải Phòng',
         ShippingPostalCode: '180000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -100,6 +106,7 @@ module.exports = {
         ShippingAddress: '67 Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -114,6 +121,7 @@ module.exports = {
         ShippingAddress: '123 Trần Phú, Lộc Thọ',
         ShippingCity: 'Nha Trang',
         ShippingPostalCode: '650000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -128,6 +136,7 @@ module.exports = {
         ShippingAddress: '45 Nguyễn Huệ, Thành phố Huế',
         ShippingCity: 'Huế',
         ShippingPostalCode: '530000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
@@ -142,6 +151,7 @@ module.exports = {
         ShippingAddress: '56 Nguyễn Văn Linh, Hải Châu',
         ShippingCity: 'Đà Nẵng',
         ShippingPostalCode: '550000',
+        IsDeleted: false,
         createdAt: now,
         updatedAt: now
       },
