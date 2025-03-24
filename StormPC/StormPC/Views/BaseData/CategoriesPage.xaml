@@ -73,7 +73,7 @@
                                             Style="{StaticResource AccentButtonStyle}"/>
                                     <Button Content="&#xE74D;"
                                             FontFamily="Segoe MDL2 Assets"
-                                            Style="{StaticResource DangerButtonStyle}"/>
+                                            Style="{StaticResource AccentButtonStyle}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
@@ -85,5 +85,32 @@
                          Width="50" 
                          Height="50"/>
         </Grid>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="1" 
+                  Grid.ColumnSpan="2"
+                  Orientation="Horizontal" 
+                  HorizontalAlignment="Center"
+                  Margin="0,24,0,0"
+                  Spacing="12">
+            <Button Style="{ThemeResource AccentButtonStyle}"
+                    Padding="16,8"
+                    CornerRadius="4">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE70F;" FontSize="12"/>
+                    <TextBlock Text="Chỉnh sửa" Margin="8,0,0,0"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{ThemeResource AccentButtonStyle}"
+                    Background="#E81123"
+                    Foreground="White"
+                    Padding="16,8"
+                    CornerRadius="4">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE74D;" FontSize="12"/>
+                    <TextBlock Text="Xóa" Margin="8,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page> 

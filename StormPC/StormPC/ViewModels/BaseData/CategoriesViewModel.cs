@@ -1,11 +1,14 @@
+using System;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using StormPC.Core.Infrastructure.Database;
-using StormPC.Core.Infrastructure.Database.Contexts;
 using StormPC.Core.Models.Products;
 using StormPC.Core.Models.Products.Dtos;
+using StormPC.Core.Infrastructure.Database.Contexts;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace StormPC.ViewModels.BaseData;
 
@@ -34,33 +37,45 @@ public partial class CategoriesViewModel : ObservableObject
         try
         {
             IsLoading = true;
-            System.Diagnostics.Debug.WriteLine("Loading categories...");
+            Debug.WriteLine("Loading categories...");
 
-            var rawCategories = await _dbContext.Categories.ToListAsync();
-            System.Diagnostics.Debug.WriteLine($"Total categories found: {rawCategories.Count}");
-
+            // Get categories with product counts in a single query
             var categories = await _dbContext.Categories
-                .Select(c => new CategoryDisplayDto
+                .Where(c => !c.IsDeleted)
+                .Select(c => new
                 {
-                    CategoryID = c.CategoryID,
-                    CategoryName = c.CategoryName,
-                    Description = c.Description,
+                    c.CategoryID,
+                    c.CategoryName,
+                    c.Description,
                     ProductCount = _dbContext.Laptops.Count(l => l.CategoryID == c.CategoryID && !l.IsDeleted),
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt
+                    c.CreatedAt,
+                    UpdatedAt = c.UpdatedAt ?? c.CreatedAt
                 })
                 .OrderBy(c => c.CategoryName)
                 .ToListAsync();
 
-            System.Diagnostics.Debug.WriteLine($"Processed categories: {categories.Count}");
+            Debug.WriteLine($"Total categories found: {categories.Count}");
 
-            Categories = new ObservableCollection<CategoryDisplayDto>(categories);
-            System.Diagnostics.Debug.WriteLine($"Categories loaded: {Categories.Count}");
+            // Map to CategoryDisplayDto
+            Categories = new ObservableCollection<CategoryDisplayDto>(
+                categories.Select(c => new CategoryDisplayDto
+                {
+                    CategoryID = c.CategoryID,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description,
+                    ProductCount = c.ProductCount,
+                    CreatedAt = c.CreatedAt,
+                    UpdatedAt = c.UpdatedAt
+                })
+            );
+
+            Debug.WriteLine($"Categories loaded: {Categories.Count}");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error loading categories: {ex.Message}");
-            System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            Debug.WriteLine($"Error loading categories: {ex.Message}");
+            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            // Handle error appropriately
         }
         finally
         {
