@@ -38,7 +38,12 @@ public sealed partial class FirstTimeWindow : Window
 
         Title = "First Time Setup - StormPC";
 
-        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/img/icon/WindowIcon-512.ico"));
+        // Set window icon
+        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets/img/icon/WindowIcon-512.ico");
+        if (File.Exists(iconPath))
+        {
+            AppWindow.SetIcon(iconPath);
+        }
     }
 
     private async void ViewModel_AccountCreated(object? sender, EventArgs e)
