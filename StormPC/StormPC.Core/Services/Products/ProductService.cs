@@ -5,14 +5,9 @@ using StormPC.Core.Models.Products.Dtos;
 
 namespace StormPC.Core.Services.Products;
 
-public class ProductService : IProductService
+public class ProductService(StormPCDbContext dbContext) : IProductService
 {
-    private readonly StormPCDbContext _dbContext;
-
-    public ProductService(StormPCDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly StormPCDbContext _dbContext = dbContext;
 
     public async Task<IEnumerable<LaptopDisplayDto>> GetAllLaptopsForDisplayAsync()
     {
@@ -30,7 +25,10 @@ public class ProductService : IProductService
                 .OrderBy(s => s.Price)
                 .FirstOrDefault();
 
-            if (cheapestSpec == null) continue;
+            if (cheapestSpec == null)
+            {
+                continue;
+            }
 
             result.Add(new LaptopDisplayDto
             {
