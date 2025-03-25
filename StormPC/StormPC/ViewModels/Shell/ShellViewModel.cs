@@ -1,61 +1,85 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-
 using StormPC.Contracts.Services;
-using StormPC.Views.Settings;
-using StormPC.Views.Shell;
+using StormPC.Helpers;
+using StormPC.ViewModels.Dashboard;
+using StormPC.ViewModels.BaseData;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace StormPC.ViewModels.Shell;
 
-public partial class ShellViewModel : ObservableObject
+public partial class ShellViewModel : ObservableRecipient
 {
+    private readonly INavigationService _navigationService;
+    private readonly INavigationViewService _navigationViewService;
+    private readonly ILastPageService _lastPageService;
+
+    [ObservableProperty]
     private bool _isBackEnabled;
+
+    [ObservableProperty]
     private object? _selected;
 
-    public INavigationService NavigationService
+    public IList<object>? MenuItems => _navigationViewService.MenuItems;
+
+    public object? SettingsItem => _navigationViewService.SettingsItem;
+
+    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, ILastPageService lastPageService)
     {
-        get;
+        _navigationService = navigationService;
+        _navigationViewService = navigationViewService;
+        _lastPageService = lastPageService;
+
+        _navigationService.Navigated += OnNavigated;
     }
 
-    public INavigationViewService NavigationViewService
+    private async void OnNavigated(object sender, NavigationEventArgs e)
     {
-        get;
-    }
+        IsBackEnabled = _navigationService.CanGoBack;
 
-    public bool IsBackEnabled
-    {
-        get => _isBackEnabled;
-        set => SetProperty(ref _isBackEnabled, value);
-    }
-
-    public object? Selected
-    {
-        get => _selected;
-        set => SetProperty(ref _selected, value);
-    }
-
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
-    {
-        NavigationService = navigationService;
-        NavigationService.Navigated += OnNavigated;
-        NavigationViewService = navigationViewService;
-    }
-
-    private void OnNavigated(object sender, NavigationEventArgs e)
-    {
-        IsBackEnabled = NavigationService.CanGoBack;
-
-        if (e.SourcePageType == typeof(SettingsPage))
+        if (e.SourcePageType != null)
         {
-            Selected = NavigationViewService.SettingsItem;
-            return;
+            Selected = _navigationViewService.GetSelectedItem(e.SourcePageType);
+            
+            // Get the corresponding ViewModel type name
+            var viewModelTypeName = e.SourcePageType.FullName!.Replace("Views", "ViewModels").Replace("Page", "ViewModel");
+            Debug.WriteLine($"Saving last page: {viewModelTypeName}");
+            await _lastPageService.SaveLastPageAsync(viewModelTypeName);
         }
+    }
 
-        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        if (selectedItem != null)
+    [RelayCommand]
+    private void GoBack()
+    {
+        if (_navigationService.CanGoBack)
         {
-            Selected = selectedItem;
+            _navigationService.GoBack();
         }
+    }
+
+    public async Task InitializeAsync()
+    {
+        var lastPage = await _lastPageService.GetLastPageAsync();
+        Debug.WriteLine($"Retrieved last page: {lastPage}");
+
+        if (!string.IsNullOrEmpty(lastPage))
+        {
+            Debug.WriteLine($"Attempting to navigate to: {lastPage}");
+            _navigationService.NavigateTo(lastPage);
+        }
+        else
+        {
+            Debug.WriteLine("No last page found, navigating to default page");
+            _navigationService.NavigateTo(typeof(InventoryReportViewModel).FullName!);
+        }
+    }
+
+    public void UnregisterEvents()
+    {
+        _navigationService.Navigated -= OnNavigated;
     }
 } 
