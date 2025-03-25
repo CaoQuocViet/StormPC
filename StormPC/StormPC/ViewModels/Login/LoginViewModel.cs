@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using StormPC.Core.Services.Login;
 using System.Threading.Tasks;
-using StormPC.Contracts.Services;
+using StormPC.Contracts;
 using System;
 
 namespace StormPC.ViewModels.Login;

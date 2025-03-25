@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
-using StormPC.Contracts.Services;
+using StormPC.Contracts;
 using StormPC.Helpers;
 using StormPC.ViewModels.Shell;
 using StormPC.ViewModels.BaseData;

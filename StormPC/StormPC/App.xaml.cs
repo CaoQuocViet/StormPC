@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using StormPC.Activation;
-using StormPC.Contracts.Services;
+using StormPC.Contracts;
 using StormPC.Core.Contracts.Services;
 using StormPC.Core.Infrastructure.Database.Configurations;
 using StormPC.Core.Infrastructure.Database.Contexts;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 
-using StormPC.Contracts.Services;
+using StormPC.Contracts;
 using StormPC.ViewModels;
 using StormPC.ViewModels.Shell;
 

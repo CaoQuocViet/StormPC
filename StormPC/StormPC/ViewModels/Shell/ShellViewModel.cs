@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using StormPC.Contracts.Services;
+using StormPC.Contracts;
 using StormPC.Helpers;
 using StormPC.ViewModels.Dashboard;
 using StormPC.ViewModels.BaseData;

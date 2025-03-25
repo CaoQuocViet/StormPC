@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Microsoft.UI.Xaml;
 
-using StormPC.Contracts.Services;
+using StormPC.Contracts;
 using StormPC.Helpers;
 
 using Windows.ApplicationModel;
