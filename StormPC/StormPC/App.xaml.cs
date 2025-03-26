@@ -10,6 +10,7 @@ using StormPC.Core.Infrastructure.Database.Contexts;
 using StormPC.Core.Infrastructure.Database.Services;
 using StormPC.Core.Services;
 using StormPC.Core.Services.Login;
+using StormPC.Core.Services.Orders;
 using StormPC.Core.Services.Products;
 using StormPC.Helpers;
 using StormPC.Models;
@@ -118,11 +119,14 @@ public partial class App : Application
             services.AddTransient<ProductsViewModel>();
             services.AddTransient<ProductsPage>();
             
-            // Orders
+            // Orders list
             services.AddTransient<OrderListViewModel>();
             services.AddTransient<OrderListPage>();
             services.AddTransient<OrderDetailViewModel>();
             services.AddTransient<OrderDetailPage>();
+
+            // Order detail
+            services.AddTransient<IOrderDetailService, OrderDetailService>();
             
             // Activity Log
             services.AddTransient<ActivityLogViewModel>();
