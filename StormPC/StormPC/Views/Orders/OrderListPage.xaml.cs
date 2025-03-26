@@ -2,16 +2,19 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Controls;
 using StormPC.Core.Models.Orders.Dtos;
 using StormPC.ViewModels.Orders;
+using StormPC.Contracts;
 
 namespace StormPC.Views.Orders;
 
 public sealed partial class OrderListPage : Page
 {
     public OrderListViewModel ViewModel { get; }
+    private readonly INavigationService _navigationService;
 
     public OrderListPage()
     {
         ViewModel = App.GetService<OrderListViewModel>();
+        _navigationService = App.GetService<INavigationService>();
         InitializeComponent();
     }
 
@@ -24,7 +27,7 @@ public sealed partial class OrderListPage : Page
     {
         if (sender is DataGrid dataGrid && dataGrid.SelectedItem is OrderDisplayDto selectedOrder)
         {
-            Frame.Navigate(typeof(OrderDetailPage), selectedOrder.OrderID);
+            _navigationService.NavigateTo(typeof(OrderDetailViewModel).FullName!, selectedOrder.OrderID);
         }
     }
 } 

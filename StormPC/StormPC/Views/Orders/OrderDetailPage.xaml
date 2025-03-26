@@ -133,6 +133,7 @@
                             <Grid Padding="16" HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="120"/>
@@ -143,17 +144,22 @@
                                              Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                                 </StackPanel>
 
-                                <TextBlock Grid.Column="1" 
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{x:Bind ModelName}" 
+                                             Style="{ThemeResource BodyTextBlockStyle}"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="2" 
                                          Text="{x:Bind FormattedUnitPrice}"
                                          Style="{ThemeResource BodyTextBlockStyle}"
                                          HorizontalAlignment="Right"/>
 
-                                <TextBlock Grid.Column="2" 
+                                <TextBlock Grid.Column="3" 
                                          Text="{x:Bind Quantity}"
                                          Style="{ThemeResource BodyTextBlockStyle}"
                                          HorizontalAlignment="Center"/>
 
-                                <TextBlock Grid.Column="3" 
+                                <TextBlock Grid.Column="4" 
                                          Text="{x:Bind FormattedSubtotal}"
                                          Style="{ThemeResource BodyStrongTextBlockStyle}"
                                          HorizontalAlignment="Right"/>
@@ -165,19 +171,22 @@
                         <Grid Padding="16" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="120"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Product" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                            <TextBlock Grid.Column="1" Text="Unit Price" 
+                            <TextBlock Text="ID" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                            <TextBlock Grid.Column="1" Text="Product" 
+                                     Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                            <TextBlock Grid.Column="2" Text="Unit Price" 
                                      Style="{ThemeResource BodyStrongTextBlockStyle}"
                                      HorizontalAlignment="Right"/>
-                            <TextBlock Grid.Column="2" Text="Quantity" 
+                            <TextBlock Grid.Column="3" Text="Quantity" 
                                      Style="{ThemeResource BodyStrongTextBlockStyle}"
                                      HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="3" Text="Subtotal" 
+                            <TextBlock Grid.Column="4" Text="Subtotal" 
                                      Style="{ThemeResource BodyStrongTextBlockStyle}"
                                      HorizontalAlignment="Right"/>
                         </Grid>

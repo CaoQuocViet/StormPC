@@ -17,7 +17,10 @@ public sealed partial class OrderDetailPage : Page
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        await ViewModel.InitializeAsync();
+        if (ViewModel.OrderDetail == null)
+        {
+            await ViewModel.InitializeAsync();
+        }
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
