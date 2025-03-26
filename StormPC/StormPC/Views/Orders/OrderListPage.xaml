@@ -67,7 +67,8 @@
                              GridLinesVisibility="Horizontal"
                              HorizontalGridLinesBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                              IsReadOnly="True"
-                             SelectionMode="Single">
+                             SelectionMode="Single"
+                             DoubleTapped="DataGrid_DoubleTapped">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Mã ĐH" 
                                                Binding="{Binding OrderID}" 
