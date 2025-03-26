@@ -10,12 +10,12 @@ public sealed partial class CategoriesPage : Page
 
     public CategoriesPage()
     {
+        this.InitializeComponent();
         ViewModel = App.GetService<CategoriesViewModel>();
-        InitializeComponent();
     }
 
-    private void Page_Loaded(object sender, RoutedEventArgs e)
+    private async void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        ViewModel.LoadCategoriesCommand.Execute(null);
+        await ViewModel.InitializeAsync();
     }
 } 

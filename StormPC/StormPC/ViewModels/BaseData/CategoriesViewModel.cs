@@ -28,12 +28,18 @@ public partial class CategoriesViewModel : ObservableObject
     public CategoriesViewModel(StormPCDbContext dbContext)
     {
         _dbContext = dbContext;
-        Task.Run(async () => await LoadCategories());
+    }
+
+    public async Task InitializeAsync()
+    {
+        await LoadCategories();
     }
 
     [RelayCommand]
     private async Task LoadCategories()
     {
+        if (IsLoading) return; // Prevent multiple simultaneous loads
+
         try
         {
             IsLoading = true;
@@ -56,26 +62,24 @@ public partial class CategoriesViewModel : ObservableObject
 
             Debug.WriteLine($"Total categories found: {categories.Count}");
 
-            // Map to CategoryDisplayDto
-            Categories = new ObservableCollection<CategoryDisplayDto>(
-                categories.Select(c => new CategoryDisplayDto
-                {
-                    CategoryID = c.CategoryID,
-                    CategoryName = c.CategoryName,
-                    Description = c.Description,
-                    ProductCount = c.ProductCount,
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt
-                })
-            );
+            var categoryDtos = categories.Select(c => new CategoryDisplayDto
+            {
+                CategoryID = c.CategoryID,
+                CategoryName = c.CategoryName,
+                Description = c.Description,
+                ProductCount = c.ProductCount,
+                CreatedAt = c.CreatedAt,
+                UpdatedAt = c.UpdatedAt
+            }).ToList();
 
+            Categories = new ObservableCollection<CategoryDisplayDto>(categoryDtos);
             Debug.WriteLine($"Categories loaded: {Categories.Count}");
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error loading categories: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-            // Handle error appropriately
+            // Consider showing error message to user
         }
         finally
         {
