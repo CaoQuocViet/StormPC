@@ -5,6 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     const now = new Date();
     await queryInterface.bulkInsert('Customers', [
+      // Giữ nguyên 10 khách hàng hiện có
       {
         CustomerID: 1,
         FullName: 'Nguyễn Văn Anh',
@@ -111,6 +112,63 @@ module.exports = {
         Phone: '0990123456',
         Address: '45 Nguyễn Huệ, Thành phố Huế',
         CityCode: 'HUE',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      
+      // Thêm 5 khách hàng mới
+      {
+        CustomerID: 11,
+        FullName: 'Trần Đức Hiếu',
+        Email: 'hieutd@email.com',
+        Phone: '0912345987',
+        Address: '28 Phan Xích Long, Phường 2, Phú Nhuận',
+        CityCode: 'HCM',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        CustomerID: 12,
+        FullName: 'Nguyễn Thị Kiều Trang',
+        Email: 'trangntk@email.com',
+        Phone: '0923456987',
+        Address: '175 Tây Sơn, Đống Đa',
+        CityCode: 'HAN',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        CustomerID: 13,
+        FullName: 'Lê Minh Hoàng',
+        Email: 'hoanglm@email.com',
+        Phone: '0934567891',
+        Address: '45 Nguyễn Thị Minh Khai, Hải Châu',
+        CityCode: 'DAN',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        CustomerID: 14,
+        FullName: 'Phạm Thanh Hương',
+        Email: 'huongpt@email.com',
+        Phone: '0945678902',
+        Address: '101 Lê Hồng Phong, Ngô Quyền',
+        CityCode: 'HAP',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        CustomerID: 15,
+        FullName: 'Trịnh Văn Công',
+        Email: 'congtv@email.com',
+        Phone: '0956789198',
+        Address: '65 Lê Duẩn, Quận 1',
+        CityCode: 'HCM',
         IsDeleted: false,
         createdAt: now,
         updatedAt: now
