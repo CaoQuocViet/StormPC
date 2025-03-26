@@ -61,5 +61,52 @@ public class StormPCDbContext : DbContext
         // Configure composite key for OrderItems
         modelBuilder.Entity<OrderItem>()
             .HasKey(oi => new { oi.OrderID, oi.VariantID });
+
+        // Configure City entity
+        modelBuilder.Entity<City>()
+            .HasKey(c => c.CityCode);
+
+        // Configure Order-City relationship
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.ShipCity)
+            .WithMany(c => c.ShippingOrders)
+            .HasForeignKey(o => o.ShipCityCode)
+            .HasPrincipalKey(c => c.CityCode)
+            .IsRequired();
+
+        // Configure Customer-City relationship
+        modelBuilder.Entity<Customer>()
+            .HasOne(c => c.City)
+            .WithMany(c => c.Customers)
+            .HasForeignKey(c => c.CityCode)
+            .HasPrincipalKey(c => c.CityCode)
+            .IsRequired();
+
+        // Configure Order-Customer relationship
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Customer)
+            .WithMany(c => c.Orders)
+            .HasForeignKey(o => o.CustomerID)
+            .IsRequired();
+
+        // Configure Order-Status relationship
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Status)
+            .WithMany(s => s.Orders)
+            .HasForeignKey(o => o.StatusID)
+            .IsRequired();
+
+        // Configure Order-PaymentMethod relationship
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.PaymentMethod)
+            .WithMany(p => p.Orders)
+            .HasForeignKey(o => o.PaymentMethodID)
+            .IsRequired();
+
+        // Configure soft delete filter
+        modelBuilder.Entity<Order>()
+            .HasQueryFilter(o => !o.IsDeleted);
+        modelBuilder.Entity<Customer>()
+            .HasQueryFilter(c => !c.IsDeleted);
     }
 } 
