@@ -181,7 +181,7 @@ ALTER SEQUENCE public."Customers_id_seq" OWNED BY public."Customers".id;
 
 CREATE TABLE public."LaptopSpecs" (
     id integer NOT NULL,
-    sku character varying(255) NOT NULL,
+    "SKU" character varying(255) NOT NULL,
     "VariantID" character varying(255),
     "LaptopID" character varying(255),
     "CPU" character varying(255),
@@ -190,7 +190,7 @@ CREATE TABLE public."LaptopSpecs" (
     "Storage" integer,
     "StorageType" character varying(255),
     "Color" character varying(255),
-    import_price numeric NOT NULL,
+    "ImportPrice" numeric NOT NULL,
     "Price" numeric,
     "StockQuantity" integer,
     "createdAt" timestamp with time zone,
@@ -556,19 +556,19 @@ ALTER TABLE ONLY public."Customers"
 
 
 --
+-- Name: LaptopSpecs LaptopSpecs_SKU_key; Type: CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."LaptopSpecs"
+    ADD CONSTRAINT "LaptopSpecs_SKU_key" UNIQUE ("SKU");
+
+
+--
 -- Name: LaptopSpecs LaptopSpecs_pkey; Type: CONSTRAINT; Schema: public; Owner: vietcq
 --
 
 ALTER TABLE ONLY public."LaptopSpecs"
     ADD CONSTRAINT "LaptopSpecs_pkey" PRIMARY KEY (id);
-
-
---
--- Name: LaptopSpecs LaptopSpecs_sku_key; Type: CONSTRAINT; Schema: public; Owner: vietcq
---
-
-ALTER TABLE ONLY public."LaptopSpecs"
-    ADD CONSTRAINT "LaptopSpecs_sku_key" UNIQUE (sku);
 
 
 --
