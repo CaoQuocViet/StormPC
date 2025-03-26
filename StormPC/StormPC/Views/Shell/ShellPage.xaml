@@ -111,7 +111,7 @@
                     <NavigationViewItem.Icon>
                         <ImageIcon Source="/Assets/img/icon/taskbar-icon/activity-log.png" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.Content>Nhật ký hoạt động</NavigationViewItem.Content>
+                    <NavigationViewItem.Content>Lịch sử hoạt động</NavigationViewItem.Content>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Frame x:Name="NavigationFrame" />

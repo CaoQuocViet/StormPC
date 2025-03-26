@@ -6,15 +6,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <Style x:Key="PageHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,24"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemAccentColor}"/>
+        </Style>
+    </Page.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Nhật ký hoạt động" 
-                   Style="{ThemeResource TitleTextBlockStyle}" 
-                   Grid.Row="0"/>
+        <TextBlock Text="Lịch sử hoạt động" 
+                    Style="{StaticResource PageHeaderStyle}" 
+                    HorizontalAlignment="Center" 
+                    Grid.Row="0"/>   
 
         <Grid Grid.Row="1" Margin="0,20,0,0">
             <!-- Content will be added here -->
