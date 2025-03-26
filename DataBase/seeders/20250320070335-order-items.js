@@ -9,7 +9,7 @@ module.exports = {
       {
         OrderID: 1,
         VariantID: '12768-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 138000000,
         createdAt: now,
         updatedAt: now
@@ -25,7 +25,7 @@ module.exports = {
       {
         OrderID: 1,
         VariantID: '12768-3',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 144000000,
         createdAt: now,
         updatedAt: now
@@ -43,7 +43,7 @@ module.exports = {
       {
         OrderID: 2,
         VariantID: '16354-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 153000000,
         createdAt: now,
         updatedAt: now
@@ -59,7 +59,7 @@ module.exports = {
       {
         OrderID: 2,
         VariantID: '20388-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 72000000,
         createdAt: now,
         updatedAt: now
@@ -77,7 +77,7 @@ module.exports = {
       {
         OrderID: 3,
         VariantID: '19927-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 243000000,
         createdAt: now,
         updatedAt: now
@@ -85,7 +85,7 @@ module.exports = {
       {
         OrderID: 3,
         VariantID: '20269-1',
-        Quantity: 2,
+        Quantity: 3,
         UnitPrice: 67500000,
         createdAt: now,
         updatedAt: now
@@ -93,7 +93,7 @@ module.exports = {
       {
         OrderID: 3,
         VariantID: '21056-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 81000000,
         createdAt: now,
         updatedAt: now
@@ -111,7 +111,7 @@ module.exports = {
       {
         OrderID: 4,
         VariantID: '18351-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 97000000,  
         createdAt: now,
         updatedAt: now
@@ -119,7 +119,7 @@ module.exports = {
       {
         OrderID: 4,
         VariantID: '21340-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 69999988,   
         createdAt: now,
         updatedAt: now
@@ -135,7 +135,7 @@ module.exports = {
       {
         OrderID: 4,
         VariantID: '21175-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 90000000,
         createdAt: now,
         updatedAt: now
@@ -161,7 +161,7 @@ module.exports = {
       {
         OrderID: 5,
         VariantID: '20626-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 324000000,
         createdAt: now,
         updatedAt: now
@@ -171,7 +171,7 @@ module.exports = {
       {
         OrderID: 6,
         VariantID: '21042-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 138200000, 
         createdAt: now,
         updatedAt: now
@@ -179,7 +179,7 @@ module.exports = {
       {
         OrderID: 6,
         VariantID: '20993-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 58400000,  
         createdAt: now,
         updatedAt: now
@@ -195,7 +195,7 @@ module.exports = {
       {
         OrderID: 6,
         VariantID: '20993-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 99000000,
         createdAt: now,
         updatedAt: now
@@ -205,7 +205,7 @@ module.exports = {
       {
         OrderID: 7,
         VariantID: '16354-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 158000000, 
         createdAt: now,
         updatedAt: now
@@ -221,7 +221,7 @@ module.exports = {
       {
         OrderID: 7,
         VariantID: '21108-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 171000000,
         createdAt: now,
         updatedAt: now
@@ -237,7 +237,7 @@ module.exports = {
       {
         OrderID: 7,
         VariantID: '20577-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 81000000,
         createdAt: now,
         updatedAt: now
@@ -247,7 +247,7 @@ module.exports = {
       {
         OrderID: 8,
         VariantID: '20225-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 215000000,
         createdAt: now,
         updatedAt: now
@@ -263,7 +263,7 @@ module.exports = {
       {
         OrderID: 8,
         VariantID: '20269-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 135000000,
         createdAt: now,
         updatedAt: now
@@ -273,7 +273,7 @@ module.exports = {
       {
         OrderID: 9,
         VariantID: '21183-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 146200000,  
         createdAt: now,
         updatedAt: now
@@ -289,7 +289,7 @@ module.exports = {
       {
         OrderID: 9,
         VariantID: '20388-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 72000000,
         createdAt: now,
         updatedAt: now
@@ -297,7 +297,7 @@ module.exports = {
       {
         OrderID: 9,
         VariantID: '21340-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 72000000,
         createdAt: now,
         updatedAt: now
@@ -315,7 +315,7 @@ module.exports = {
       {
         OrderID: 10,
         VariantID: '20626-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 324000000,
         createdAt: now,
         updatedAt: now
@@ -323,7 +323,7 @@ module.exports = {
       {
         OrderID: 10,
         VariantID: '20627-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 126000000,
         createdAt: now,
         updatedAt: now
@@ -341,7 +341,7 @@ module.exports = {
       {
         OrderID: 11,
         VariantID: '18950-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 108000000,
         createdAt: now,
         updatedAt: now
@@ -349,7 +349,7 @@ module.exports = {
       {
         OrderID: 11,
         VariantID: '18950-2',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 144000000,
         createdAt: now,
         updatedAt: now
@@ -365,7 +365,7 @@ module.exports = {
       {
         OrderID: 11,
         VariantID: '20353-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 198000000,
         createdAt: now,
         updatedAt: now
@@ -375,7 +375,7 @@ module.exports = {
       {
         OrderID: 12,
         VariantID: '19325-1',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 171000000,
         createdAt: now,
         updatedAt: now
@@ -391,7 +391,7 @@ module.exports = {
       {
         OrderID: 12,
         VariantID: '20269-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 171000000,
         createdAt: now,
         updatedAt: now
@@ -409,7 +409,7 @@ module.exports = {
       {
         OrderID: 13,
         VariantID: '20577-2',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 117000000,
         createdAt: now,
         updatedAt: now
@@ -417,7 +417,7 @@ module.exports = {
       {
         OrderID: 13,
         VariantID: '21037-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 198000000,
         createdAt: now,
         updatedAt: now
@@ -427,7 +427,7 @@ module.exports = {
       {
         OrderID: 14,
         VariantID: '20724-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 225000000,
         createdAt: now,
         updatedAt: now
@@ -443,7 +443,7 @@ module.exports = {
       {
         OrderID: 14,
         VariantID: '21056-2',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 117000000,
         createdAt: now,
         updatedAt: now
@@ -451,7 +451,7 @@ module.exports = {
       {
         OrderID: 14,
         VariantID: '21108-2',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 216000000,
         createdAt: now,
         updatedAt: now
@@ -461,7 +461,7 @@ module.exports = {
       {
         OrderID: 15,
         VariantID: '21175-2',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 108000000,
         createdAt: now,
         updatedAt: now
@@ -469,7 +469,7 @@ module.exports = {
       {
         OrderID: 15,
         VariantID: '21310-1',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 117000000,
         createdAt: now,
         updatedAt: now
@@ -495,7 +495,7 @@ module.exports = {
       {
         OrderID: 16,
         VariantID: '21330-2',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 153000000,
         createdAt: now,
         updatedAt: now
@@ -513,7 +513,7 @@ module.exports = {
       {
         OrderID: 17,
         VariantID: '21345-2',
-        Quantity: 1,
+        Quantity: 3,
         UnitPrice: 135000000,
         createdAt: now,
         updatedAt: now
@@ -521,7 +521,7 @@ module.exports = {
       {
         OrderID: 17,
         VariantID: '18351-3',
-        Quantity: 1,
+        Quantity: 2,
         UnitPrice: 153000000,
         createdAt: now,
         updatedAt: now
