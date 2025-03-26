@@ -1,11 +1,15 @@
-using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using StormPC.Core.Models.Orders.Dtos;
+using CommunityToolkit.WinUI.UI.Controls;
 using StormPC.ViewModels.Orders;
+using StormPC.Core.Models.Orders.Dtos;
 using StormPC.Contracts;
 
 namespace StormPC.Views.Orders;
 
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
 public sealed partial class OrderListPage : Page
 {
     public OrderListViewModel ViewModel { get; }
@@ -13,21 +17,22 @@ public sealed partial class OrderListPage : Page
 
     public OrderListPage()
     {
+        InitializeComponent();
         ViewModel = App.GetService<OrderListViewModel>();
         _navigationService = App.GetService<INavigationService>();
-        InitializeComponent();
     }
 
-    private async void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
         await ViewModel.InitializeAsync();
     }
 
-    private void DataGrid_DoubleTapped(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+    private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is DataGrid dataGrid && dataGrid.SelectedItem is OrderDisplayDto selectedOrder)
+        var dataGrid = sender as DataGrid;
+        if (dataGrid?.SelectedItem is OrderDisplayDto selectedOrder)
         {
-            _navigationService.NavigateTo(typeof(OrderDetailViewModel).FullName!, selectedOrder.OrderID);
+            _navigationService.NavigateTo("StormPC.ViewModels.Orders.OrderDetailViewModel", selectedOrder.OrderID);
         }
     }
 } 

@@ -9,6 +9,7 @@ using StormPC.ViewModels.Dashboard;
 using StormPC.ViewModels.BaseData;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 
 namespace StormPC.ViewModels.Shell;
 
@@ -43,10 +44,30 @@ public partial class ShellViewModel : ObservableRecipient
 
         if (e.SourcePageType != null)
         {
-            Selected = _navigationViewService.GetSelectedItem(e.SourcePageType);
-            
-            // Get the corresponding ViewModel type name
             var viewModelTypeName = e.SourcePageType.FullName!.Replace("Views", "ViewModels").Replace("Page", "ViewModel");
+            
+            // Find and select the correct navigation item
+            var items = MenuItems?.OfType<NavigationViewItem>();
+            if (items != null)
+            {
+                foreach (var item in items)
+                {
+                    // Check main menu items
+                    if (item.MenuItems.Count > 0)
+                    {
+                        foreach (var subItem in item.MenuItems.OfType<NavigationViewItem>())
+                        {
+                            if (subItem.GetValue(NavigationHelper.NavigateToProperty)?.ToString() == viewModelTypeName)
+                            {
+                                Selected = subItem;
+                                item.IsExpanded = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             Debug.WriteLine($"Saving last page: {viewModelTypeName}");
             await _lastPageService.SaveLastPageAsync(viewModelTypeName);
         }

@@ -11,13 +11,14 @@ public sealed partial class OrderDetailPage : Page
 
     public OrderDetailPage()
     {
-        ViewModel = App.GetService<OrderDetailViewModel>();
         InitializeComponent();
+        ViewModel = App.GetService<OrderDetailViewModel>();
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.OrderDetail == null)
+        // Only load latest order if we didn't navigate with a specific order ID
+        if (Frame.BackStack.Count == 0)
         {
             await ViewModel.InitializeAsync();
         }
@@ -27,6 +28,7 @@ public sealed partial class OrderDetailPage : Page
     {
         base.OnNavigatedTo(e);
 
+        // If we have a parameter and it's an integer (OrderID)
         if (e.Parameter is int orderId)
         {
             await ViewModel.LoadOrderByIdAsync(orderId);
