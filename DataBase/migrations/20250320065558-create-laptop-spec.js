@@ -4,12 +4,12 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('LaptopSpecs', {
       id: {
-        allowNull: true,
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      sku: {
+      SKU: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true
@@ -38,7 +38,7 @@ module.exports = {
       Color: {
         type: Sequelize.STRING
       },
-      import_price: {
+      ImportPrice: {
         type: Sequelize.DECIMAL,
         allowNull: false
       },

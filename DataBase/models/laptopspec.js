@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   LaptopSpec.init({
-    sku: {
+    SKU: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     Storage: DataTypes.INTEGER,
     StorageType: DataTypes.STRING,
     Color: DataTypes.STRING,
-    import_price: {
+    ImportPrice: {
       type: DataTypes.DECIMAL,
       allowNull: false
     },
