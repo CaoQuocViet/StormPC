@@ -36,16 +36,24 @@ public class OrderDetailService : IOrderDetailService
         var orderItems = await _dbContext.OrderItems
             .AsNoTracking()
             .Where(oi => oi.OrderID == latestOrder.OrderID)
-            .Select(oi => new OrderItemDto
-            {
-                OrderItemID = oi.OrderID,
-                VariantID = oi.VariantID,
-                Quantity = oi.Quantity,
-                UnitPrice = oi.UnitPrice,
-                FormattedUnitPrice = string.Format("{0:N0} VNĐ", oi.UnitPrice),
-                Subtotal = oi.Quantity * oi.UnitPrice,
-                FormattedSubtotal = string.Format("{0:N0} VNĐ", oi.Quantity * oi.UnitPrice)
-            })
+            .Join(_dbContext.LaptopSpecs,
+                oi => oi.VariantID,
+                ls => ls.VariantID,
+                (oi, ls) => new { OrderItem = oi, LaptopSpec = ls })
+            .Join(_dbContext.Laptops,
+                x => x.LaptopSpec.LaptopID,
+                l => l.LaptopID,
+                (x, l) => new OrderItemDto
+                {
+                    OrderItemID = x.OrderItem.OrderID,
+                    VariantID = x.OrderItem.VariantID,
+                    ModelName = l.ModelName,
+                    Quantity = x.OrderItem.Quantity,
+                    UnitPrice = x.OrderItem.UnitPrice,
+                    FormattedUnitPrice = x.OrderItem.UnitPrice.ToString("N0") + " đ",
+                    Subtotal = x.OrderItem.Quantity * x.OrderItem.UnitPrice,
+                    FormattedSubtotal = (x.OrderItem.Quantity * x.OrderItem.UnitPrice).ToString("N0") + " đ"
+                })
             .ToListAsync();
 
         return new OrderDetailDto
@@ -81,16 +89,24 @@ public class OrderDetailService : IOrderDetailService
         var orderItems = await _dbContext.OrderItems
             .AsNoTracking()
             .Where(oi => oi.OrderID == orderId)
-            .Select(oi => new OrderItemDto
-            {
-                OrderItemID = oi.OrderID,
-                VariantID = oi.VariantID,
-                Quantity = oi.Quantity,
-                UnitPrice = oi.UnitPrice,
-                FormattedUnitPrice = string.Format("{0:N0} VNĐ", oi.UnitPrice),
-                Subtotal = oi.Quantity * oi.UnitPrice,
-                FormattedSubtotal = string.Format("{0:N0} VNĐ", oi.Quantity * oi.UnitPrice)
-            })
+            .Join(_dbContext.LaptopSpecs,
+                oi => oi.VariantID,
+                ls => ls.VariantID,
+                (oi, ls) => new { OrderItem = oi, LaptopSpec = ls })
+            .Join(_dbContext.Laptops,
+                x => x.LaptopSpec.LaptopID,
+                l => l.LaptopID,
+                (x, l) => new OrderItemDto
+                {
+                    OrderItemID = x.OrderItem.OrderID,
+                    VariantID = x.OrderItem.VariantID,
+                    ModelName = l.ModelName,
+                    Quantity = x.OrderItem.Quantity,
+                    UnitPrice = x.OrderItem.UnitPrice,
+                    FormattedUnitPrice = x.OrderItem.UnitPrice.ToString("N0") + " đ",
+                    Subtotal = x.OrderItem.Quantity * x.OrderItem.UnitPrice,
+                    FormattedSubtotal = (x.OrderItem.Quantity * x.OrderItem.UnitPrice).ToString("N0") + " đ"
+                })
             .ToListAsync();
 
         return new OrderDetailDto

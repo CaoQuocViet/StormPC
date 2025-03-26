@@ -23,6 +23,7 @@ public class OrderItemDto
 {
     public int OrderItemID { get; set; }
     public string VariantID { get; set; } = string.Empty;
+    public string ModelName { get; set; } = string.Empty;
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
     public string FormattedUnitPrice { get; set; } = string.Empty;
