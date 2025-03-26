@@ -9,6 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      sku: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
       VariantID: {
         type: Sequelize.STRING
       },
@@ -32,6 +37,10 @@ module.exports = {
       },
       Color: {
         type: Sequelize.STRING
+      },
+      import_price: {
+        type: Sequelize.DECIMAL,
+        allowNull: false
       },
       Price: {
         type: Sequelize.DECIMAL

@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   LaptopSpec.init({
+    sku: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
     VariantID: DataTypes.STRING,
     LaptopID: DataTypes.STRING,
     CPU: DataTypes.STRING,
@@ -22,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     Storage: DataTypes.INTEGER,
     StorageType: DataTypes.STRING,
     Color: DataTypes.STRING,
+    import_price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false
+    },
     Price: DataTypes.DECIMAL,
     StockQuantity: DataTypes.INTEGER
   }, {

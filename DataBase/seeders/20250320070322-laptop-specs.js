@@ -6,6 +6,7 @@ module.exports = {
     const now = new Date();
     await queryInterface.bulkInsert('LaptopSpecs', [
       {
+        sku: 'LEN-12768-1-WHT',
         VariantID: '12768-1',
         LaptopID: '12768',
         CPU: 'Intel Core i7-1360P',
@@ -14,12 +15,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'White',
+        import_price: 100000000,
         Price: 120000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-12768-2-BLK',
         VariantID: '12768-2',
         LaptopID: '12768',
         CPU: 'Intel Core i7-1360P',
@@ -28,12 +31,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 125000000,
         Price: 150000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-12768-3-SLV',
         VariantID: '12768-3',
         LaptopID: '12768',
         CPU: 'Intel Core i7-1360P',
@@ -42,12 +47,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Silver',
+        import_price: 135000000,
         Price: 160000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-16354-1-GRY',
         VariantID: '16354-1',
         LaptopID: '16354',
         CPU: 'Intel Core i7-14700HX',
@@ -56,12 +63,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 145000000,
         Price: 170000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-16354-2-GRY',
         VariantID: '16354-2',
         LaptopID: '16354',
         CPU: 'Intel Core i9-14900HX',
@@ -70,12 +79,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 204000000,
         Price: 240000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-16354-3-GRY',
         VariantID: '16354-3',
         LaptopID: '16354',
         CPU: 'Intel Core i9-14900HX',
@@ -84,12 +95,14 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 263500000,
         Price: 310000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-18351-1-BLU',
         VariantID: '18351-1',
         LaptopID: '18351',
         CPU: 'Intel Core i7-13700H',
@@ -98,12 +111,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Storm Blue',
+        import_price: 93500000,
         Price: 110000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-18351-2-BLU',
         VariantID: '18351-2',
         LaptopID: '18351',
         CPU: 'Intel Core i7-13700H',
@@ -112,12 +127,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Blue',
+        import_price: 119000000,
         Price: 140000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-18351-3-BLK',
         VariantID: '18351-3',
         LaptopID: '18351',
         CPU: 'Intel Core i9-13900H',
@@ -126,12 +143,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Obsidian Black',
+        import_price: 144500000,
         Price: 170000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-18950-1-GRY',
         VariantID: '18950-1',
         LaptopID: '18950',
         CPU: 'AMD Ryzen 7 7840HS',
@@ -140,12 +159,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Mecha Grey',
+        import_price: 102000000,
         Price: 120000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-18950-2-GRY',
         VariantID: '18950-2',
         LaptopID: '18950',
         CPU: 'AMD Ryzen 9 7940HS',
@@ -154,12 +175,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Mecha Grey',
+        import_price: 136000000,
         Price: 160000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-18950-3-BLK',
         VariantID: '18950-3',
         LaptopID: '18950',
         CPU: 'AMD Ryzen 9 7940HS',
@@ -168,12 +191,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Eclipse Black',
+        import_price: 178500000,
         Price: 210000000,
         StockQuantity: 7,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-19325-1-SLV',
         VariantID: '19325-1',
         LaptopID: '19325',
         CPU: 'Intel Core i7-14700H',
@@ -182,12 +207,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Lunar Silver',
+        import_price: 161500000,
         Price: 190000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-19325-2-SLV',
         VariantID: '19325-2',
         LaptopID: '19325',
         CPU: 'Intel Core i9-14900H',
@@ -196,12 +223,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Lunar Silver',
+        import_price: 204000000,
         Price: 240000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-19927-1-GRY',
         VariantID: '19927-1',
         LaptopID: '19927',
         CPU: 'Intel Core i9-14900HX',
@@ -210,12 +239,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Eclipse Gray',
+        import_price: 229500000,
         Price: 270000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-19927-2-GRY',
         VariantID: '19927-2',
         LaptopID: '19927',
         CPU: 'Intel Core i9-14900HX',
@@ -224,12 +255,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Eclipse Gray',
+        import_price: 289000000,
         Price: 340000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ASU-20225-1-WHT',
         VariantID: '20225-1',
         LaptopID: '20225',
         CPU: 'AMD Ryzen 9 7940HS',
@@ -238,12 +271,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Moonlight White',
+        import_price: 153000000,
         Price: 180000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ASU-20225-2-GRY',
         VariantID: '20225-2',
         LaptopID: '20225',
         CPU: 'AMD Ryzen 9 7940HS',
@@ -252,12 +287,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Eclipse Gray',
+        import_price: 195500000,
         Price: 230000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ASU-20269-1-BLK',
         VariantID: '20269-1',
         LaptopID: '20269',
         CPU: 'Intel Core i7-14700H',
@@ -266,12 +303,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Off Black',
+        import_price: 127500000,
         Price: 150000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ASU-20269-2-BLK',
         VariantID: '20269-2',
         LaptopID: '20269',
         CPU: 'Intel Core i9-14900H',
@@ -280,12 +319,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Off Black',
+        import_price: 161500000,
         Price: 190000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'DEL-20353-1-SLV',
         VariantID: '20353-1',
         LaptopID: '20353',
         CPU: 'Intel Core i7-13700H',
@@ -294,12 +335,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Platinum Silver',
+        import_price: 187000000,
         Price: 220000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'DEL-20353-2-SLV',
         VariantID: '20353-2',
         LaptopID: '20353',
         CPU: 'Intel Core i9-13900H',
@@ -308,12 +351,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Platinum Silver',
+        import_price: 246500000,
         Price: 290000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-20388-1-GRY',
         VariantID: '20388-1',
         LaptopID: '20388',
         CPU: 'Intel Core i5-13500H',
@@ -322,12 +367,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Onyx Gray',
+        import_price: 68000000,
         Price: 80000000,
         StockQuantity: 30,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'HPP-20577-1-BLU',
         VariantID: '20577-1',
         LaptopID: '20577',
         CPU: 'Intel Core i5-14500H',
@@ -336,12 +383,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Performance Blue',
+        import_price: 76500000,
         Price: 90000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'HPP-20577-2-BLU',
         VariantID: '20577-2',
         LaptopID: '20577',
         CPU: 'Intel Core i7-14700H',
@@ -350,12 +399,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Performance Blue',
+        import_price: 110500000,
         Price: 130000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'GGB-20626-1-BLK',
         VariantID: '20626-1',
         LaptopID: '20626',
         CPU: 'Intel Core i9-14900HX',
@@ -364,12 +415,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 238000000,
         Price: 280000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'GGB-20626-2-BLK',
         VariantID: '20626-2',
         LaptopID: '20626',
         CPU: 'Intel Core i9-14900HX',
@@ -378,12 +431,14 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 306000000,
         Price: 360000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'GGB-20627-1-BLK',
         VariantID: '20627-1',
         LaptopID: '20627',
         CPU: 'Intel Core i7-14700H',
@@ -392,12 +447,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 119000000,
         Price: 140000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-20692-1-BLK',
         VariantID: '20692-1',
         LaptopID: '20692',
         CPU: 'Intel Core i9-14900HX',
@@ -406,12 +463,14 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Cosmic Black',
+        import_price: 416500000,
         Price: 490000000,
         StockQuantity: 3,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ASU-20724-1-BLK',
         VariantID: '20724-1',
         LaptopID: '20724',
         CPU: 'Intel Core i9-14900H',
@@ -420,12 +479,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Off Black',
+        import_price: 212500000,
         Price: 250000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ASU-20724-2-BLK',
         VariantID: '20724-2',
         LaptopID: '20724',
         CPU: 'Intel Core i9-14900H',
@@ -434,12 +495,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Off Black',
+        import_price: 272000000,
         Price: 320000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-20993-1-GRY',
         VariantID: '20993-1',
         LaptopID: '20993',
         CPU: 'AMD Ryzen 7 7840U',
@@ -448,12 +511,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 68000000,
         Price: 80000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-20993-2-GRY',
         VariantID: '20993-2',
         LaptopID: '20993',
         CPU: 'AMD Ryzen 9 7940U',
@@ -462,12 +527,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 93500000,
         Price: 110000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'HPP-21037-1-BLK',
         VariantID: '21037-1',
         LaptopID: '21037',
         CPU: 'Intel Core i7-14700H',
@@ -476,12 +543,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Shadow Black',
+        import_price: 144500000,
         Price: 170000000,
         StockQuantity: 18,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'HPP-21037-2-BLK',
         VariantID: '21037-2',
         LaptopID: '21037',
         CPU: 'Intel Core i9-14900H',
@@ -490,12 +559,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Shadow Black',
+        import_price: 187000000,
         Price: 220000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ACR-21042-1-BLK',
         VariantID: '21042-1',
         LaptopID: '21042',
         CPU: 'Intel Core i7-14700H',
@@ -504,12 +575,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Obsidian Black',
+        import_price: 136000000,
         Price: 160000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ACR-21042-2-BLK',
         VariantID: '21042-2',
         LaptopID: '21042',
         CPU: 'Intel Core i9-14900H',
@@ -518,12 +591,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Obsidian Black',
+        import_price: 178500000,
         Price: 210000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'HPP-21056-1-SLV',
         VariantID: '21056-1',
         LaptopID: '21056',
         CPU: 'Intel Core i5-14500H',
@@ -532,12 +607,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Mica Silver',
+        import_price: 76500000,
         Price: 90000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'HPP-21056-2-SLV',
         VariantID: '21056-2',
         LaptopID: '21056',
         CPU: 'Intel Core i7-14700H',
@@ -546,12 +623,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Mica Silver',
+        import_price: 110500000,
         Price: 130000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ACR-21108-1-BLK',
         VariantID: '21108-1',
         LaptopID: '21108',
         CPU: 'Intel Core i7-14700H',
@@ -560,12 +639,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Abyssal Black',
+        import_price: 161500000,
         Price: 190000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'ACR-21108-2-BLK',
         VariantID: '21108-2',
         LaptopID: '21108',
         CPU: 'Intel Core i9-14900H',
@@ -574,12 +655,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Abyssal Black',
+        import_price: 204000000,
         Price: 240000000,
         StockQuantity: 8,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21171-1-OAT',
         VariantID: '21171-1',
         LaptopID: '21171',
         CPU: 'Intel Core i7-1360P',
@@ -588,12 +671,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Oatmeal',
+        import_price: 110500000,
         Price: 130000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21171-2-OAT',
         VariantID: '21171-2',
         LaptopID: '21171',
         CPU: 'Intel Core i7-1360P',
@@ -602,12 +687,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Oatmeal',
+        import_price: 136000000,
         Price: 160000000,
         StockQuantity: 10,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21175-1-GRY',
         VariantID: '21175-1',
         LaptopID: '21175',
         CPU: 'Intel Core i5-1340P',
@@ -616,12 +703,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 85000000,
         Price: 100000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21175-2-GRY',
         VariantID: '21175-2',
         LaptopID: '21175',
         CPU: 'Intel Core i7-1360P',
@@ -630,12 +719,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Storm Grey',
+        import_price: 102000000,
         Price: 120000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21183-1-GRY',
         VariantID: '21183-1',
         LaptopID: '21183',
         CPU: 'AMD Ryzen 7 7840HS',
@@ -644,12 +735,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Onyx Grey',
+        import_price: 102000000,
         Price: 120000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21183-2-GRY',
         VariantID: '21183-2',
         LaptopID: '21183',
         CPU: 'AMD Ryzen 9 7940HS',
@@ -658,12 +751,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Onyx Grey',
+        import_price: 136000000,
         Price: 160000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-21253-1-BLK',
         VariantID: '21253-1',
         LaptopID: '21253',
         CPU: 'Intel Core i9-14900HX',
@@ -672,12 +767,14 @@ module.exports = {
         Storage: 4096,
         StorageType: 'SSD',
         Color: 'Core Black',
+        import_price: 374000000,
         Price: 440000000,
         StockQuantity: 5,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-21302-1-BLK',
         VariantID: '21302-1',
         LaptopID: '21302',
         CPU: 'Intel Core i5-13500H',
@@ -686,12 +783,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 76500000,
         Price: 90000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-21302-2-BLK',
         VariantID: '21302-2',
         LaptopID: '21302',
         CPU: 'Intel Core i7-13700H',
@@ -700,12 +799,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 102000000,
         Price: 120000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-21310-1-BLK',
         VariantID: '21310-1',
         LaptopID: '21310',
         CPU: 'Intel Core i7-14700H',
@@ -714,12 +815,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 110500000,
         Price: 130000000,
         StockQuantity: 18,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'MSI-21310-2-BLK',
         VariantID: '21310-2',
         LaptopID: '21310',
         CPU: 'Intel Core i9-14900H',
@@ -728,12 +831,14 @@ module.exports = {
         Storage: 2048,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 153000000,
         Price: 180000000,
         StockQuantity: 12,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'DEL-21330-1-GRY',
         VariantID: '21330-1',
         LaptopID: '21330',
         CPU: 'Intel Core i7-14700H',
@@ -742,12 +847,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Dark Shadow Grey',
+        import_price: 119000000,
         Price: 140000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'DEL-21330-2-GRY',
         VariantID: '21330-2',
         LaptopID: '21330',
         CPU: 'Intel Core i7-14700H',
@@ -756,12 +863,14 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Dark Shadow Grey',
+        import_price: 144500000,
         Price: 170000000,
         StockQuantity: 15,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'DEL-21340-1-GRY',
         VariantID: '21340-1',
         LaptopID: '21340',
         CPU: 'Intel Core i5-1335U',
@@ -770,12 +879,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Titan Grey',
+        import_price: 68000000,
         Price: 80000000,
         StockQuantity: 25,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21345-1-BLK',
         VariantID: '21345-1',
         LaptopID: '21345',
         CPU: 'Intel Core i7-1355U',
@@ -784,12 +895,14 @@ module.exports = {
         Storage: 512,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 102000000,
         Price: 120000000,
         StockQuantity: 20,
         createdAt: now,
         updatedAt: now
       },
       {
+        sku: 'LEN-21345-2-BLK',
         VariantID: '21345-2',
         LaptopID: '21345',
         CPU: 'Intel Core i7-1355U',
@@ -798,6 +911,7 @@ module.exports = {
         Storage: 1024,
         StorageType: 'SSD',
         Color: 'Black',
+        import_price: 127500000,
         Price: 150000000,
         StockQuantity: 15,
         createdAt: now,

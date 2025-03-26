@@ -10,6 +10,10 @@ public class LaptopSpec
     [Key]
     public string VariantID { get; set; } = null!;
 
+    [Required]
+    [MaxLength(50)]
+    public string SKU { get; set; } = null!;
+
     public string LaptopID { get; set; } = null!;
 
     [Required]
@@ -31,6 +35,10 @@ public class LaptopSpec
 
     [MaxLength(50)]
     public string? Color { get; set; }
+
+    [Required]
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal ImportPrice { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(18,2)")]
