@@ -24,6 +24,10 @@
             <Setter Property="Height" Value="40"/>
             <Setter Property="CornerRadius" Value="4"/>
         </Style>
+        
+        <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
     </Page.Resources>
 
     <Grid Margin="20">
@@ -42,6 +46,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox PlaceholderText="Tìm kiếm đơn hàng..."
@@ -49,13 +54,26 @@
                           Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Height="40"
                           Margin="0,0,12,0"/>
+                          
+            <ToggleButton Grid.Column="1"
+                         x:Name="MultiColumnSortToggle"
+                         ToolTipService.ToolTip="Bật/tắt chế độ sắp xếp nhiều cột"
+                         Margin="0,0,12,0"
+                         Height="40"
+                         Checked="MultiColumnSortToggle_Checked"
+                         Unchecked="MultiColumnSortToggle_Checked">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE8F1;" FontFamily="Segoe MDL2 Assets"/>
+                    <TextBlock Text="Sắp xếp nhiều cột"/>
+                </StackPanel>
+            </ToggleButton>
 
-            <Button Grid.Column="1"
+            <Button Grid.Column="2"
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"/>
 
-            <Button Grid.Column="2"
+            <Button Grid.Column="3"
                     Content="Xóa"
                     Style="{StaticResource ActionButtonStyle}"
                     Background="#E81123"
@@ -63,21 +81,35 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <controls:DataGrid ItemsSource="{x:Bind ViewModel.Orders, Mode=OneWay}"
+            <controls:DataGrid x:Name="OrdersDataGrid"
+                             ItemsSource="{x:Bind ViewModel.Orders, Mode=OneWay}"
                              AutoGenerateColumns="False"
                              GridLinesVisibility="Horizontal"
                              HorizontalGridLinesBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                              IsReadOnly="True"
                              SelectionMode="Single"
-                             SelectionChanged="DataGrid_SelectionChanged">
+                             SelectionChanged="DataGrid_SelectionChanged"
+                             Sorting="DataGrid_Sorting">
+                
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Mã ĐH" 
                                                Binding="{Binding OrderID}" 
-                                               Width="100"/>
+                                               Tag="OrderID"
+                                               Width="100">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Khách hàng" 
                                                Binding="{Binding CustomerName}" 
-                                               Width="200"/>
+                                               Tag="CustomerName"
+                                               Width="200">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTemplateColumn Header="Trạng thái" 
+                                                   Tag="StatusName"
                                                    Width="120">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -89,22 +121,50 @@
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
+                        <controls:DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTemplateColumn.HeaderStyle>
                     </controls:DataGridTemplateColumn>
                     <controls:DataGridTextColumn Header="Thanh toán" 
                                                Binding="{Binding PaymentMethod}" 
-                                               Width="150"/>
+                                               Tag="PaymentMethod"
+                                               Width="150">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Tổng tiền" 
                                                Binding="{Binding FormattedTotalAmount}" 
-                                               Width="150"/>
+                                               Tag="TotalAmount"
+                                               Width="150">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Địa chỉ" 
                                                Binding="{Binding ShippingAddress}" 
-                                               Width="*"/>
+                                               Tag="ShippingAddress"
+                                               Width="*">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Thành phố" 
                                                Binding="{Binding ShippingCity}" 
-                                               Width="150"/>
+                                               Tag="ShippingCity"
+                                               Width="150">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Ngày đặt" 
                                                Binding="{Binding FormattedOrderDate}" 
-                                               Width="150"/>
+                                               Tag="OrderDate"
+                                               Width="150">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
 
