@@ -28,7 +28,7 @@ namespace StormPC.Core.Helpers
             if (items == null || !sortProperties.Any() || sortProperties.Count != sortDirections.Count)
                 return new ObservableCollection<T>(items);
 
-            // Use LINQ to sort the collection
+            // Dùng LINQ để sắp xếp collection
             IOrderedEnumerable<T> sortedItems = null;
             bool firstSort = true;
 
@@ -40,7 +40,7 @@ namespace StormPC.Core.Helpers
                 if (string.IsNullOrEmpty(propertyName))
                     continue;
 
-                // Get the property info for the property name
+                // Lấy thông tin thuộc tính cho tên thuộc tính
                 PropertyInfo prop = typeof(T).GetProperty(propertyName);
                 if (prop == null)
                     continue;

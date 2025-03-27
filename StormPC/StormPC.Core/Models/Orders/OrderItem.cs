@@ -17,7 +17,7 @@ public class OrderItem
     [Column(TypeName = "decimal(18,2)")]
     public decimal UnitPrice { get; set; }
 
-    // Navigation properties
+    // Thuộc tính navigation
     public Order Order { get; set; } = null!;
     public LaptopSpec LaptopSpec { get; set; } = null!;
 } 

@@ -13,6 +13,6 @@ public class OrderStatus
     [MaxLength(50)]
     public string StatusName { get; set; } = null!;
 
-    // Navigation property
+    // Thuộc tính navigation
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 } 

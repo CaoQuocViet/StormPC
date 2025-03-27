@@ -13,6 +13,6 @@ public class PaymentMethod
     [MaxLength(50)]
     public string MethodName { get; set; } = null!;
 
-    // Navigation property
+    // Thuộc tính navigation
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 } 

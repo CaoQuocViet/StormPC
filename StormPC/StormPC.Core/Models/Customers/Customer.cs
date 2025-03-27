@@ -33,7 +33,7 @@ public class Customer
     [Required]
     public bool IsDeleted { get; set; }
 
-    // Navigation properties
+    // Thuộc tính navigation
     public City City { get; set; } = null!;
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 } 

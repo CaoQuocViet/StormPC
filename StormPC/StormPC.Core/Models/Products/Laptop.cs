@@ -39,7 +39,7 @@ public class Laptop
     [Required]
     public bool IsDeleted { get; set; }
 
-    // Navigation properties
+    // Thuộc tính navigation
     public Brand Brand { get; set; } = null!;
     public Category Category { get; set; } = null!;
     public ICollection<LaptopSpec> Specs { get; set; } = new List<LaptopSpec>();

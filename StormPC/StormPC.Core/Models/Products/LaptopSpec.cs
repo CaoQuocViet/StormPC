@@ -47,7 +47,7 @@ public class LaptopSpec
     [Required]
     public int StockQuantity { get; set; }
 
-    // Navigation properties
+    // Thuộc tính navigation
     public Laptop Laptop { get; set; } = null!;
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 } 

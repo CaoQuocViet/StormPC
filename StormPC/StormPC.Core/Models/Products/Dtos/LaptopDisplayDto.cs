@@ -13,7 +13,7 @@ public class LaptopDisplayDto
     public decimal Discount { get; set; }
     public DateTime? DiscountEndDate { get; set; }
 
-    // Cheapest spec information
+    // Thông tin phiên bản rẻ nhất
     public decimal LowestPrice { get; set; }
     public string CPU { get; set; } = "N/A";
     public string GPU { get; set; } = "N/A";

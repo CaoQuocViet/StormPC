@@ -90,7 +90,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
     {
         var laptops = (await GetAllLaptopsForDisplayAsync()).ToList();
 
-        // Format price and calculate discount percentage
+        // Định dạng giá và tính phần trăm giảm giá
         foreach (var laptop in laptops)
         {
             laptop.FormattedPrice = string.Format("{0:N0}", laptop.LowestPrice);
@@ -106,7 +106,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
                 laptop.FormattedDiscount = "0";
             }
 
-            // Get variants count
+            // Lấy số lượng phiên bản
             laptop.OptionsCount = await _dbContext.LaptopSpecs
                 .CountAsync(s => s.LaptopID == laptop.LaptopID) - 1;
         }

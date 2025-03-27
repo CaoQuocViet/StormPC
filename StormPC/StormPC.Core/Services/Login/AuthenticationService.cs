@@ -61,7 +61,7 @@ public class AuthenticationService
             return (false, "Invalid username or password");
         }
 
-        // Check rate limiting
+        // Kiểm tra giới hạn đăng nhập
         if (user.FailedLoginAttempts >= MAX_LOGIN_ATTEMPTS && 
             user.LastFailedLoginAttempt?.AddMinutes(LOCKOUT_MINUTES) > DateTime.UtcNow)
         {
@@ -77,12 +77,12 @@ public class AuthenticationService
             return (false, "Invalid username or password");
         }
 
-        // Reset failed attempts on successful login
+        // Đặt lại số lần thất bại trên đăng nhập thành công
         user.FailedLoginAttempts = 0;
         user.LastLoginAt = DateTime.UtcNow;
         _secureStorage.SaveSecureData(USERS_STORAGE_KEY, users);
 
-        // Create new session
+        // Tạo phiên mới
         var session = new UserSession
         {
             Username = username,
@@ -144,7 +144,7 @@ public class AuthenticationService
         rng.GetBytes(randomBytes);
         var backupKey = Convert.ToBase64String(randomBytes);
         
-        // Hash the backup key
+        // Hash khóa bảo lưu
         using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(backupKey))
         {
             DegreeOfParallelism = 8,
@@ -154,7 +154,7 @@ public class AuthenticationService
         var hash = await argon2.GetBytesAsync(32);
         var backupKeyHash = Convert.ToBase64String(hash);
 
-        // Save the hash to the admin account
+        // Lưu hash vào tài khoản quản trị
         var users = _secureStorage.LoadSecureData<UserAccount[]>(USERS_STORAGE_KEY);
         if (users != null)
         {
@@ -177,7 +177,7 @@ public class AuthenticationService
         var adminAccount = users.FirstOrDefault(u => u.IsAdmin);
         if (adminAccount == null || string.IsNullOrEmpty(adminAccount.BackupKeyHash)) return false;
 
-        // Hash the provided backup key
+        // Hash khóa bảo lưu đã cung cấp
         using var argon2 = new Argon2id(Encoding.UTF8.GetBytes(backupKey))
         {
             DegreeOfParallelism = 8,
@@ -192,7 +192,7 @@ public class AuthenticationService
 
     public void ResetAdminAccount()
     {
-        // Delete the secure storage file
+        // Xóa tệp lưu trữ bảo mật
         var appDataPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "StormPC");

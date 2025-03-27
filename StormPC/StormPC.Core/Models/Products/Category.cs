@@ -25,7 +25,7 @@ public class Category
     [Column("updatedAt")]
     public DateTime? UpdatedAt { get; set; }
 
-    // Navigation property
+    // Thuộc tính navigation
     public ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
 
     [NotMapped]

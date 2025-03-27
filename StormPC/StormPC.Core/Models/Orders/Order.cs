@@ -40,7 +40,7 @@ public class Order
     [Required]
     public bool IsDeleted { get; set; }
 
-    // Navigation properties
+    // Thuộc tính navigation
     public Customer Customer { get; set; } = null!;
     public OrderStatus Status { get; set; } = null!;
     public PaymentMethod PaymentMethod { get; set; } = null!;

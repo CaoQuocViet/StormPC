@@ -15,7 +15,7 @@ public class City
     [MaxLength(100)]
     public string CityName { get; set; } = null!;
 
-    // Navigation properties
+    // Thuộc tính navigation
     public ICollection<Customer> Customers { get; set; } = new List<Customer>();
     public ICollection<Order> ShippingOrders { get; set; } = new List<Order>();
 } 
