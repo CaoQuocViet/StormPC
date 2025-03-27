@@ -17,6 +17,11 @@ public sealed partial class ProductsPage : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        await ViewModel.LoadDataAsync();
+        await ViewModel.LoadProductsAsync();
+    }
+
+    private void PaginationControl_PageChanged(object sender, int page)
+    {
+        ViewModel.LoadPage(page);
     }
 } 

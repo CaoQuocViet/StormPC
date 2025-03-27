@@ -94,4 +94,9 @@ public sealed partial class CategoriesPage : Page
             }
         }
     }
+
+    private void PaginationControl_PageChanged(object sender, int page)
+    {
+        ViewModel.LoadPage(page);
+    }
 } 

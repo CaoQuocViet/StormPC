@@ -7,6 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dtos="using:StormPC.Core.Models.Products.Dtos"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:local="using:StormPC.Views.BaseData"
+    xmlns:sharedControls="using:StormPC.Controls"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
 
@@ -86,6 +88,11 @@
         </Grid>
 
         <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
             <controls:DataGrid x:Name="CategoriesDataGrid"
                       ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                       AutoGenerateColumns="False"
@@ -170,9 +177,14 @@
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
 
+            <sharedControls:PaginationControl Grid.Row="1"
+                                    CurrentPage="{x:Bind ViewModel.CurrentPage, Mode=TwoWay}"
+                                    TotalPages="{x:Bind ViewModel.TotalPages, Mode=OneWay}"
+                                    PageChanged="PaginationControl_PageChanged"/>
+
             <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-                         Width="50" 
-                         Height="50"/>
+                          Width="50" 
+                          Height="50"/>
         </Grid>
     </Grid>
 </Page> 

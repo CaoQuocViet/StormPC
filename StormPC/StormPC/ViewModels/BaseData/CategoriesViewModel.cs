@@ -12,22 +12,61 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace StormPC.ViewModels.BaseData;
 
-public partial class CategoriesViewModel : ObservableObject
+public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 {
     private readonly StormPCDbContext _dbContext;
-
-    [ObservableProperty]
-    private ObservableCollection<CategoryDisplayDto> _categories = new();
-
-    [ObservableProperty]
+    private List<CategoryDisplayDto> _allCategories;
+    private ObservableCollection<CategoryDisplayDto> _categories;
     private bool _isLoading;
-
     [ObservableProperty]
     private string _searchText = string.Empty;
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalItems;
+
+    public ObservableCollection<CategoryDisplayDto> Categories
+    {
+        get => _categories;
+        set => SetProperty(ref _categories, value);
+    }
+
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
+    }
+
+    public int CurrentPage
+    {
+        get => _currentPage;
+        set
+        {
+            if (SetProperty(ref _currentPage, value))
+            {
+                LoadPage(value);
+            }
+        }
+    }
+
+    public int PageSize
+    {
+        get => _pageSize;
+        set
+        {
+            if (SetProperty(ref _pageSize, value))
+            {
+                FilterAndPaginateCategories();
+            }
+        }
+    }
+
+    public int TotalPages => (_totalItems + PageSize - 1) / PageSize;
 
     public CategoriesViewModel(StormPCDbContext dbContext)
     {
         _dbContext = dbContext;
+        _categories = new ObservableCollection<CategoryDisplayDto>();
+        _allCategories = new List<CategoryDisplayDto>();
     }
 
     public async Task InitializeAsync()
@@ -72,8 +111,8 @@ public partial class CategoriesViewModel : ObservableObject
                 UpdatedAt = c.UpdatedAt
             }).ToList();
 
-            Categories = new ObservableCollection<CategoryDisplayDto>(categoryDtos);
-            Debug.WriteLine($"Categories loaded: {Categories.Count}");
+            _allCategories = categoryDtos;
+            FilterAndPaginateCategories();
         }
         catch (Exception ex)
         {
@@ -89,18 +128,70 @@ public partial class CategoriesViewModel : ObservableObject
 
     partial void OnSearchTextChanged(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            LoadCategoriesCommand.Execute(null);
-            return;
-        }
+        FilterAndPaginateCategories();
+    }
 
-        var searchText = value.ToLower();
-        var filteredCategories = Categories
-            .Where(c => c.CategoryName.ToLower().Contains(searchText) ||
-                       (c.Description?.ToLower().Contains(searchText) ?? false))
+    public async Task LoadCategoriesAsync()
+    {
+        try
+        {
+            IsLoading = true;
+            var categories = await _dbContext.Categories
+                .Where(c => !c.IsDeleted)
+                .Select(c => new CategoryDisplayDto
+                {
+                    CategoryID = c.CategoryID,
+                    CategoryName = c.CategoryName,
+                    Description = c.Description,
+                    ProductCount = _dbContext.Laptops.Count(l => l.CategoryID == c.CategoryID && !l.IsDeleted),
+                    CreatedAt = c.CreatedAt,
+                    UpdatedAt = c.UpdatedAt ?? c.CreatedAt
+                })
+                .OrderBy(c => c.CategoryName)
+                .ToListAsync();
+            
+            _allCategories = categories;
+            FilterAndPaginateCategories();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void FilterAndPaginateCategories()
+    {
+        var filteredCategories = string.IsNullOrWhiteSpace(SearchText)
+            ? _allCategories
+            : _allCategories.Where(c =>
+                c.CategoryName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
+                (c.Description?.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ?? false)
+            ).ToList();
+
+        _totalItems = filteredCategories.Count;
+        CurrentPage = 1;
+        LoadPage(1);
+    }
+
+    public void LoadPage(int page)
+    {
+        if (_allCategories == null) return;
+
+        var filteredCategories = string.IsNullOrWhiteSpace(SearchText)
+            ? _allCategories
+            : _allCategories.Where(c =>
+                c.CategoryName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
+                (c.Description?.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ?? false)
+            ).ToList();
+
+        _totalItems = filteredCategories.Count;
+
+        var pagedCategories = filteredCategories
+            .Skip((page - 1) * PageSize)
+            .Take(PageSize)
             .ToList();
 
-        Categories = new ObservableCollection<CategoryDisplayDto>(filteredCategories);
+        Categories = new ObservableCollection<CategoryDisplayDto>(pagedCategories);
+        OnPropertyChanged(nameof(TotalPages));
     }
 } 
