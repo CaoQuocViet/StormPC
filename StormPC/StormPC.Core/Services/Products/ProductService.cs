@@ -85,4 +85,32 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
             .Where(spec => spec.LaptopID == laptopId)
             .CountAsync();
     }
+
+    public async Task<List<LaptopDisplayDto>> GetLaptopsAsync()
+    {
+        var laptops = (await GetAllLaptopsForDisplayAsync()).ToList();
+
+        // Format price and calculate discount percentage
+        foreach (var laptop in laptops)
+        {
+            laptop.FormattedPrice = string.Format("{0:N0}", laptop.LowestPrice);
+
+            if (laptop.Discount > 0)
+            {
+                var originalPrice = laptop.LowestPrice + laptop.Discount;
+                var discountPercent = (int)((laptop.Discount / originalPrice) * 100);
+                laptop.FormattedDiscount = discountPercent.ToString();
+            }
+            else
+            {
+                laptop.FormattedDiscount = "0";
+            }
+
+            // Get variants count
+            laptop.OptionsCount = await _dbContext.LaptopSpecs
+                .CountAsync(s => s.LaptopID == laptop.LaptopID) - 1;
+        }
+
+        return laptops.OrderByDescending(l => l.ReleaseYear).ToList();
+    }
 } 
