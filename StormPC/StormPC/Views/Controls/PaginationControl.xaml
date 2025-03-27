@@ -7,49 +7,58 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Spacing="8"
-                Margin="0,20,0,0">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
         <Button x:Name="PreviousButton"
+                Grid.Column="0"
                 Click="PreviousButton_Click"
                 Style="{ThemeResource AccentButtonStyle}"
                 Width="40"
                 Height="32"
-                CornerRadius="4"
-                VerticalAlignment="Center">
+                Margin="0,0,8,0"
+                CornerRadius="4">
             <FontIcon Glyph="&#xE72B;" FontSize="12"/>
         </Button>
 
-        <Grid VerticalAlignment="Center" Height="32">
-            <TextBox x:Name="CurrentPageBox"
-                     Text="{x:Bind CurrentPage, Mode=TwoWay}"
-                     TextAlignment="Center"
-                     MinWidth="32"
-                     Height="32"
-                     VerticalAlignment="Center"
-                     VerticalContentAlignment="Center"
-                     BeforeTextChanging="CurrentPageBox_BeforeTextChanging"
-                     KeyDown="CurrentPageBox_KeyDown"/>
-        </Grid>
+        <TextBox x:Name="CurrentPageBox"
+                 Grid.Column="1"
+                 Text="{x:Bind CurrentPage, Mode=TwoWay}"
+                 TextAlignment="Center"
+                 MinWidth="32"
+                 Height="32"
+                 Margin="0,0,8,0"
+                 VerticalAlignment="Center"
+                 VerticalContentAlignment="Center"
+                 BeforeTextChanging="CurrentPageBox_BeforeTextChanging"
+                 KeyDown="CurrentPageBox_KeyDown"/>
 
-        <TextBlock Text="/" 
+        <TextBlock Grid.Column="2"
+                  Text="/" 
+                  Margin="0,0,8,0"
                   VerticalAlignment="Center"
                   Foreground="{ThemeResource SystemBaseMediumColor}"/>
 
-        <TextBlock x:Name="TotalPagesText"
+        <TextBlock Grid.Column="3"
+                  x:Name="TotalPagesText"
                   Text="{x:Bind TotalPages, Mode=OneWay}"
+                  Margin="0,0,8,0"
                   VerticalAlignment="Center"/>
 
-        <Button x:Name="NextButton"
+        <Button Grid.Column="4"
+                x:Name="NextButton"
                 Click="NextButton_Click"
                 Style="{ThemeResource AccentButtonStyle}"
                 Width="40"
                 Height="32"
-                CornerRadius="4"
-                VerticalAlignment="Center">
+                CornerRadius="4">
             <FontIcon Glyph="&#xE72A;" FontSize="12"/>
         </Button>
-    </StackPanel>
-</UserControl> 
+    </Grid>
+</UserControl>
