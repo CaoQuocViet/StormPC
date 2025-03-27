@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Logo -->
@@ -61,6 +62,13 @@
                 Padding="15,10"
                 HorizontalAlignment="Center"
                 Click="OnCreateAdminClick"/>
+                
+        <TextBlock Grid.Row="4"
+                  Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}"
+                  HorizontalAlignment="Center"
+                  Margin="0,15,0,0"
+                  Opacity="0.7"
+                  FontSize="12"/>
 
         <winui:ContentDialog x:Name="BackupKeyDialog"
                       Title="Backup Key"
