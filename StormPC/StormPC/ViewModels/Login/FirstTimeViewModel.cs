@@ -2,6 +2,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StormPC.Core.Services.Login;
 using System.Threading.Tasks;
+using System.Reflection;
+using Windows.ApplicationModel;
+using StormPC.Helpers;
 
 namespace StormPC.ViewModels.Login;
 
@@ -18,11 +21,32 @@ public partial class FirstTimeViewModel : ObservableObject
     [ObservableProperty]
     private string _backupKey = string.Empty;
 
+    [ObservableProperty]
+    private string _versionDescription;
+
     public event EventHandler? AccountCreated;
 
     public FirstTimeViewModel(AuthenticationService authService)
     {
         _authService = authService;
+        _versionDescription = GetVersionDescription();
+    }
+
+    private static string GetVersionDescription()
+    {
+        Version version;
+
+        if (RuntimeHelper.IsMSIX)
+        {
+            var packageVersion = Package.Current.Id.Version;
+            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+        }
+        else
+        {
+            version = Assembly.GetExecutingAssembly().GetName().Version!;
+        }
+
+        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 
     [RelayCommand]

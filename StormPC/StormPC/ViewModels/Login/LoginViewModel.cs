@@ -5,6 +5,9 @@ using StormPC.Core.Services.Login;
 using System.Threading.Tasks;
 using StormPC.Contracts;
 using System;
+using System.Reflection;
+using Windows.ApplicationModel;
+using StormPC.Helpers;
 
 namespace StormPC.ViewModels.Login;
 
@@ -31,11 +34,32 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _isPasswordViewable = true;
 
+    [ObservableProperty]
+    private string _versionDescription;
+
     public LoginViewModel(AuthenticationService authService, SecureStorageService secureStorage)
     {
         _authService = authService;
         _secureStorage = secureStorage;
+        _versionDescription = GetVersionDescription();
         LoadRememberedLogin();
+    }
+
+    private static string GetVersionDescription()
+    {
+        Version version;
+
+        if (RuntimeHelper.IsMSIX)
+        {
+            var packageVersion = Package.Current.Id.Version;
+            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+        }
+        else
+        {
+            version = Assembly.GetExecutingAssembly().GetName().Version!;
+        }
+
+        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 
     public async Task<bool> VerifyBackupKeyAsync(string backupKey)
