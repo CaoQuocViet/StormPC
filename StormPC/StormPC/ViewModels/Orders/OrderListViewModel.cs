@@ -5,25 +5,68 @@ using StormPC.Core.Models.Orders.Dtos;
 using StormPC.Core.Infrastructure.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace StormPC.ViewModels.Orders;
 
-public partial class OrderListViewModel : ObservableObject
+public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 {
     private readonly StormPCDbContext _dbContext;
-
-    [ObservableProperty]
-    private ObservableCollection<OrderDisplayDto> _orders = new();
-
-    [ObservableProperty]
+    private List<OrderDisplayDto> _allOrders;
+    private ObservableCollection<OrderDisplayDto> _orders;
     private bool _isLoading;
-
     [ObservableProperty]
     private string _searchText = string.Empty;
+    private int _currentPage = 1;
+    private int _pageSize = 10;
+    private int _totalItems;
+
+    public ObservableCollection<OrderDisplayDto> Orders
+    {
+        get => _orders;
+        set => SetProperty(ref _orders, value);
+    }
+
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
+    }
+
+    public int CurrentPage
+    {
+        get => _currentPage;
+        set
+        {
+            if (SetProperty(ref _currentPage, value))
+            {
+                LoadPage(value);
+            }
+        }
+    }
+
+    public int PageSize
+    {
+        get => _pageSize;
+        set
+        {
+            if (SetProperty(ref _pageSize, value))
+            {
+                FilterAndPaginateOrders();
+            }
+        }
+    }
+
+    public int TotalPages => (_totalItems + PageSize - 1) / PageSize;
 
     public OrderListViewModel(StormPCDbContext dbContext)
     {
         _dbContext = dbContext;
+        _orders = new ObservableCollection<OrderDisplayDto>();
+        _allOrders = new List<OrderDisplayDto>();
         Debug.WriteLine("OrderListViewModel constructed with dbContext");
     }
 
@@ -114,8 +157,8 @@ public partial class OrderListViewModel : ObservableObject
                 Debug.WriteLine($"Order {order.OrderID}: Customer={order.CustomerName}, Status={order.StatusName}, Payment={order.PaymentMethod}");
             }
 
-            Orders = new ObservableCollection<OrderDisplayDto>(orders);
-            Debug.WriteLine($"Orders loaded successfully. Collection count: {Orders.Count}");
+            _allOrders = orders;
+            FilterAndPaginateOrders();
         }
         catch (Exception ex)
         {
@@ -148,21 +191,59 @@ public partial class OrderListViewModel : ObservableObject
         };
     }
 
-    partial void OnSearchTextChanged(string value)
+    private void FilterAndPaginateOrders()
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            LoadOrdersCommand.Execute(null);
-            return;
-        }
+        var filteredOrders = string.IsNullOrWhiteSpace(SearchText)
+            ? _allOrders
+            : _allOrders.Where(o =>
+                o.OrderID.ToString().Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
+                o.CustomerName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
+                o.StatusName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
+            ).ToList();
 
-        var searchText = value.ToLower();
-        var filteredOrders = Orders
-            .Where(o => o.CustomerName.ToLower().Contains(searchText) ||
-                       o.OrderID.ToString().Contains(searchText) ||
-                       o.StatusName.ToLower().Contains(searchText))
+        _totalItems = filteredOrders.Count;
+        CurrentPage = 1;
+        LoadPage(1);
+    }
+
+    public void LoadPage(int page)
+    {
+        if (_allOrders == null) return;
+
+        var filteredOrders = string.IsNullOrWhiteSpace(SearchText)
+            ? _allOrders
+            : _allOrders.Where(o =>
+                o.OrderID.ToString().Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
+                o.CustomerName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
+                o.StatusName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+
+        _totalItems = filteredOrders.Count;
+
+        var pagedOrders = filteredOrders
+            .Skip((page - 1) * PageSize)
+            .Take(PageSize)
             .ToList();
 
-        Orders = new ObservableCollection<OrderDisplayDto>(filteredOrders);
+        Orders = new ObservableCollection<OrderDisplayDto>(pagedOrders);
+        OnPropertyChanged(nameof(TotalPages));
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        FilterAndPaginateOrders();
+    }
+
+    public async Task LoadOrdersAsync()
+    {
+        try
+        {
+            IsLoading = true;
+            await LoadOrders();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 } 
