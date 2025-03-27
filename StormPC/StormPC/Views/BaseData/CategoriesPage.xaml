@@ -30,6 +30,10 @@
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        
+        <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
     </Page.Resources>
 
     <Grid Margin="20">
@@ -47,6 +51,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox PlaceholderText="Tìm kiếm loại sản phẩm..."
@@ -55,12 +60,25 @@
                           Height="40"
                           Margin="0,0,12,0"/>
 
-            <Button Grid.Column="1"
+            <ToggleButton Grid.Column="1"
+                         x:Name="MultiColumnSortToggle"
+                         ToolTipService.ToolTip="Bật/tắt chế độ sắp xếp nhiều cột"
+                         Margin="0,0,12,0"
+                         Height="40"
+                         Checked="MultiColumnSortToggle_Checked"
+                         Unchecked="MultiColumnSortToggle_Checked">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE8F1;" FontFamily="Segoe MDL2 Assets"/>
+                    <TextBlock Text="Sắp xếp nhiều cột"/>
+                </StackPanel>
+            </ToggleButton>
+            
+            <Button Grid.Column="2"
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"/>
 
-            <Button Grid.Column="2"
+            <Button Grid.Column="3"
                     Content="Xóa"
                     Style="{StaticResource ActionButtonStyle}"
                     Background="#E81123"
@@ -68,39 +86,70 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <controls:DataGrid ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
+            <controls:DataGrid x:Name="CategoriesDataGrid"
+                      ItemsSource="{x:Bind ViewModel.Categories, Mode=OneWay}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                      SelectionMode="Single">
+                      SelectionMode="Single"
+                      Sorting="DataGrid_Sorting">
+                
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="ID" 
                                       Binding="{Binding CategoryID}" 
-                                      Width="80"/>
+                                      Tag="CategoryID"
+                                      Width="80">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Loại sản phẩm" 
                                       Binding="{Binding CategoryName}" 
+                                      Tag="CategoryName"
                                       Width="200">
                         <controls:DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
                         </controls:DataGridTextColumn.ElementStyle>
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
                     </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Thông tin" 
                                       Binding="{Binding Description}" 
+                                      Tag="Description"
                                       Width="*">
                         <controls:DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
                         </controls:DataGridTextColumn.ElementStyle>
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
                     </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Số lượng SP" 
                                       Binding="{Binding ProductCount}" 
-                                      Width="120"/>
+                                      Tag="ProductCount"
+                                      Width="120">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Ngày tạo" 
                                       Binding="{Binding FormattedCreatedAt}" 
-                                      Width="150"/>
+                                      Tag="CreatedAt"
+                                      Width="150">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Cập nhật" 
                                       Binding="{Binding FormattedUpdatedAt}" 
-                                      Width="150"/>
+                                      Tag="UpdatedAt"
+                                      Width="150">
+                        <controls:DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTextColumn.HeaderStyle>
+                    </controls:DataGridTextColumn>
                     <controls:DataGridTemplateColumn Header="Thao tác" Width="120">
                         <controls:DataGridTemplateColumn.CellTemplate>
                             <DataTemplate x:DataType="dtos:CategoryDisplayDto">
@@ -114,6 +163,9 @@
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
+                        <controls:DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTemplateColumn.HeaderStyle>
                     </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
