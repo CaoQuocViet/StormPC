@@ -109,4 +109,9 @@ public sealed partial class OrderListPage : Page
             }
         }
     }
+
+    private void PaginationControl_PageChanged(object sender, int page)
+    {
+        ViewModel.LoadPage(page);
+    }
 } 
