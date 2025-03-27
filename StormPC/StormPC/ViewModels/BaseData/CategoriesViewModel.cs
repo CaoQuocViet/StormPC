@@ -9,6 +9,8 @@ using StormPC.Core.Models.Products.Dtos;
 using StormPC.Core.Infrastructure.Database.Contexts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace StormPC.ViewModels.BaseData;
 
@@ -23,6 +25,10 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     private int _currentPage = 1;
     private int _pageSize = 10;
     private int _totalItems;
+
+    // Sorting properties
+    private List<string> _sortProperties = new();
+    private List<ListSortDirection> _sortDirections = new();
 
     public ObservableCollection<CategoryDisplayDto> Categories
     {
@@ -159,6 +165,13 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    public void UpdateSorting(List<string> properties, List<ListSortDirection> directions)
+    {
+        _sortProperties = properties;
+        _sortDirections = directions;
+        FilterAndPaginateCategories();
+    }
+
     private void FilterAndPaginateCategories()
     {
         var filteredCategories = string.IsNullOrWhiteSpace(SearchText)
@@ -167,6 +180,16 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 c.CategoryName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
                 (c.Description?.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ?? false)
             ).ToList();
+
+        // Apply sorting if any sort properties are defined
+        if (_sortProperties.Any())
+        {
+            filteredCategories = Core.Helpers.DataGridSortHelper.ApplySort(
+                filteredCategories,
+                _sortProperties,
+                _sortDirections
+            ).ToList();
+        }
 
         _totalItems = filteredCategories.Count;
         CurrentPage = 1;
@@ -183,6 +206,16 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 c.CategoryName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
                 (c.Description?.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ?? false)
             ).ToList();
+
+        // Apply sorting if any sort properties are defined
+        if (_sortProperties.Any())
+        {
+            filteredCategories = Core.Helpers.DataGridSortHelper.ApplySort(
+                filteredCategories,
+                _sortProperties,
+                _sortDirections
+            ).ToList();
+        }
 
         _totalItems = filteredCategories.Count;
 

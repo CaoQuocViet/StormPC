@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace StormPC.ViewModels.Orders;
 
@@ -23,6 +24,10 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     private int _currentPage = 1;
     private int _pageSize = 10;
     private int _totalItems;
+
+    // Sorting properties
+    private List<string> _sortProperties = new();
+    private List<ListSortDirection> _sortDirections = new();
 
     public ObservableCollection<OrderDisplayDto> Orders
     {
@@ -191,6 +196,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         };
     }
 
+    public void UpdateSorting(List<string> properties, List<ListSortDirection> directions)
+    {
+        _sortProperties = properties;
+        _sortDirections = directions;
+        FilterAndPaginateOrders();
+    }
+
     private void FilterAndPaginateOrders()
     {
         var filteredOrders = string.IsNullOrWhiteSpace(SearchText)
@@ -200,6 +212,16 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 o.CustomerName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
                 o.StatusName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
             ).ToList();
+
+        // Apply sorting if any sort properties are defined
+        if (_sortProperties.Any())
+        {
+            filteredOrders = Core.Helpers.DataGridSortHelper.ApplySort(
+                filteredOrders,
+                _sortProperties,
+                _sortDirections
+            ).ToList();
+        }
 
         _totalItems = filteredOrders.Count;
         CurrentPage = 1;
@@ -217,6 +239,16 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 o.CustomerName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
                 o.StatusName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
             ).ToList();
+
+        // Apply sorting if any sort properties are defined
+        if (_sortProperties.Any())
+        {
+            filteredOrders = Core.Helpers.DataGridSortHelper.ApplySort(
+                filteredOrders,
+                _sortProperties,
+                _sortDirections
+            ).ToList();
+        }
 
         _totalItems = filteredOrders.Count;
 
