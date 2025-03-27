@@ -8,6 +8,7 @@ using StormPC.Contracts;
 using StormPC.Helpers.UI;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
 
 namespace StormPC.Views.Orders;
 
@@ -65,21 +66,63 @@ public sealed partial class OrderListPage : Page
         // Store reference to active DataGrid
         _activeDataGrid = dataGrid;
         
-        // Get up-to-date original list if needed
-        if (!_originalOrders.Any() || _originalOrders.Count != ViewModel.Orders.Count)
+        // Get property name from Tag property
+        string propertyName = e.Column.Tag?.ToString();
+        if (string.IsNullOrEmpty(propertyName))
+            return;
+
+        // Determine the new sort direction
+        ListSortDirection direction;
+        if (e.Column.SortDirection == null || e.Column.SortDirection == DataGridSortDirection.Descending)
+            direction = ListSortDirection.Ascending;
+        else
+            direction = ListSortDirection.Descending;
+
+        // Update the column's sort direction
+        e.Column.SortDirection = direction == ListSortDirection.Ascending 
+            ? DataGridSortDirection.Ascending 
+            : DataGridSortDirection.Descending;
+
+        var sortProperties = new List<string>();
+        var sortDirections = new List<ListSortDirection>();
+
+        if (DataGridSortingHelper.IsMultiColumnSortMode())
         {
-            _originalOrders = ViewModel.Orders.ToList();
+            // In multi-column mode:
+            // 1. Remove the current column if it exists in the sort list
+            // 2. Add all other sorted columns first
+            // 3. Add the current column last (highest priority)
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.SortDirection != null && column.Tag != null && column != e.Column)
+                {
+                    sortProperties.Add(column.Tag.ToString());
+                    sortDirections.Add(column.SortDirection == DataGridSortDirection.Ascending 
+                        ? ListSortDirection.Ascending 
+                        : ListSortDirection.Descending);
+                }
+            }
+            
+            // Add the current column last (highest priority)
+            sortProperties.Add(propertyName);
+            sortDirections.Add(direction);
         }
-        
-        // Process sorting using the helper
-        var sortedItems = DataGridSortingHelper.ProcessSorting(dataGrid, e, _originalOrders);
-        
-        // Update the view model with sorted items
-        ViewModel.Orders.Clear();
-        foreach (var item in sortedItems)
+        else
         {
-            ViewModel.Orders.Add(item);
+            // In single-column mode, clear other columns' sort directions
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column != e.Column)
+                    column.SortDirection = null;
+            }
+            
+            // Only sort by the clicked column
+            sortProperties.Add(propertyName);
+            sortDirections.Add(direction);
         }
+
+        // Update sorting in ViewModel
+        ViewModel.UpdateSorting(sortProperties, sortDirections);
     }
 
     private void MultiColumnSortToggle_Checked(object sender, RoutedEventArgs e)
@@ -97,14 +140,31 @@ public sealed partial class OrderListPage : Page
             // If turning off multi-column sort and we have a DataGrid reference
             if (!isMultiColumnMode && dataGrid != null)
             {
-                // Force single column mode using the helper method
-                DataGridSortingHelper.ForceSingleColumnMode(dataGrid);
-                
-                // Re-sort the collection (if needed)
+                // Clear all sort directions except the primary one
                 var primarySortColumn = dataGrid.Columns.FirstOrDefault(col => col.SortDirection != null);
-                if (primarySortColumn != null)
+                foreach (var column in dataGrid.Columns)
                 {
-                    DataGrid_Sorting(dataGrid, new DataGridColumnEventArgs(primarySortColumn));
+                    if (column != primarySortColumn)
+                    {
+                        column.SortDirection = null;
+                    }
+                }
+                
+                // Update sorting in ViewModel
+                if (primarySortColumn != null && primarySortColumn.Tag != null)
+                {
+                    var direction = primarySortColumn.SortDirection == DataGridSortDirection.Ascending
+                        ? ListSortDirection.Ascending
+                        : ListSortDirection.Descending;
+                    ViewModel.UpdateSorting(
+                        new List<string> { primarySortColumn.Tag.ToString() },
+                        new List<ListSortDirection> { direction }
+                    );
+                }
+                else
+                {
+                    // No sorting
+                    ViewModel.UpdateSorting(new List<string>(), new List<ListSortDirection>());
                 }
             }
         }
