@@ -533,6 +533,62 @@ module.exports = {
         UnitPrice: 279000000,
         createdAt: now,
         updatedAt: now
+      },
+
+      // OrderID 18
+      {
+        OrderID: 18,
+        VariantID: '21355-1',
+        Quantity: 1,
+        UnitPrice: 495000000, // 520000000 - 25000000 (đã trừ discount)
+        createdAt: now,
+        updatedAt: now
+      },
+
+      // OrderID 19
+      {
+        OrderID: 19,
+        VariantID: '21355-2',
+        Quantity: 1,
+        UnitPrice: 570000000, // 600000000 - 30000000
+        createdAt: now,
+        updatedAt: now
+      },
+
+      // OrderID 20
+      {
+        OrderID: 20,
+        VariantID: '21360-1',
+        Quantity: 1,
+        UnitPrice: 670000000, // 700000000 - 30000000
+        createdAt: now,
+        updatedAt: now
+      },
+
+      // OrderID 21 - đơn hàng nhiều item
+      {
+        OrderID: 21,
+        VariantID: '21360-2',
+        Quantity: 1,
+        UnitPrice: 770000000, // 800000000 - 30000000
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        OrderID: 21,
+        VariantID: '21355-1',
+        Quantity: 1,
+        UnitPrice: 495000000, // 520000000 - 25000000
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        OrderID: 21,
+        VariantID: '21355-2',
+        Quantity: 1,
+        UnitPrice: 255000000, // Giá đã được giảm thêm cho đơn tổng hợp
+        createdAt: now, 
+        updatedAt: now
       }
     ], {});
   },

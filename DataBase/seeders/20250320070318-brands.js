@@ -58,6 +58,12 @@ module.exports = {
         BrandName: 'Gigabyte',
         createdAt: now,
         updatedAt: now
+      },
+      {
+        BrandID: 10,
+        BrandName: 'Apple',
+        createdAt: now,
+        updatedAt: now
       }
     ], {});
   },

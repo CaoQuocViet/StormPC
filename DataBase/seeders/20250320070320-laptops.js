@@ -497,6 +497,40 @@ module.exports = {
         IsDeleted: false,
         createdAt: now,
         updatedAt: now
+      },
+      {
+        LaptopID: '21355',
+        BrandID: 10,
+        CategoryID: 3,
+        Picture: '/Assets/data/laptops/30.jpg',
+        ModelName: 'MacBook Pro 2024 16 inch',
+        ScreenSize: 16.0,
+        OperatingSystem: 'macOS Sequoia',
+        ReleaseYear: 2024,
+        Description: 'Laptop cao cấp với chip Apple M4 Pro mạnh mẽ, màn hình Mini-LED XDR',
+        Discount: 25000000,
+        DiscountStartDate: '2024-03-25',
+        DiscountEndDate: '2024-04-25',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        LaptopID: '21360',
+        BrandID: 10,
+        CategoryID: 3,
+        Picture: '/Assets/data/laptops/31.jpg',
+        ModelName: 'MacBook Pro 2024 14 inch',
+        ScreenSize: 14.0,
+        OperatingSystem: 'macOS Sequoia',
+        ReleaseYear: 2024,
+        Description: 'Laptop cao cấp với chip Apple M4 Max siêu mạnh, màn hình Mini-LED XDR',
+        Discount: 30000000,
+        DiscountStartDate: '2024-03-25',
+        DiscountEndDate: '2024-04-25',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
       }
     ], {});
   },

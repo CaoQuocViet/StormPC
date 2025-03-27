@@ -262,6 +262,66 @@ module.exports = {
         IsDeleted: false,
         createdAt: now,
         updatedAt: now
+      },
+      {
+        OrderID: 18,
+        CustomerID: 1,
+        OrderDate: '2024-03-26 09:30:00',
+        StatusID: 1,
+        TotalAmount: 495000000, // 495000000 (495tr)
+        PaymentMethodID: 5,
+        ShipCityCode: 'HCM',
+        ShippingAddress: '123 Lê Lợi, Phường Bến Nghé, Quận 1',
+        ShippingCity: 'Hồ Chí Minh',
+        ShippingPostalCode: '700000',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        OrderID: 19,
+        CustomerID: 3,
+        OrderDate: '2024-03-27 14:15:00',
+        StatusID: 2,
+        TotalAmount: 570000000, // 570tr
+        PaymentMethodID: 1,
+        ShipCityCode: 'HCM',
+        ShippingAddress: '67 Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1',
+        ShippingCity: 'Hồ Chí Minh',
+        ShippingPostalCode: '700000',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        OrderID: 20,
+        CustomerID: 4,
+        OrderDate: '2024-03-28 10:20:00',
+        StatusID: 3,
+        TotalAmount: 670000000, // 670tr
+        PaymentMethodID: 2,
+        ShipCityCode: 'HAN',
+        ShippingAddress: '89 Lý Tự Trọng, Hoàn Kiếm',
+        ShippingCity: 'Hà Nội',
+        ShippingPostalCode: '100000',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        OrderID: 21,
+        CustomerID: 13,
+        OrderDate: '2024-03-29 16:45:00',
+        StatusID: 1,
+        TotalAmount: 1520000000, // 1.52 tỷ
+        PaymentMethodID: 3,
+        ShipCityCode: 'DAN',
+        ShippingAddress: '45 Nguyễn Thị Minh Khai, Hải Châu',
+        ShippingCity: 'Đà Nẵng',
+        ShippingPostalCode: '550000',
+        IsDeleted: false,
+        createdAt: now,
+        updatedAt: now
       }
     ], {});
   },
