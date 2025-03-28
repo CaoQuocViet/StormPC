@@ -19,6 +19,19 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private int _currentPage = 1;
     private int _pageSize = 10; 
     private int _totalItems;
+    private int _selectedSortIndex;
+
+    public int SelectedSortIndex
+    {
+        get => _selectedSortIndex;
+        set
+        {
+            if (SetProperty(ref _selectedSortIndex, value))
+            {
+                FilterAndPaginateProducts();
+            }
+        }
+    }
 
     public ObservableCollection<LaptopDisplayDto> Laptops
     {
@@ -97,9 +110,26 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 l.CPU.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
+        // Apply sorting based on selected index
+        filteredProducts = SortProducts(filteredProducts);
+
         _totalItems = filteredProducts.Count;
         CurrentPage = 1;
         LoadPage(1);
+    }
+
+    private List<LaptopDisplayDto> SortProducts(List<LaptopDisplayDto> products)
+    {
+        return SelectedSortIndex switch
+        {
+            0 => products.OrderByDescending(p => p.ReleaseYear).ToList(), // Mới nhất
+            1 => products.OrderBy(p => p.LowestPrice).ToList(), // Giá thấp đến cao
+            2 => products.OrderByDescending(p => p.LowestPrice).ToList(), // Giá cao đến thấp
+            3 => products.OrderByDescending(p => p.Discount).ToList(), // Giảm giá nhiều nhất
+            4 => products.OrderBy(p => p.ModelName).ToList(), // Tên A-Z
+            5 => products.OrderByDescending(p => p.ModelName).ToList(), // Tên Z-A
+            _ => products
+        };
     }
 
     public void LoadPage(int page)
@@ -113,6 +143,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 l.BrandName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
                 l.CPU.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
             ).ToList();
+
+        // Apply sorting
+        filteredProducts = SortProducts(filteredProducts);
 
         _totalItems = filteredProducts.Count;
 

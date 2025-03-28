@@ -43,6 +43,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox
@@ -52,12 +53,26 @@
                 Height="40"
                 Margin="0,0,12,0"/>
 
-            <Button Grid.Column="1"
+            <ComboBox Grid.Column="1"
+                      SelectedIndex="{x:Bind ViewModel.SelectedSortIndex, Mode=TwoWay}"
+                      SelectionChanged="SortingComboBox_SelectionChanged"
+                      Width="200"
+                      Height="40"
+                      Margin="0,0,12,0">
+                <ComboBoxItem Content="Mới nhất"/>
+                <ComboBoxItem Content="Giá thấp đến cao"/>
+                <ComboBoxItem Content="Giá cao đến thấp"/>
+                <ComboBoxItem Content="Giảm giá nhiều nhất"/>
+                <ComboBoxItem Content="Tên A-Z"/>
+                <ComboBoxItem Content="Tên Z-A"/>
+            </ComboBox>
+
+            <Button Grid.Column="2"
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"/>
 
-            <Button Grid.Column="2"
+            <Button Grid.Column="3"
                     Content="Xóa"
                     Style="{StaticResource ActionButtonStyle}"
                     Background="#E81123"

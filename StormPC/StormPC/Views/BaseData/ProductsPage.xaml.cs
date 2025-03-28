@@ -30,4 +30,17 @@ public sealed partial class ProductsPage : Page
         ViewModel.PageSize = pageSize;
         ViewModel.LoadPage(1); // Reset to first page when changing page size
     }
+
+    private async void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        await ViewModel.LoadProductsAsync();
+    }
+
+    private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox)
+        {
+            ViewModel.SelectedSortIndex = comboBox.SelectedIndex;
+        }
+    }
 } 
