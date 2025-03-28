@@ -12,6 +12,7 @@ using StormPC.Core.Services;
 using StormPC.Core.Services.Login;
 using StormPC.Core.Services.Orders;
 using StormPC.Core.Services.Products;
+using StormPC.Core.Services.Dashboard;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
@@ -138,6 +139,9 @@ public partial class App : Application
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+
+            // Add to ConfigureServices method
+            services.AddSingleton<ICustomerReportService, CustomerReportService>();
         }).
         Build();
 
