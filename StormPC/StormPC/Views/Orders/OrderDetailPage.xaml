@@ -128,6 +128,12 @@
 
                 <!-- Actions -->
                 <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button Style="{StaticResource ActionButtonStyle}" Click="ExportPdfButton_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE8C4;" FontSize="16"/>
+                            <TextBlock Text="Xuất hóa đơn"/>
+                        </StackPanel>
+                    </Button>
                     <Button Style="{StaticResource ActionButtonStyle}">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <FontIcon Glyph="&#xE70F;" FontSize="16"/>
