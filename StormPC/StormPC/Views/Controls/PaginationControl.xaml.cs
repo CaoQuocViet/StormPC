@@ -14,7 +14,12 @@ namespace StormPC.Controls
             DependencyProperty.Register(nameof(TotalPages), typeof(int), typeof(PaginationControl),
                 new PropertyMetadata(1, OnTotalPagesChanged));
 
+        public static readonly DependencyProperty PageSizeProperty =
+            DependencyProperty.Register(nameof(PageSize), typeof(int), typeof(PaginationControl),
+                new PropertyMetadata(10, OnPageSizeChanged));
+
         public event EventHandler<int> PageChanged;
+        public event EventHandler<int> PageSizeChanged;
 
         public int CurrentPage
         {
@@ -28,10 +33,17 @@ namespace StormPC.Controls
             set => SetValue(TotalPagesProperty, value);
         }
 
+        public int PageSize
+        {
+            get => (int)GetValue(PageSizeProperty);
+            set => SetValue(PageSizeProperty, value);
+        }
+
         public PaginationControl()
         {
             this.InitializeComponent();
             UpdateButtonStates();
+            PageSizeComboBox.SelectedValue = PageSize;
         }
 
         private static void OnCurrentPageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -44,6 +56,12 @@ namespace StormPC.Controls
         {
             var control = (PaginationControl)d;
             control.UpdateButtonStates();
+        }
+
+        private static void OnPageSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (PaginationControl)d;
+            control.PageSizeChanged?.Invoke(control, (int)e.NewValue);
         }
 
         private void UpdateButtonStates()
@@ -92,6 +110,14 @@ namespace StormPC.Controls
                         textBox.Text = CurrentPage.ToString();
                     }
                 }
+            }
+        }
+
+        private void PageSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedValue is int newPageSize)
+            {
+                PageSize = newPageSize;
             }
         }
     }

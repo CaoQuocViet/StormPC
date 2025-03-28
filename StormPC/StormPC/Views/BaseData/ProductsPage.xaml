@@ -454,7 +454,9 @@
             <sharedControls:PaginationControl Grid.Row="1"
                                     CurrentPage="{x:Bind ViewModel.CurrentPage, Mode=TwoWay}"
                                     TotalPages="{x:Bind ViewModel.TotalPages, Mode=OneWay}"
-                                    PageChanged="PaginationControl_PageChanged"/>
+                                    PageSize="{x:Bind ViewModel.PageSize, Mode=TwoWay}"
+                                    PageChanged="PaginationControl_PageChanged"
+                                    PageSizeChanged="PaginationControl_PageSizeChanged"/>
 
             <!-- Loading Indicator -->
             <Grid Grid.RowSpan="2" 

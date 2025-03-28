@@ -17,7 +17,7 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private bool _isLoading;
     private string _searchText;
     private int _currentPage = 1;
-    private int _pageSize = 12; // Show 12 products per page for grid layout
+    private int _pageSize = 10; 
     private int _totalItems;
 
     public ObservableCollection<LaptopDisplayDto> Laptops

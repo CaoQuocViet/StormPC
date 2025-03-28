@@ -24,4 +24,10 @@ public sealed partial class ProductsPage : Page
     {
         ViewModel.LoadPage(page);
     }
+
+    private void PaginationControl_PageSizeChanged(object sender, int pageSize)
+    {
+        ViewModel.PageSize = pageSize;
+        ViewModel.LoadPage(1); // Reset to first page when changing page size
+    }
 } 
