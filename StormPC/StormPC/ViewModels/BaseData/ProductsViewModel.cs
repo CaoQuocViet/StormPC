@@ -106,16 +106,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
             ? _allLaptops
             : _allLaptops.Where(l =>
                 l.ModelName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                l.BrandName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                l.CPU.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
+                l.BrandName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
         // Apply sorting based on selected index
         filteredProducts = SortProducts(filteredProducts);
 
         _totalItems = filteredProducts.Count;
-        CurrentPage = 1;
-        LoadPage(1);
+        LoadPage(1); // Reset to first page when filtering
     }
 
     private List<LaptopDisplayDto> SortProducts(List<LaptopDisplayDto> products)
@@ -140,8 +138,7 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
             ? _allLaptops
             : _allLaptops.Where(l =>
                 l.ModelName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                l.BrandName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                l.CPU.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
+                l.BrandName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
         // Apply sorting
