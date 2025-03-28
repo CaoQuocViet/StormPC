@@ -3,7 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const now = new Date();
     await queryInterface.bulkInsert('Laptops', [
       {
         LaptopID: '12768',
@@ -15,12 +14,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2023,
         Description: 'Laptop siêu nhẹ với thời lượng pin ấn tượng',
-        Discount:12000000,
-        DiscountStartDate: '2024-03-01',
-        DiscountEndDate: '2024-04-01',
+        Discount: 12000000,
+        DiscountStartDate: new Date('2025-01-15T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-15T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-12T09:15:00Z'),
+        updatedAt: new Date('2025-01-12T09:15:00Z')
       },
       {
         LaptopID: '16354',
@@ -32,12 +31,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp với hiệu năng mạnh mẽ',
-        Discount:12000000,
-        DiscountStartDate: '2024-03-15',
-        DiscountEndDate: '2024-04-15',
+        Discount: 12000000,
+        DiscountStartDate: new Date('2025-01-20T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-20T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-13T10:30:00Z'),
+        updatedAt: new Date('2025-01-13T10:30:00Z')
       },
       {
         LaptopID: '18351',
@@ -49,12 +48,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop 2-in-1 linh hoạt với màn hình cảm ứng',
-        Discount:13000000,
-        DiscountStartDate: '2024-03-10',
-        DiscountEndDate: '2024-04-10',
+        Discount: 13000000,
+        DiscountStartDate: new Date('2025-01-18T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-18T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-14T11:45:00Z'),
+        updatedAt: new Date('2025-01-14T11:45:00Z')
       },
       {
         LaptopID: '18950',
@@ -66,12 +65,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming bền bỉ với card đồ họa AMD',
-        Discount:13000000,
-        DiscountStartDate: '2024-03-05',
-        DiscountEndDate: '2024-04-05',
+        Discount: 13000000,
+        DiscountStartDate: new Date('2025-01-15T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-15T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-14T14:20:00Z'),
+        updatedAt: new Date('2025-01-14T14:20:00Z')
       },
       {
         LaptopID: '19325',
@@ -83,12 +82,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming mỏng nhẹ với thiết kế độc đáo',
-        Discount:14000000,
-        DiscountStartDate: '2024-03-20',
-        DiscountEndDate: '2024-04-20',
+        Discount: 14000000,
+        DiscountStartDate: new Date('2025-01-25T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-25T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-15T09:10:00Z'),
+        updatedAt: new Date('2025-01-15T09:10:00Z')
       },
       {
         LaptopID: '19927',
@@ -100,12 +99,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp với bàn phím RGB từng phím',
-        Discount:14000000,
-        DiscountStartDate: '2024-03-25',
-        DiscountEndDate: '2024-04-25',
+        Discount: 14000000,
+        DiscountStartDate: new Date('2025-01-28T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-28T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-16T10:30:00Z'),
+        updatedAt: new Date('2025-01-16T10:30:00Z')
       },
       {
         LaptopID: '20225',
@@ -117,12 +116,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming nhỏ gọn với hiệu năng cao',
-        Discount:15000000,
-        DiscountStartDate: '2024-03-01',
-        DiscountEndDate: '2024-04-01',
+        Discount: 15000000,
+        DiscountStartDate: new Date('2025-02-01T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-01T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-18T13:45:00Z'),
+        updatedAt: new Date('2025-01-18T13:45:00Z')
       },
       {
         LaptopID: '20269',
@@ -134,12 +133,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming với màn hình lớn và tản nhiệt hiệu quả',
-        Discount:15000000,
-        DiscountStartDate: '2024-03-15',
-        DiscountEndDate: '2024-04-15',
+        Discount: 15000000,
+        DiscountStartDate: new Date('2025-02-05T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-05T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-20T09:30:00Z'),
+        updatedAt: new Date('2025-01-20T09:30:00Z')
       },
       {
         LaptopID: '20353',
@@ -151,12 +150,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop workstation chuyên nghiệp cho công việc đồ họa',
-        Discount:16000000,
-        DiscountStartDate: '2024-03-10',
-        DiscountEndDate: '2024-04-10',
+        Discount: 16000000,
+        DiscountStartDate: new Date('2025-02-01T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-01T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-22T11:15:00Z'),
+        updatedAt: new Date('2025-01-22T11:15:00Z')
       },
       {
         LaptopID: '20388',
@@ -168,12 +167,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop giá rẻ với hiệu năng ổn định',
-        Discount:17000000,
-        DiscountStartDate: '2024-03-05',
-        DiscountEndDate: '2024-04-05',
+        Discount: 17000000,
+        DiscountStartDate: new Date('2025-01-15T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-15T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-23T14:40:00Z'),
+        updatedAt: new Date('2025-01-23T14:40:00Z')
       },
       {
         LaptopID: '20577',
@@ -185,12 +184,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming tầm trung với thiết kế hiện đại',
-        Discount:27000000,
-        DiscountStartDate: '2024-03-20',
-        DiscountEndDate: '2024-04-20',
+        Discount: 27000000,
+        DiscountStartDate: new Date('2025-02-10T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-10T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-25T10:20:00Z'),
+        updatedAt: new Date('2025-01-25T10:20:00Z')
       },
       {
         LaptopID: '20626',
@@ -202,12 +201,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp với màn hình 16 inch',
-        Discount:21000000,
-        DiscountStartDate: '2024-03-25',
-        DiscountEndDate: '2024-04-25',
+        Discount: 21000000,
+        DiscountStartDate: new Date('2025-02-12T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-12T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-26T13:45:00Z'),
+        updatedAt: new Date('2025-01-26T13:45:00Z')
       },
       {
         LaptopID: '20627',
@@ -219,12 +218,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming với giá thành hợp lý',
-        Discount:22000000,
-        DiscountStartDate: '2024-03-01',
-        DiscountEndDate: '2024-04-01',
+        Discount: 22000000,
+        DiscountStartDate: new Date('2025-01-20T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-20T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-27T09:10:00Z'),
+        updatedAt: new Date('2025-01-27T09:10:00Z')
       },
       {
         LaptopID: '20692',
@@ -236,12 +235,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp phiên bản đặc biệt Dragon Edition',
-        Discount:22200000,
-        DiscountStartDate: '2024-03-15',
-        DiscountEndDate: '2024-04-15',
+        Discount: 22200000,
+        DiscountStartDate: new Date('2025-02-05T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-05T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-30T11:30:00Z'),
+        updatedAt: new Date('2025-01-30T11:30:00Z')
       },
       {
         LaptopID: '20724',
@@ -253,12 +252,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming mỏng nhẹ với hiệu năng mạnh mẽ',
-        Discount:21200000,
-        DiscountStartDate: '2024-03-10',
-        DiscountEndDate: '2024-04-10',
+        Discount: 21200000,
+        DiscountStartDate: new Date('2025-02-01T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-01T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-31T14:45:00Z'),
+        updatedAt: new Date('2025-01-31T14:45:00Z')
       },
       {
         LaptopID: '20993',
@@ -270,12 +269,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop văn phòng với chip AMD tiết kiệm điện',
-        Discount:21600000,
-        DiscountStartDate: '2024-03-05',
-        DiscountEndDate: '2024-04-05',
+        Discount: 21600000,
+        DiscountStartDate: new Date('2025-01-25T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-25T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-01T09:30:00Z'),
+        updatedAt: new Date('2025-02-01T09:30:00Z')
       },
       {
         LaptopID: '21037',
@@ -287,12 +286,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp nhỏ gọn của HP',
-        Discount:10000008,
-        DiscountStartDate: '2024-03-20',
-        DiscountEndDate: '2024-04-20',
+        Discount: 10000008,
+        DiscountStartDate: new Date('2025-02-10T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-10T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-02T10:15:00Z'),
+        updatedAt: new Date('2025-02-02T10:15:00Z')
       },
       {
         LaptopID: '21042',
@@ -304,12 +303,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming nhỏ gọn với thiết kế độc đáo',
-        Discount:21800000,
-        DiscountStartDate: '2024-03-25',
-        DiscountEndDate: '2024-04-25',
+        Discount: 21800000,
+        DiscountStartDate: new Date('2025-02-15T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-15T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-04T13:20:00Z'),
+        updatedAt: new Date('2025-02-04T13:20:00Z')
       },
       {
         LaptopID: '21056',
@@ -321,12 +320,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming tầm trung với màn hình lớn',
-        Discount:21800000,
-        DiscountStartDate: '2024-03-01',
-        DiscountEndDate: '2024-04-01',
+        Discount: 21800000,
+        DiscountStartDate: new Date('2025-02-01T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-01T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-05T09:45:00Z'),
+        updatedAt: new Date('2025-02-05T09:45:00Z')
       },
       {
         LaptopID: '21108',
@@ -338,12 +337,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp tích hợp AI',
-        Discount:23800000,
-        DiscountStartDate: '2024-03-15',
-        DiscountEndDate: '2024-04-15',
+        Discount: 23800000,
+        DiscountStartDate: new Date('2025-02-08T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-08T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-06T11:30:00Z'),
+        updatedAt: new Date('2025-02-06T11:30:00Z')
       },
       {
         LaptopID: '21171',
@@ -355,12 +354,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop cao cấp siêu mỏng nhẹ',
-        Discount:23800000,
-        DiscountStartDate: '2024-03-10',
-        DiscountEndDate: '2024-04-10',
+        Discount: 23800000,
+        DiscountStartDate: new Date('2025-02-03T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-03T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-08T09:15:00Z'),
+        updatedAt: new Date('2025-02-08T09:15:00Z')
       },
       {
         LaptopID: '21175',
@@ -372,12 +371,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop mỏng nhẹ với hiệu năng ổn định',
-        Discount:13800000,
-        DiscountStartDate: '2024-03-05',
-        DiscountEndDate: '2024-04-05',
+        Discount: 13800000,
+        DiscountStartDate: new Date('2025-01-25T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-25T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-09T14:20:00Z'),
+        updatedAt: new Date('2025-02-09T14:20:00Z')
       },
       {
         LaptopID: '21183',
@@ -389,12 +388,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming với chip AMD mạnh mẽ',
-        Discount:13800000,
-        DiscountStartDate: '2024-03-20',
-        DiscountEndDate: '2024-04-20',
+        Discount: 13800000,
+        DiscountStartDate: new Date('2025-02-12T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-12T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-10T10:00:00Z'),
+        updatedAt: new Date('2025-02-10T10:00:00Z')
       },
       {
         LaptopID: '21253',
@@ -406,12 +405,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp với màn hình 18 inch',
-        Discount:10000008,
-        DiscountStartDate: '2024-03-25',
-        DiscountEndDate: '2024-04-25',
+        Discount: 10000008,
+        DiscountStartDate: new Date('2025-02-18T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-18T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-11T13:10:00Z'),
+        updatedAt: new Date('2025-02-11T13:10:00Z')
       },
       {
         LaptopID: '21302',
@@ -423,12 +422,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming cao cấp với công nghệ AI',
-        Discount:14900000,
-        DiscountStartDate: '2024-03-01',
-        DiscountEndDate: '2024-04-01',
+        Discount: 14900000,
+        DiscountStartDate: new Date('2025-01-20T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-20T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-12T09:30:00Z'),
+        updatedAt: new Date('2025-02-12T09:30:00Z')
       },
       {
         LaptopID: '21310',
@@ -440,12 +439,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming tầm trung với thiết kế gaming',
-        Discount:14900000,
-        DiscountStartDate: '2024-03-15',
-        DiscountEndDate: '2024-04-15',
+        Discount: 14900000,
+        DiscountStartDate: new Date('2025-02-05T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-05T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-14T11:45:00Z'),
+        updatedAt: new Date('2025-02-14T11:45:00Z')
       },
       {
         LaptopID: '21330',
@@ -457,12 +456,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop gaming Dell với thiết kế bền bỉ',
-        Discount:10000015,
-        DiscountStartDate: '2024-03-10',
-        DiscountEndDate: '2024-04-10',
+        Discount: 10000015,
+        DiscountStartDate: new Date('2025-02-01T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-01T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-15T14:30:00Z'),
+        updatedAt: new Date('2025-02-15T14:30:00Z')
       },
       {
         LaptopID: '21340',
@@ -474,12 +473,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop doanh nhân với độ bền cao',
-        Discount:10000012,
-        DiscountStartDate: '2024-03-05',
-        DiscountEndDate: '2024-04-05',
+        Discount: 10000012,
+        DiscountStartDate: new Date('2025-01-25T00:00:00Z'),
+        DiscountEndDate: new Date('2025-02-25T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-16T10:20:00Z'),
+        updatedAt: new Date('2025-02-16T10:20:00Z')
       },
       {
         LaptopID: '21345',
@@ -491,12 +490,12 @@ module.exports = {
         OperatingSystem: 'Windows 11',
         ReleaseYear: 2024,
         Description: 'Laptop doanh nhân cao cấp với bảo mật tốt',
-        Discount:12000000,
-        DiscountStartDate: '2024-03-20',
-        DiscountEndDate: '2024-04-20',
+        Discount: 12000000,
+        DiscountStartDate: new Date('2025-02-15T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-15T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-18T09:45:00Z'),
+        updatedAt: new Date('2025-02-18T09:45:00Z')
       },
       {
         LaptopID: '21355',
@@ -509,11 +508,11 @@ module.exports = {
         ReleaseYear: 2024,
         Description: 'Laptop cao cấp với chip Apple M4 Pro mạnh mẽ, màn hình Mini-LED XDR',
         Discount: 25000000,
-        DiscountStartDate: '2024-03-25',
-        DiscountEndDate: '2024-04-25',
+        DiscountStartDate: new Date('2025-02-25T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-25T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-20T11:30:00Z'),
+        updatedAt: new Date('2025-02-20T11:30:00Z')
       },
       {
         LaptopID: '21360',
@@ -526,11 +525,11 @@ module.exports = {
         ReleaseYear: 2024,
         Description: 'Laptop cao cấp với chip Apple M4 Max siêu mạnh, màn hình Mini-LED XDR',
         Discount: 30000000,
-        DiscountStartDate: '2024-03-25',
-        DiscountEndDate: '2024-04-25',
+        DiscountStartDate: new Date('2025-02-25T00:00:00Z'),
+        DiscountEndDate: new Date('2025-03-25T23:59:59Z'),
         IsDeleted: false,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-22T14:15:00Z'),
+        updatedAt: new Date('2025-02-22T14:15:00Z')
       }
     ], {});
   },
