@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System;
 
 namespace StormPC.ViewModels.Orders;
 
@@ -20,7 +21,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     private ObservableCollection<OrderDisplayDto> _orders;
     private bool _isLoading;
     [ObservableProperty]
-    private string _searchText = string.Empty;
+    private string searchText = string.Empty;
     private int _currentPage = 1;
     private int _pageSize = 10;
     private int _totalItems;
@@ -208,24 +209,16 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         var filteredOrders = string.IsNullOrWhiteSpace(SearchText)
             ? _allOrders
             : _allOrders.Where(o =>
-                o.OrderID.ToString().Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                o.CustomerName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                o.StatusName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
+                o.CustomerName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                o.StatusName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                o.ShippingCity.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
-        // Apply sorting if any sort properties are defined
-        if (_sortProperties.Any())
-        {
-            filteredOrders = Core.Helpers.DataGridSortHelper.ApplySort(
-                filteredOrders,
-                _sortProperties,
-                _sortDirections
-            ).ToList();
-        }
+        // Apply sorting based on current sort properties
+        filteredOrders = ApplySorting(filteredOrders);
 
         _totalItems = filteredOrders.Count;
-        CurrentPage = 1;
-        LoadPage(1);
+        LoadPage(1); // Reset to first page when filtering
     }
 
     public void LoadPage(int page)
@@ -235,20 +228,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         var filteredOrders = string.IsNullOrWhiteSpace(SearchText)
             ? _allOrders
             : _allOrders.Where(o =>
-                o.OrderID.ToString().Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                o.CustomerName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                o.StatusName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
+                o.CustomerName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                o.StatusName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                o.ShippingCity.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
-        // Apply sorting if any sort properties are defined
-        if (_sortProperties.Any())
-        {
-            filteredOrders = Core.Helpers.DataGridSortHelper.ApplySort(
-                filteredOrders,
-                _sortProperties,
-                _sortDirections
-            ).ToList();
-        }
+        // Apply sorting
+        filteredOrders = ApplySorting(filteredOrders);
 
         _totalItems = filteredOrders.Count;
 
@@ -259,6 +245,20 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 
         Orders = new ObservableCollection<OrderDisplayDto>(pagedOrders);
         OnPropertyChanged(nameof(TotalPages));
+    }
+
+    private List<OrderDisplayDto> ApplySorting(List<OrderDisplayDto> orders)
+    {
+        // Apply sorting if any sort properties are defined
+        if (_sortProperties.Any())
+        {
+            orders = Core.Helpers.DataGridSortHelper.ApplySort(
+                orders,
+                _sortProperties,
+                _sortDirections
+            ).ToList();
+        }
+        return orders;
     }
 
     partial void OnSearchTextChanged(string value)
