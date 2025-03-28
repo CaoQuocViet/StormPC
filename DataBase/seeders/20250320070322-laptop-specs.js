@@ -3,7 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const now = new Date();
     await queryInterface.bulkInsert('LaptopSpecs', [
       {
         SKU: 'LEN-12768-1-WHT',
@@ -18,8 +17,8 @@ module.exports = {
         ImportPrice: 100000000,
         Price: 120000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-13T09:30:00Z'),
+        updatedAt: new Date('2025-01-13T09:30:00Z')
       },
       {
         SKU: 'LEN-12768-2-BLK',
@@ -34,8 +33,8 @@ module.exports = {
         ImportPrice: 125000000,
         Price: 150000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-13T10:15:00Z'),
+        updatedAt: new Date('2025-01-13T10:15:00Z')
       },
       {
         SKU: 'LEN-12768-3-SLV',
@@ -50,8 +49,8 @@ module.exports = {
         ImportPrice: 135000000,
         Price: 160000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-13T11:00:00Z'),
+        updatedAt: new Date('2025-01-13T11:00:00Z')
       },
       {
         SKU: 'LEN-16354-1-GRY',
@@ -66,8 +65,8 @@ module.exports = {
         ImportPrice: 145000000,
         Price: 170000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-15T13:30:00Z'),
+        updatedAt: new Date('2025-01-15T13:30:00Z')
       },
       {
         SKU: 'LEN-16354-2-GRY',
@@ -82,8 +81,8 @@ module.exports = {
         ImportPrice: 204000000,
         Price: 240000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-15T14:15:00Z'),
+        updatedAt: new Date('2025-01-15T14:15:00Z')
       },
       {
         SKU: 'LEN-16354-3-GRY',
@@ -98,8 +97,8 @@ module.exports = {
         ImportPrice: 263500000,
         Price: 310000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-15T15:00:00Z'),
+        updatedAt: new Date('2025-01-15T15:00:00Z')
       },
       {
         SKU: 'LEN-18351-1-BLU',
@@ -114,8 +113,8 @@ module.exports = {
         ImportPrice: 93500000,
         Price: 110000000,
         StockQuantity: 12,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-16T09:45:00Z'),
+        updatedAt: new Date('2025-01-16T09:45:00Z')
       },
       {
         SKU: 'LEN-18351-2-BLU',
@@ -130,8 +129,8 @@ module.exports = {
         ImportPrice: 119000000,
         Price: 140000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-16T10:30:00Z'),
+        updatedAt: new Date('2025-01-16T10:30:00Z')
       },
       {
         SKU: 'LEN-18351-3-BLK',
@@ -146,8 +145,8 @@ module.exports = {
         ImportPrice: 144500000,
         Price: 170000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-16T11:15:00Z'),
+        updatedAt: new Date('2025-01-16T11:15:00Z')
       },
       {
         SKU: 'MSI-18950-1-GRY',
@@ -162,8 +161,8 @@ module.exports = {
         ImportPrice: 102000000,
         Price: 120000000,
         StockQuantity: 25,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-17T13:00:00Z'),
+        updatedAt: new Date('2025-01-17T13:00:00Z')
       },
       {
         SKU: 'MSI-18950-2-GRY',
@@ -178,8 +177,8 @@ module.exports = {
         ImportPrice: 136000000,
         Price: 160000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-17T13:45:00Z'),
+        updatedAt: new Date('2025-01-17T13:45:00Z')
       },
       {
         SKU: 'MSI-18950-3-BLK',
@@ -194,8 +193,8 @@ module.exports = {
         ImportPrice: 178500000,
         Price: 210000000,
         StockQuantity: 7,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-17T14:30:00Z'),
+        updatedAt: new Date('2025-01-17T14:30:00Z')
       },
       {
         SKU: 'MSI-19325-1-SLV',
@@ -210,8 +209,8 @@ module.exports = {
         ImportPrice: 161500000,
         Price: 190000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-18T09:20:00Z'),
+        updatedAt: new Date('2025-01-18T09:20:00Z')
       },
       {
         SKU: 'MSI-19325-2-SLV',
@@ -226,8 +225,8 @@ module.exports = {
         ImportPrice: 204000000,
         Price: 240000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-18T10:05:00Z'),
+        updatedAt: new Date('2025-01-18T10:05:00Z')
       },
       {
         SKU: 'MSI-19927-1-GRY',
@@ -242,8 +241,8 @@ module.exports = {
         ImportPrice: 229500000,
         Price: 270000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-19T14:00:00Z'),
+        updatedAt: new Date('2025-01-19T14:00:00Z')
       },
       {
         SKU: 'MSI-19927-2-GRY',
@@ -258,8 +257,8 @@ module.exports = {
         ImportPrice: 289000000,
         Price: 340000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-19T14:45:00Z'),
+        updatedAt: new Date('2025-01-19T14:45:00Z')
       },
       {
         SKU: 'ASU-20225-1-WHT',
@@ -274,8 +273,8 @@ module.exports = {
         ImportPrice: 153000000,
         Price: 180000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-21T10:15:00Z'),
+        updatedAt: new Date('2025-01-21T10:15:00Z')
       },
       {
         SKU: 'ASU-20225-2-GRY',
@@ -290,8 +289,8 @@ module.exports = {
         ImportPrice: 195500000,
         Price: 230000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-21T11:00:00Z'),
+        updatedAt: new Date('2025-01-21T11:00:00Z')
       },
       {
         SKU: 'ASU-20269-1-BLK',
@@ -306,8 +305,8 @@ module.exports = {
         ImportPrice: 127500000,
         Price: 150000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-22T14:30:00Z'),
+        updatedAt: new Date('2025-01-22T14:30:00Z')
       },
       {
         SKU: 'ASU-20269-2-BLK',
@@ -322,8 +321,8 @@ module.exports = {
         ImportPrice: 161500000,
         Price: 190000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-22T15:15:00Z'),
+        updatedAt: new Date('2025-01-22T15:15:00Z')
       },
       {
         SKU: 'DEL-20353-1-SLV',
@@ -338,8 +337,8 @@ module.exports = {
         ImportPrice: 187000000,
         Price: 220000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-25T09:10:00Z'),
+        updatedAt: new Date('2025-01-25T09:10:00Z')
       },
       {
         SKU: 'DEL-20353-2-SLV',
@@ -354,8 +353,8 @@ module.exports = {
         ImportPrice: 246500000,
         Price: 290000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-25T09:55:00Z'),
+        updatedAt: new Date('2025-01-25T09:55:00Z')
       },
       {
         SKU: 'LEN-20388-1-GRY',
@@ -370,8 +369,8 @@ module.exports = {
         ImportPrice: 68000000,
         Price: 80000000,
         StockQuantity: 30,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-26T13:20:00Z'),
+        updatedAt: new Date('2025-01-26T13:20:00Z')
       },
       {
         SKU: 'HPP-20577-1-BLU',
@@ -386,8 +385,8 @@ module.exports = {
         ImportPrice: 76500000,
         Price: 90000000,
         StockQuantity: 25,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-28T09:40:00Z'),
+        updatedAt: new Date('2025-01-28T09:40:00Z')
       },
       {
         SKU: 'HPP-20577-2-BLU',
@@ -402,8 +401,8 @@ module.exports = {
         ImportPrice: 110500000,
         Price: 130000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-28T10:25:00Z'),
+        updatedAt: new Date('2025-01-28T10:25:00Z')
       },
       {
         SKU: 'GGB-20626-1-BLK',
@@ -418,8 +417,8 @@ module.exports = {
         ImportPrice: 238000000,
         Price: 280000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-29T14:15:00Z'),
+        updatedAt: new Date('2025-01-29T14:15:00Z')
       },
       {
         SKU: 'GGB-20626-2-BLK',
@@ -434,8 +433,8 @@ module.exports = {
         ImportPrice: 306000000,
         Price: 360000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-29T15:00:00Z'),
+        updatedAt: new Date('2025-01-29T15:00:00Z')
       },
       {
         SKU: 'GGB-20627-1-BLK',
@@ -450,8 +449,8 @@ module.exports = {
         ImportPrice: 119000000,
         Price: 140000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-30T10:30:00Z'),
+        updatedAt: new Date('2025-01-30T10:30:00Z')
       },
       {
         SKU: 'MSI-20692-1-BLK',
@@ -466,8 +465,8 @@ module.exports = {
         ImportPrice: 416500000,
         Price: 490000000,
         StockQuantity: 3,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-01-31T13:00:00Z'),
+        updatedAt: new Date('2025-01-31T13:00:00Z')
       },
       {
         SKU: 'ASU-20724-1-BLK',
@@ -482,8 +481,8 @@ module.exports = {
         ImportPrice: 212500000,
         Price: 250000000,
         StockQuantity: 12,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-01T15:30:00Z'),
+        updatedAt: new Date('2025-02-01T15:30:00Z')
       },
       {
         SKU: 'ASU-20724-2-BLK',
@@ -498,8 +497,8 @@ module.exports = {
         ImportPrice: 272000000,
         Price: 320000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-01T16:15:00Z'),
+        updatedAt: new Date('2025-02-01T16:15:00Z')
       },
       {
         SKU: 'LEN-20993-1-GRY',
@@ -514,8 +513,8 @@ module.exports = {
         ImportPrice: 68000000,
         Price: 80000000,
         StockQuantity: 25,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-03T09:20:00Z'),
+        updatedAt: new Date('2025-02-03T09:20:00Z')
       },
       {
         SKU: 'LEN-20993-2-GRY',
@@ -530,8 +529,8 @@ module.exports = {
         ImportPrice: 93500000,
         Price: 110000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-03T10:05:00Z'),
+        updatedAt: new Date('2025-02-03T10:05:00Z')
       },
       {
         SKU: 'HPP-21037-1-BLK',
@@ -546,8 +545,8 @@ module.exports = {
         ImportPrice: 144500000,
         Price: 170000000,
         StockQuantity: 18,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-04T11:00:00Z'),
+        updatedAt: new Date('2025-02-04T11:00:00Z')
       },
       {
         SKU: 'HPP-21037-2-BLK',
@@ -562,8 +561,8 @@ module.exports = {
         ImportPrice: 187000000,
         Price: 220000000,
         StockQuantity: 12,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-04T11:45:00Z'),
+        updatedAt: new Date('2025-02-04T11:45:00Z')
       },
       {
         SKU: 'ACR-21042-1-BLK',
@@ -578,8 +577,8 @@ module.exports = {
         ImportPrice: 136000000,
         Price: 160000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-05T14:10:00Z'),
+        updatedAt: new Date('2025-02-05T14:10:00Z')
       },
       {
         SKU: 'ACR-21042-2-BLK',
@@ -594,8 +593,8 @@ module.exports = {
         ImportPrice: 178500000,
         Price: 210000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-05T14:55:00Z'),
+        updatedAt: new Date('2025-02-05T14:55:00Z')
       },
       {
         SKU: 'HPP-21056-1-SLV',
@@ -610,8 +609,8 @@ module.exports = {
         ImportPrice: 76500000,
         Price: 90000000,
         StockQuantity: 25,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-06T10:30:00Z'),
+        updatedAt: new Date('2025-02-06T10:30:00Z')
       },
       {
         SKU: 'HPP-21056-2-SLV',
@@ -626,8 +625,8 @@ module.exports = {
         ImportPrice: 110500000,
         Price: 130000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-06T11:15:00Z'),
+        updatedAt: new Date('2025-02-06T11:15:00Z')
       },
       {
         SKU: 'ACR-21108-1-BLK',
@@ -642,8 +641,8 @@ module.exports = {
         ImportPrice: 161500000,
         Price: 190000000,
         StockQuantity: 12,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-07T13:40:00Z'),
+        updatedAt: new Date('2025-02-07T13:40:00Z')
       },
       {
         SKU: 'ACR-21108-2-BLK',
@@ -658,8 +657,8 @@ module.exports = {
         ImportPrice: 204000000,
         Price: 240000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-07T14:25:00Z'),
+        updatedAt: new Date('2025-02-07T14:25:00Z')
       },
       {
         SKU: 'LEN-21171-1-OAT',
@@ -674,8 +673,8 @@ module.exports = {
         ImportPrice: 110500000,
         Price: 130000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-09T10:00:00Z'),
+        updatedAt: new Date('2025-02-09T10:00:00Z')
       },
       {
         SKU: 'LEN-21171-2-OAT',
@@ -690,8 +689,8 @@ module.exports = {
         ImportPrice: 136000000,
         Price: 160000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-09T10:45:00Z'),
+        updatedAt: new Date('2025-02-09T10:45:00Z')
       },
       {
         SKU: 'LEN-21175-1-GRY',
@@ -706,8 +705,8 @@ module.exports = {
         ImportPrice: 85000000,
         Price: 100000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-10T15:10:00Z'),
+        updatedAt: new Date('2025-02-10T15:10:00Z')
       },
       {
         SKU: 'LEN-21175-2-GRY',
@@ -722,8 +721,8 @@ module.exports = {
         ImportPrice: 102000000,
         Price: 120000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-10T15:55:00Z'),
+        updatedAt: new Date('2025-02-10T15:55:00Z')
       },
       {
         SKU: 'LEN-21183-1-GRY',
@@ -738,8 +737,8 @@ module.exports = {
         ImportPrice: 102000000,
         Price: 120000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-12T09:10:00Z'),
+        updatedAt: new Date('2025-02-12T09:10:00Z')
       },
       {
         SKU: 'LEN-21183-2-GRY',
@@ -754,8 +753,8 @@ module.exports = {
         ImportPrice: 136000000,
         Price: 160000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-12T09:55:00Z'),
+        updatedAt: new Date('2025-02-12T09:55:00Z')
       },
       {
         SKU: 'MSI-21253-1-BLK',
@@ -770,8 +769,8 @@ module.exports = {
         ImportPrice: 374000000,
         Price: 440000000,
         StockQuantity: 5,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-13T13:40:00Z'),
+        updatedAt: new Date('2025-02-13T13:40:00Z')
       },
       {
         SKU: 'MSI-21302-1-BLK',
@@ -786,8 +785,8 @@ module.exports = {
         ImportPrice: 76500000,
         Price: 90000000,
         StockQuantity: 25,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-14T10:00:00Z'),
+        updatedAt: new Date('2025-02-14T10:00:00Z')
       },
       {
         SKU: 'MSI-21302-2-BLK',
@@ -802,8 +801,8 @@ module.exports = {
         ImportPrice: 102000000,
         Price: 120000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-14T10:45:00Z'),
+        updatedAt: new Date('2025-02-14T10:45:00Z')
       },
       {
         SKU: 'MSI-21310-1-BLK',
@@ -818,8 +817,8 @@ module.exports = {
         ImportPrice: 110500000,
         Price: 130000000,
         StockQuantity: 18,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-15T14:30:00Z'),
+        updatedAt: new Date('2025-02-15T14:30:00Z')
       },
       {
         SKU: 'MSI-21310-2-BLK',
@@ -834,8 +833,8 @@ module.exports = {
         ImportPrice: 153000000,
         Price: 180000000,
         StockQuantity: 12,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-15T15:15:00Z'),
+        updatedAt: new Date('2025-02-15T15:15:00Z')
       },
       {
         SKU: 'DEL-21330-1-GRY',
@@ -850,8 +849,8 @@ module.exports = {
         ImportPrice: 119000000,
         Price: 140000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-17T09:20:00Z'),
+        updatedAt: new Date('2025-02-17T09:20:00Z')
       },
       {
         SKU: 'DEL-21330-2-GRY',
@@ -866,8 +865,8 @@ module.exports = {
         ImportPrice: 144500000,
         Price: 170000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-17T10:05:00Z'),
+        updatedAt: new Date('2025-02-17T10:05:00Z')
       },
       {
         SKU: 'DEL-21340-1-GRY',
@@ -882,8 +881,8 @@ module.exports = {
         ImportPrice: 68000000,
         Price: 80000000,
         StockQuantity: 25,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-18T13:30:00Z'),
+        updatedAt: new Date('2025-02-18T13:30:00Z')
       },
       {
         SKU: 'LEN-21345-1-BLK',
@@ -898,8 +897,8 @@ module.exports = {
         ImportPrice: 102000000,
         Price: 120000000,
         StockQuantity: 20,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-19T11:00:00Z'),
+        updatedAt: new Date('2025-02-19T11:00:00Z')
       },
       {
         SKU: 'LEN-21345-2-BLK',
@@ -914,8 +913,8 @@ module.exports = {
         ImportPrice: 127500000,
         Price: 150000000,
         StockQuantity: 15,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-19T11:45:00Z'),
+        updatedAt: new Date('2025-02-19T11:45:00Z')
       },
       {
         SKU: 'APL-21355-1-SLV',
@@ -930,8 +929,8 @@ module.exports = {
         ImportPrice: 442000000,
         Price: 520000000,
         StockQuantity: 10,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-21T09:30:00Z'),
+        updatedAt: new Date('2025-02-21T09:30:00Z')
       },
       {
         SKU: 'APL-21355-2-SGY',
@@ -946,8 +945,8 @@ module.exports = {
         ImportPrice: 510000000,
         Price: 600000000,
         StockQuantity: 8,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-21T10:15:00Z'),
+        updatedAt: new Date('2025-02-21T10:15:00Z')
       },
       {
         SKU: 'APL-21360-1-SLV',
@@ -962,8 +961,8 @@ module.exports = {
         ImportPrice: 595000000,
         Price: 700000000,
         StockQuantity: 6,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-23T14:00:00Z'),
+        updatedAt: new Date('2025-02-23T14:00:00Z')
       },
       {
         SKU: 'APL-21360-2-SGY',
@@ -978,8 +977,8 @@ module.exports = {
         ImportPrice: 680000000,
         Price: 800000000,
         StockQuantity: 4,
-        createdAt: now,
-        updatedAt: now
+        createdAt: new Date('2025-02-23T14:45:00Z'),
+        updatedAt: new Date('2025-02-23T14:45:00Z')
       }
     ], {});
   },
