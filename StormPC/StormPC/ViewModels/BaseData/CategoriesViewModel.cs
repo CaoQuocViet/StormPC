@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.ComponentModel;
+using StormPC.Core.Services.Products;
 
 namespace StormPC.ViewModels.BaseData;
 
@@ -21,7 +22,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     private ObservableCollection<CategoryDisplayDto> _categories;
     private bool _isLoading;
     [ObservableProperty]
-    private string _searchText = string.Empty;
+    private string searchText = string.Empty;
     private int _currentPage = 1;
     private int _pageSize = 10;
     private int _totalItems;
@@ -177,23 +178,15 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         var filteredCategories = string.IsNullOrWhiteSpace(SearchText)
             ? _allCategories
             : _allCategories.Where(c =>
-                c.CategoryName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                (c.Description?.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ?? false)
+                c.CategoryName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                (c.Description != null && c.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
             ).ToList();
 
-        // Apply sorting if any sort properties are defined
-        if (_sortProperties.Any())
-        {
-            filteredCategories = Core.Helpers.DataGridSortHelper.ApplySort(
-                filteredCategories,
-                _sortProperties,
-                _sortDirections
-            ).ToList();
-        }
+        // Apply sorting based on current sort properties
+        filteredCategories = ApplySorting(filteredCategories);
 
         _totalItems = filteredCategories.Count;
-        CurrentPage = 1;
-        LoadPage(1);
+        LoadPage(1); // Reset to first page when filtering
     }
 
     public void LoadPage(int page)
@@ -203,19 +196,12 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         var filteredCategories = string.IsNullOrWhiteSpace(SearchText)
             ? _allCategories
             : _allCategories.Where(c =>
-                c.CategoryName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                (c.Description?.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ?? false)
+                c.CategoryName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                (c.Description != null && c.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase))
             ).ToList();
 
-        // Apply sorting if any sort properties are defined
-        if (_sortProperties.Any())
-        {
-            filteredCategories = Core.Helpers.DataGridSortHelper.ApplySort(
-                filteredCategories,
-                _sortProperties,
-                _sortDirections
-            ).ToList();
-        }
+        // Apply sorting
+        filteredCategories = ApplySorting(filteredCategories);
 
         _totalItems = filteredCategories.Count;
 
@@ -226,5 +212,19 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 
         Categories = new ObservableCollection<CategoryDisplayDto>(pagedCategories);
         OnPropertyChanged(nameof(TotalPages));
+    }
+
+    private List<CategoryDisplayDto> ApplySorting(List<CategoryDisplayDto> categories)
+    {
+        // Apply sorting if any sort properties are defined
+        if (_sortProperties.Any())
+        {
+            categories = Core.Helpers.DataGridSortHelper.ApplySort(
+                categories,
+                _sortProperties,
+                _sortDirections
+            ).ToList();
+        }
+        return categories;
     }
 } 
