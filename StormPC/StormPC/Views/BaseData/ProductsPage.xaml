@@ -92,7 +92,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="GridViewItem">
-                                        <Grid>
+                                        <Grid Width="280" Height="420">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
                                                     <VisualState x:Name="Normal">
@@ -113,7 +113,9 @@
                                                 </VisualStateGroup>
                                             </VisualStateManager.VisualStateGroups>
 
-                                            <ContentPresenter x:Name="ContentPresenter" />
+                                            <ContentPresenter x:Name="ContentPresenter" 
+                                                            HorizontalAlignment="Stretch"
+                                                            VerticalAlignment="Stretch"/>
                                             
                                             <Grid x:Name="HoverContent" 
                                                   Background="#CC000000" 
@@ -250,8 +252,7 @@
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Width="280" Height="420" 
-                                  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                                   BorderBrush="{ThemeResource SystemBaseLowColor}" 
                                   BorderThickness="1" 
                                   CornerRadius="12">
