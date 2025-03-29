@@ -90,6 +90,8 @@
                 Content="Login"
                 Style="{StaticResource AccentButtonStyle}"
                 HorizontalAlignment="Center"
+                Width="250"
+                Height="32"
                 Click="OnLoginClick"/>
                 
         <TextBlock Grid.Row="4"
@@ -119,4 +121,4 @@
             </StackPanel>
         </winui:ContentDialog>
     </Grid>
-</Window> 
+</Window>

@@ -59,8 +59,10 @@
 
         <Button Grid.Row="3"
                 Content="Create Admin Account"
-                Padding="15,10"
+                Style="{StaticResource AccentButtonStyle}" 
                 HorizontalAlignment="Center"
+                Width="250"
+                Height="32"
                 Click="OnCreateAdminClick"/>
                 
         <TextBlock Grid.Row="4"
@@ -90,4 +92,4 @@
             </StackPanel>
         </winui:ContentDialog>
     </Grid>
-</Window> 
+</Window>
