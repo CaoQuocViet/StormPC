@@ -24,7 +24,7 @@ public sealed partial class FirstTimeWindow : Window
         var appWindow = AppWindow.GetFromWindowId(windowId);
         
         // Set size
-        var size = new Windows.Graphics.SizeInt32(400, 630);
+        var size = new Windows.Graphics.SizeInt32(400, 640);
         appWindow.Resize(size);
 
         // Center on screen
