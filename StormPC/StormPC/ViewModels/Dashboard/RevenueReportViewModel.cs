@@ -41,6 +41,21 @@ public partial class RevenueReportViewModel : ObservableObject
     [ObservableProperty]
     private IEnumerable<ICartesianAxis> _yAxes;
 
+    [ObservableProperty]
+    private IEnumerable<ICartesianAxis> _categoryYAxes;
+
+    private string FormatCurrency(double value)
+    {
+        if (value >= 1_000_000_000) // Tỷ
+        {
+            return $"{value / 1_000_000_000:N1} Tỷ VNĐ";
+        }
+        else // Triệu
+        {
+            return $"{value / 1_000_000:N0} Tr VNĐ";
+        }
+    }
+
     public RevenueReportViewModel(IRevenueReportService revenueReportService)
     {
         _revenueReportService = revenueReportService;
@@ -100,7 +115,7 @@ public partial class RevenueReportViewModel : ObservableObject
         {
             new Axis
             {
-                Labeler = value => $"{value/1000000:N0}M"
+                Labeler = value => FormatCurrency(value)
             }
         };
 
@@ -110,11 +125,19 @@ public partial class RevenueReportViewModel : ObservableObject
         {
             categoryValues.Add(new ColumnSeries<decimal>
             {
-                Name = category.CategoryName,
-                Values = new[] { category.Revenue, category.Profit }
+                Name = $"{category.CategoryName} ({FormatCurrency((double)category.Revenue)})",
+                Values = new[] { category.Revenue }
             });
         }
         CategoryRevenueSeries = categoryValues.ToArray();
+
+        CategoryYAxes = new[]
+        {
+            new Axis
+            {
+                Labeler = value => FormatCurrency((double)value)
+            }
+        };
 
         var paymentData = await _revenueReportService.GetPaymentMethodDataAsync(StartDate, EndDate);
         var paymentValues = new List<PieSeries<double>>();
@@ -122,7 +145,7 @@ public partial class RevenueReportViewModel : ObservableObject
         {
             paymentValues.Add(new PieSeries<double>
             {
-                Name = payment.MethodName,
+                Name = $"{payment.MethodName} ({FormatCurrency((double)payment.Amount)})",
                 Values = new[] { (double)payment.Amount },
                 InnerRadius = 100
             });
