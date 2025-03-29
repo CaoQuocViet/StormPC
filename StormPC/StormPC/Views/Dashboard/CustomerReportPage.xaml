@@ -84,8 +84,10 @@
                          Style="{ThemeResource CaptionTextBlockStyle}"
                          Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.TotalCustomers}"
-                         Style="{ThemeResource DisplayTextBlockStyle}"/>
+                         Text="{x:Bind ViewModel.SegmentationData.TotalCustomers, Mode=OneWay}"
+                         Style="{ThemeResource SubtitleTextBlockStyle}"
+                         FontSize="20"
+                         VerticalAlignment="Center"/>
             </Grid>
 
             <Grid Grid.Column="1" Style="{StaticResource CardStyle}">
@@ -97,8 +99,10 @@
                          Style="{ThemeResource CaptionTextBlockStyle}"
                          Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.PlatinumCustomers}"
-                         Style="{ThemeResource DisplayTextBlockStyle}"/>
+                         Text="{x:Bind ViewModel.SegmentationData.PlatinumCustomers, Mode=OneWay}"
+                         Style="{ThemeResource SubtitleTextBlockStyle}"
+                         FontSize="20"
+                         VerticalAlignment="Center"/>
             </Grid>
 
             <Grid Grid.Column="2" Style="{StaticResource CardStyle}">
@@ -110,8 +114,10 @@
                          Style="{ThemeResource CaptionTextBlockStyle}"
                          Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.GoldCustomers}"
-                         Style="{ThemeResource DisplayTextBlockStyle}"/>
+                         Text="{x:Bind ViewModel.SegmentationData.GoldCustomers, Mode=OneWay}"
+                         Style="{ThemeResource SubtitleTextBlockStyle}"
+                         FontSize="20"
+                         VerticalAlignment="Center"/>
             </Grid>
 
             <Grid Grid.Column="3" Style="{StaticResource CardStyle}">
@@ -123,8 +129,10 @@
                          Style="{ThemeResource CaptionTextBlockStyle}"
                          Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.SilverCustomers}"
-                         Style="{ThemeResource DisplayTextBlockStyle}"/>
+                         Text="{x:Bind ViewModel.SegmentationData.SilverCustomers, Mode=OneWay}"
+                         Style="{ThemeResource SubtitleTextBlockStyle}"
+                         FontSize="20"
+                         VerticalAlignment="Center"/>
             </Grid>
 
             <Grid Grid.Column="4" Style="{StaticResource CardStyle}">
@@ -136,8 +144,10 @@
                          Style="{ThemeResource CaptionTextBlockStyle}"
                          Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
                 <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.BronzeCustomers}"
-                         Style="{ThemeResource DisplayTextBlockStyle}"/>
+                         Text="{x:Bind ViewModel.SegmentationData.BronzeCustomers, Mode=OneWay}"
+                         Style="{ThemeResource SubtitleTextBlockStyle}"
+                         FontSize="20"
+                         VerticalAlignment="Center"/>
             </Grid>
         </Grid>
 
