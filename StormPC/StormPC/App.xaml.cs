@@ -142,6 +142,7 @@ public partial class App : Application
 
             // Add to ConfigureServices method
             services.AddSingleton<ICustomerReportService, CustomerReportService>();
+            services.AddTransient<IRevenueReportService, RevenueReportService>();
         }).
         Build();
 
