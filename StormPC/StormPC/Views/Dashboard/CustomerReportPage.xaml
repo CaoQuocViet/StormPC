@@ -175,7 +175,8 @@
                                  Series="{x:Bind ViewModel.PurchaseTrendsSeries, Mode=OneWay}"
                                  XAxes="{x:Bind ViewModel.XAxes, Mode=OneWay}"
                                  YAxes="{x:Bind ViewModel.YAxes, Mode=OneWay}"
-                                 TooltipPosition="Hidden">
+                                 TooltipPosition="Top"
+                                 LegendPosition="Top">
                 </lvc:CartesianChart>
             </Grid>
 
