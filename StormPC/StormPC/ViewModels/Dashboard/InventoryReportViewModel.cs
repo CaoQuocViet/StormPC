@@ -13,6 +13,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using StormPC.Helpers;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
 
 namespace StormPC.ViewModels.Dashboard;
 
@@ -102,10 +105,10 @@ public partial class InventoryReportViewModel : ObservableObject
     private ObservableCollection<BrandAnalysis> _brandAnalytics;
 
     [ObservableProperty]
-    private ObservableCollection<AgedInventory> _agedInventories;
+    private ObservableCollection<AgedInventory> _agedInventories = new();
 
     [ObservableProperty]
-    private ObservableCollection<RestockSuggestion> _restockSuggestions;
+    private ObservableCollection<RestockSuggestion> _restockSuggestions = new();
 
     [ObservableProperty]
     private ISeries[] _stockDistributionSeries;
@@ -134,9 +137,109 @@ public partial class InventoryReportViewModel : ObservableObject
     [ObservableProperty]
     private List<ICartesianAxis> _heatYAxes;
 
+    // Phân trang cho bảng thời gian tồn kho
+    private int _agedInventoriesCurrentPage = 1;
+    private int _agedInventoriesItemsPerPage = 15;
+    private int _restockSuggestionsCurrentPage = 1;
+    private int _restockSuggestionsItemsPerPage = 15;
+
+    public int AgedInventoriesCurrentPage
+    {
+        get => _agedInventoriesCurrentPage;
+        set
+        {
+            SetProperty(ref _agedInventoriesCurrentPage, value);
+            OnPropertyChanged(nameof(AgedInventoriesPagedItems));
+            OnPropertyChanged(nameof(CanGoToPreviousAgedInventoriesPage));
+            OnPropertyChanged(nameof(CanGoToNextAgedInventoriesPage));
+            (PreviousAgedInventoriesPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            (NextAgedInventoriesPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        }
+    }
+
+    public int AgedInventoriesTotalPages => _agedInventories?.Count > 0 
+        ? (int)Math.Ceiling(_agedInventories.Count / (double)_agedInventoriesItemsPerPage) 
+        : 1;
+
+    public IEnumerable<AgedInventory> AgedInventoriesPagedItems =>
+        _agedInventories?.Count > 0
+            ? _agedInventories
+                .Skip((AgedInventoriesCurrentPage - 1) * _agedInventoriesItemsPerPage)
+                .Take(_agedInventoriesItemsPerPage)
+            : Enumerable.Empty<AgedInventory>();
+
+    public int RestockSuggestionsCurrentPage
+    {
+        get => _restockSuggestionsCurrentPage;
+        set
+        {
+            SetProperty(ref _restockSuggestionsCurrentPage, value);
+            OnPropertyChanged(nameof(RestockSuggestionsPagedItems));
+            OnPropertyChanged(nameof(CanGoToPreviousRestockSuggestionsPage));
+            OnPropertyChanged(nameof(CanGoToNextRestockSuggestionsPage));
+            (PreviousRestockSuggestionsPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            (NextRestockSuggestionsPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        }
+    }
+
+    public int RestockSuggestionsTotalPages => _restockSuggestions?.Count > 0
+        ? (int)Math.Ceiling(_restockSuggestions.Count / (double)_restockSuggestionsItemsPerPage)
+        : 1;
+
+    public IEnumerable<RestockSuggestion> RestockSuggestionsPagedItems =>
+        _restockSuggestions?.Count > 0
+            ? _restockSuggestions
+                .Skip((RestockSuggestionsCurrentPage - 1) * _restockSuggestionsItemsPerPage)
+                .Take(_restockSuggestionsItemsPerPage)
+            : Enumerable.Empty<RestockSuggestion>();
+
+    public bool CanGoToPreviousAgedInventoriesPage => AgedInventoriesCurrentPage > 1;
+    public bool CanGoToNextAgedInventoriesPage => AgedInventoriesCurrentPage < AgedInventoriesTotalPages;
+    public bool CanGoToPreviousRestockSuggestionsPage => RestockSuggestionsCurrentPage > 1;
+    public bool CanGoToNextRestockSuggestionsPage => RestockSuggestionsCurrentPage < RestockSuggestionsTotalPages;
+
+    public IRelayCommand PreviousAgedInventoriesPageCommand { get; }
+    public IRelayCommand NextAgedInventoriesPageCommand { get; }
+    public IRelayCommand PreviousRestockSuggestionsPageCommand { get; }
+    public IRelayCommand NextRestockSuggestionsPageCommand { get; }
+
     public InventoryReportViewModel(IInventoryReportService inventoryReportService)
     {
         _inventoryReportService = inventoryReportService;
+        
+        // Initialize commands
+        PreviousAgedInventoriesPageCommand = new RelayCommand(
+            () => {
+                AgedInventoriesCurrentPage--;
+                (PreviousAgedInventoriesPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (NextAgedInventoriesPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            },
+            () => CanGoToPreviousAgedInventoriesPage);
+            
+        NextAgedInventoriesPageCommand = new RelayCommand(
+            () => {
+                AgedInventoriesCurrentPage++;
+                (PreviousAgedInventoriesPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (NextAgedInventoriesPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            },
+            () => CanGoToNextAgedInventoriesPage);
+            
+        PreviousRestockSuggestionsPageCommand = new RelayCommand(
+            () => {
+                RestockSuggestionsCurrentPage--;
+                (PreviousRestockSuggestionsPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (NextRestockSuggestionsPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            },
+            () => CanGoToPreviousRestockSuggestionsPage);
+            
+        NextRestockSuggestionsPageCommand = new RelayCommand(
+            () => {
+                RestockSuggestionsCurrentPage++;
+                (PreviousRestockSuggestionsPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (NextRestockSuggestionsPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            },
+            () => CanGoToNextRestockSuggestionsPage);
+
         Initialize();
     }
 
@@ -155,32 +258,69 @@ public partial class InventoryReportViewModel : ObservableObject
 
     private async Task LoadData()
     {
-        // Convert local time to UTC for PostgreSQL
-        var startUtc = StartDate.UtcDateTime;
-        var endUtc = EndDate.UtcDateTime;
-        
-        var data = await _inventoryReportService.GetInventoryData(startUtc, endUtc);
+        try
+        {
+            // Convert local time to UTC for PostgreSQL
+            var startUtc = StartDate.UtcDateTime;
+            var endUtc = EndDate.UtcDateTime;
+            
+            var data = await _inventoryReportService.GetInventoryData(startUtc, endUtc);
+            
+            // Update KPIs
+            TotalProducts = data.TotalProducts;
+            TotalStock = data.TotalStock;
+            TotalValue = data.TotalValue;
+            AverageStockValue = data.AverageStockValue;
+            StockTurnoverRate = data.StockTurnoverRate;
+            LowStockProducts = data.LowStockProducts;
 
-        // Update KPIs
-        TotalProducts = data.TotalProducts;
-        TotalStock = data.TotalStock;
-        TotalValue = data.TotalValue;
-        AverageStockValue = data.AverageStockValue;
-        StockTurnoverRate = data.StockTurnoverRate;
-        LowStockProducts = data.LowStockProducts;
+            // Update with pagination
+            AgedInventories = new ObservableCollection<AgedInventory>(data.AgedInventories ?? Enumerable.Empty<AgedInventory>());
+            RestockSuggestions = new ObservableCollection<RestockSuggestion>(data.RestockSuggestions ?? Enumerable.Empty<RestockSuggestion>());
 
-        // Update Data Tables
-        CategoryAnalytics = new ObservableCollection<CategoryAnalysis>(data.CategoryAnalytics);
-        BrandAnalytics = new ObservableCollection<BrandAnalysis>(data.BrandAnalytics);
-        AgedInventories = new ObservableCollection<AgedInventory>(data.AgedInventories);
-        LowStockItems = new ObservableCollection<LowStockItem>(data.LowStockItems);
-        RestockSuggestions = new ObservableCollection<RestockSuggestion>(data.RestockSuggestions);
+            // Reset pagination
+            AgedInventoriesCurrentPage = 1;
+            RestockSuggestionsCurrentPage = 1;
 
-        // Update Charts
-        UpdateStockTrendChart(data.StockTrends);
-        UpdateCategoryDistributionChart(data.CategoryAnalytics);
-        UpdateBrandDistributionChart(data.BrandAnalytics);
-        UpdateStockAgingChart(data.AgedInventories);
+            // Update UI
+            OnPropertyChanged(nameof(AgedInventoriesPagedItems));
+            OnPropertyChanged(nameof(RestockSuggestionsPagedItems));
+            OnPropertyChanged(nameof(AgedInventoriesTotalPages));
+            OnPropertyChanged(nameof(RestockSuggestionsTotalPages));
+            OnPropertyChanged(nameof(CanGoToPreviousAgedInventoriesPage));
+            OnPropertyChanged(nameof(CanGoToNextAgedInventoriesPage));
+            OnPropertyChanged(nameof(CanGoToPreviousRestockSuggestionsPage));
+            OnPropertyChanged(nameof(CanGoToNextRestockSuggestionsPage));
+
+            // Update Charts
+            UpdateStockTrendChart(data.StockTrends ?? Enumerable.Empty<StockTrend>());
+            UpdateCategoryDistributionChart(data.CategoryAnalytics ?? Enumerable.Empty<CategoryAnalysis>());
+            UpdateBrandDistributionChart(data.BrandAnalytics ?? Enumerable.Empty<BrandAnalysis>());
+            UpdateStockAgingChart(data.AgedInventories ?? Enumerable.Empty<AgedInventory>());
+        }
+        catch (Exception ex)
+        {
+            // Initialize empty collections in case of error
+            AgedInventories = new ObservableCollection<AgedInventory>();
+            RestockSuggestions = new ObservableCollection<RestockSuggestion>();
+            
+            // Reset pagination
+            AgedInventoriesCurrentPage = 1;
+            RestockSuggestionsCurrentPage = 1;
+            
+            // Update UI
+            OnPropertyChanged(nameof(AgedInventoriesPagedItems));
+            OnPropertyChanged(nameof(RestockSuggestionsPagedItems));
+            OnPropertyChanged(nameof(AgedInventoriesTotalPages));
+            OnPropertyChanged(nameof(RestockSuggestionsTotalPages));
+            OnPropertyChanged(nameof(CanGoToPreviousAgedInventoriesPage));
+            OnPropertyChanged(nameof(CanGoToNextAgedInventoriesPage));
+            OnPropertyChanged(nameof(CanGoToPreviousRestockSuggestionsPage));
+            OnPropertyChanged(nameof(CanGoToNextRestockSuggestionsPage));
+            
+            // You might want to log the error or show it to the user
+            Debug.WriteLine($"Error loading inventory data: {ex.Message}");
+        }
     }
 
     private void UpdateStockTrendChart(IEnumerable<StockTrend> trends)

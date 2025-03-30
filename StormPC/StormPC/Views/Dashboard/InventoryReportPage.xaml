@@ -20,6 +20,8 @@
         <helpers:CurrencyConverter x:Key="CurrencyConverter"/>
         <helpers:PercentageConverter x:Key="PercentageConverter"/>
         <helpers:DateTimeConverter x:Key="DateTimeConverter"/>
+        <helpers:PreviousPageConverter x:Key="PreviousPageConverter"/>
+        <helpers:NextPageConverter x:Key="NextPageConverter"/>
         <Style x:Key="CardStyle" TargetType="Grid">
             <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
@@ -222,7 +224,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="300"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Phân tích tuổi tồn kho" 
@@ -235,12 +238,12 @@
                     YAxes="{x:Bind ViewModel.AgingYAxes, Mode=OneWay}"/>
 
                 <grid:DataGrid Grid.Row="2"
-                         ItemsSource="{x:Bind ViewModel.AgedInventories, Mode=OneWay}"
+                         ItemsSource="{x:Bind ViewModel.AgedInventoriesPagedItems, Mode=OneWay}"
                          AutoGenerateColumns="False"
                          IsReadOnly="True"
                          HorizontalAlignment="Stretch"
                          HorizontalScrollBarVisibility="Auto"
-                         Margin="0,10,0,0">
+                         Margin="0,10,0,10">
                     <grid:DataGrid.Columns>
                         <grid:DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="*"/>
                         <grid:DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ModelName}" Width="2*"/>
@@ -252,13 +255,31 @@
                         <grid:DataGridTextColumn Header="Lần bán cuối" Binding="{Binding LastSoldDate, Converter={StaticResource DateTimeConverter}}" Width="*"/>
                     </grid:DataGrid.Columns>
                 </grid:DataGrid>
+
+                <!-- Phân trang cho bảng thời gian tồn kho -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <Button Content="&lt;" 
+                            Command="{x:Bind ViewModel.PreviousAgedInventoriesPageCommand}"
+                            IsEnabled="{x:Bind ViewModel.CanGoToPreviousAgedInventoriesPage, Mode=OneWay}"/>
+                    <TextBlock Text="{x:Bind ViewModel.AgedInventoriesCurrentPage, Mode=OneWay}" 
+                             VerticalAlignment="Center" 
+                             Margin="10,0"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind ViewModel.AgedInventoriesTotalPages, Mode=OneWay}" 
+                             VerticalAlignment="Center" 
+                             Margin="10,0"/>
+                    <Button Content="&gt;" 
+                            Command="{x:Bind ViewModel.NextAgedInventoriesPageCommand}"
+                            IsEnabled="{x:Bind ViewModel.CanGoToNextAgedInventoriesPage, Mode=OneWay}"/>
+                </StackPanel>
             </Grid>
 
             <!-- Restock Suggestions -->
             <Grid Grid.Row="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Đề xuất nhập hàng" 
@@ -266,11 +287,12 @@
                          Margin="0,0,0,10"/>
 
                 <grid:DataGrid Grid.Row="1"
-                         ItemsSource="{x:Bind ViewModel.RestockSuggestions, Mode=OneWay}"
+                         ItemsSource="{x:Bind ViewModel.RestockSuggestionsPagedItems, Mode=OneWay}"
                          AutoGenerateColumns="False"
                          IsReadOnly="True"
                          HorizontalAlignment="Stretch"
-                         HorizontalScrollBarVisibility="Auto">
+                         HorizontalScrollBarVisibility="Auto"
+                         Margin="0,0,0,10">
                     <grid:DataGrid.Columns>
                         <grid:DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="*"/>
                         <grid:DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ModelName}" Width="2*"/>
@@ -282,7 +304,24 @@
                         <grid:DataGridTextColumn Header="Giá trị nhập" Binding="{Binding EstimatedValue, Converter={StaticResource CurrencyConverter}}" Width="*"/>
                     </grid:DataGrid.Columns>
                 </grid:DataGrid>
+
+                <!-- Phân trang cho bảng đề xuất nhập hàng -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <Button Content="&lt;" 
+                            Command="{x:Bind ViewModel.PreviousRestockSuggestionsPageCommand}"
+                            IsEnabled="{x:Bind ViewModel.CanGoToPreviousRestockSuggestionsPage, Mode=OneWay}"/>
+                    <TextBlock Text="{x:Bind ViewModel.RestockSuggestionsCurrentPage, Mode=OneWay}" 
+                             VerticalAlignment="Center" 
+                             Margin="10,0"/>
+                    <TextBlock Text="/" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind ViewModel.RestockSuggestionsTotalPages, Mode=OneWay}" 
+                             VerticalAlignment="Center" 
+                             Margin="10,0"/>
+                    <Button Content="&gt;" 
+                            Command="{x:Bind ViewModel.NextRestockSuggestionsPageCommand}"
+                            IsEnabled="{x:Bind ViewModel.CanGoToNextRestockSuggestionsPage, Mode=OneWay}"/>
+                </StackPanel>
             </Grid>
-        </Grid>
+    </Grid>
     </ScrollViewer>
 </Page> 
