@@ -9,11 +9,11 @@ public class CurrencyConverter : IValueConverter
     {
         if (value >= 1_000_000_000) // Tỷ
         {
-            return $"{value / 1_000_000_000:N1} Tỷ VNĐ";
+            return $"{value / 1_000_000_000:N1} Tỷ";
         }
         else if (value >= 1_000_000) // Triệu
         {
-            return $"{value / 1_000_000:N0} Tr VNĐ";
+            return $"{value / 1_000_000:N0} Tr";
         }
         else // Dưới triệu
         {
