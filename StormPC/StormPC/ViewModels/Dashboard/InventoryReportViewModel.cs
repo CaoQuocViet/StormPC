@@ -186,19 +186,23 @@ public partial class InventoryReportViewModel : ObservableObject
     {
         StockTrendSeries = new ISeries[]
         {
-            new LineSeries<ObservableValue>
+            new LineSeries<double>
             {
-                Name = "Tổng tồn kho",
-                Values = trends.Select(t => new ObservableValue(t.TotalStock)).ToArray(),
-                Fill = new SolidColorPaint(SKColors.Blue.WithAlpha(90)),
-                Stroke = new SolidColorPaint(SKColors.Blue, 2)
-            },
-            new LineSeries<ObservableValue>
-            {
-                Name = "Sản phẩm bán ra",
-                Values = trends.Select(t => new ObservableValue(t.SoldProducts)).ToArray(),
+                Name = "Tồn kho",
+                Values = trends.Select(t => (double)t.TotalStock).ToArray(),
                 Fill = null,
-                Stroke = new SolidColorPaint(SKColors.Red, 2)
+                GeometryFill = new SolidColorPaint(SKColors.DodgerBlue),
+                GeometryStroke = new SolidColorPaint(SKColors.DodgerBlue) { StrokeThickness = 2 },
+                Stroke = new SolidColorPaint(SKColors.DodgerBlue) { StrokeThickness = 2 }
+            },
+            new LineSeries<double>
+            {
+                Name = "Đã bán",
+                Values = trends.Select(t => (double)t.SoldProducts).ToArray(),
+                Fill = null,
+                GeometryFill = new SolidColorPaint(SKColors.OrangeRed),
+                GeometryStroke = new SolidColorPaint(SKColors.OrangeRed) { StrokeThickness = 2 },
+                Stroke = new SolidColorPaint(SKColors.OrangeRed) { StrokeThickness = 2 }
             }
         };
 
@@ -207,11 +211,10 @@ public partial class InventoryReportViewModel : ObservableObject
             new Axis
             {
                 Name = "Thời gian",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
-                LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12,
                 Labels = trends.Select(t => t.Date.ToString("dd/MM")).ToArray(),
-                LabelsRotation = 45
+                LabelsRotation = 45,
+                TextSize = 10,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
             }
         };
 
@@ -220,9 +223,9 @@ public partial class InventoryReportViewModel : ObservableObject
             new Axis
             {
                 Name = "Số lượng",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
+                TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12
+                Labeler = (value) => $"{value:N0}"
             }
         };
     }
@@ -231,11 +234,15 @@ public partial class InventoryReportViewModel : ObservableObject
     {
         CategoryDistributionSeries = new ISeries[]
         {
-            new ColumnSeries<decimal>
+            new ColumnSeries<double>
             {
                 Name = "Giá trị tồn kho",
-                Values = categories.Select(c => c.TotalValue).ToArray(),
-                Fill = new SolidColorPaint(SKColors.Blue.WithAlpha(90))
+                Values = categories.Select(c => (double)c.TotalValue).ToArray(),
+                Fill = new SolidColorPaint(SKColors.DodgerBlue.WithAlpha(200)),
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => FormatCurrency(point.Model)
             }
         };
 
@@ -244,10 +251,10 @@ public partial class InventoryReportViewModel : ObservableObject
             new Axis
             {
                 Name = "Danh mục",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
-                LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12,
-                LabelsRotation = 45
+                Labels = categories.Select(c => c.CategoryName).ToArray(),
+                LabelsRotation = 45,
+                TextSize = 10,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
             }
         };
 
@@ -255,10 +262,10 @@ public partial class InventoryReportViewModel : ObservableObject
         {
             new Axis
             {
-                Name = "Giá trị",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
+                Name = "Giá trị (VNĐ)",
+                TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12
+                Labeler = (value) => FormatCurrency(value)
             }
         };
     }
@@ -267,11 +274,15 @@ public partial class InventoryReportViewModel : ObservableObject
     {
         BrandDistributionSeries = new ISeries[]
         {
-            new ColumnSeries<decimal>
+            new ColumnSeries<double>
             {
                 Name = "Giá trị tồn kho",
-                Values = brands.Select(b => b.TotalValue).ToArray(),
-                Fill = new SolidColorPaint(SKColors.Green.WithAlpha(90))
+                Values = brands.Select(b => (double)b.TotalValue).ToArray(),
+                Fill = new SolidColorPaint(SKColors.ForestGreen.WithAlpha(200)),
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => FormatCurrency(point.Model)
             }
         };
 
@@ -280,10 +291,10 @@ public partial class InventoryReportViewModel : ObservableObject
             new Axis
             {
                 Name = "Thương hiệu",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
-                LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12,
-                LabelsRotation = 45
+                Labels = brands.Select(b => b.BrandName).ToArray(),
+                LabelsRotation = 45,
+                TextSize = 10,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
             }
         };
 
@@ -291,34 +302,32 @@ public partial class InventoryReportViewModel : ObservableObject
         {
             new Axis
             {
-                Name = "Giá trị",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
+                Name = "Giá trị (VNĐ)",
+                TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12
+                Labeler = (value) => FormatCurrency(value)
             }
         };
     }
 
-    private void UpdateStockAgingChart(IEnumerable<AgedInventory> aging)
+    private void UpdateStockAgingChart(IEnumerable<AgedInventory> agedInventories)
     {
-        var ageGroups = aging
-            .GroupBy(a => a.DaysInStock switch
-            {
-                <= 30 => "0-30 ngày",
-                <= 60 => "31-60 ngày",
-                <= 90 => "61-90 ngày",
-                _ => "Trên 90 ngày"
-            })
+        var ageGroups = agedInventories
+            .GroupBy(i => GetAgeGroup(i.DaysInStock))
             .OrderBy(g => g.Key)
             .ToList();
 
         StockAgingSeries = new ISeries[]
         {
-            new ColumnSeries<decimal>
+            new ColumnSeries<double>
             {
                 Name = "Giá trị tồn kho",
-                Values = ageGroups.Select(g => g.Sum(a => a.StockValue)).ToArray(),
-                Fill = new SolidColorPaint(SKColors.Orange.WithAlpha(90))
+                Values = ageGroups.Select(g => (double)g.Sum(i => i.StockValue)).ToArray(),
+                Fill = new SolidColorPaint(SKColors.Orange.WithAlpha(200)),
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => FormatCurrency(point.Model)
             }
         };
 
@@ -327,10 +336,10 @@ public partial class InventoryReportViewModel : ObservableObject
             new Axis
             {
                 Name = "Thời gian tồn kho",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
-                LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12,
-                LabelsRotation = 45
+                Labels = new[] { "0-30 ngày", "31-60 ngày", "61-90 ngày", "91-180 ngày", ">180 ngày" },
+                LabelsRotation = 45,
+                TextSize = 10,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
             }
         };
 
@@ -338,11 +347,51 @@ public partial class InventoryReportViewModel : ObservableObject
         {
             new Axis
             {
-                Name = "Giá trị",
-                NamePaint = new SolidColorPaint(SKColors.Gray),
+                Name = "Giá trị (VNĐ)",
+                TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                TextSize = 12
+                Labeler = (value) => FormatCurrency(value)
             }
         };
+    }
+
+    private string FormatCurrency(double value)
+    {
+        if (value >= 1_000_000_000) // Tỷ
+        {
+            return $"{value / 1_000_000_000:N1}Tỉ";
+        }
+        else if (value >= 1_000_000) // Triệu
+        {
+            return $"{value / 1_000_000:N0}Tr";
+        }
+        else // Dưới triệu
+        {
+            return $"{value:N0}";
+        }
+    }
+
+    private string GetAgeGroup(int daysInStock)
+    {
+        if (daysInStock <= 30)
+        {
+            return "0-30 ngày";
+        }
+        else if (daysInStock <= 60)
+        {
+            return "31-60 ngày";
+        }
+        else if (daysInStock <= 90)
+        {
+            return "61-90 ngày";
+        }
+        else if (daysInStock <= 180)
+        {
+            return "91-180 ngày";
+        }
+        else
+        {
+            return ">180 ngày";
+        }
     }
 } 
