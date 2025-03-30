@@ -4,21 +4,26 @@ namespace StormPC.Helpers;
 
 public class NumberFormatConverter : IValueConverter
 {
+    public static string Format(double value)
+    {
+        return value.ToString("N0");
+    }
+
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         if (value is decimal decimalValue)
         {
-            return decimalValue.ToString("N0");
+            return Format((double)decimalValue);
         }
         
         if (value is double doubleValue)
         {
-            return doubleValue.ToString("N0");
+            return Format(doubleValue);
         }
         
         if (value is int intValue)
         {
-            return intValue.ToString("N0");
+            return Format(intValue);
         }
 
         return value?.ToString() ?? string.Empty;
