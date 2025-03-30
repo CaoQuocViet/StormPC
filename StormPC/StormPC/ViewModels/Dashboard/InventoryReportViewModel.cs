@@ -143,6 +143,24 @@ public partial class InventoryReportViewModel : ObservableObject
     private int _restockSuggestionsCurrentPage = 1;
     private int _restockSuggestionsItemsPerPage = 15;
 
+    [ObservableProperty]
+    private int _todayOrderCount;
+
+    [ObservableProperty]
+    private decimal _todayRevenue;
+
+    [ObservableProperty]
+    private ObservableCollection<TopSellingProduct> _topSellingProducts;
+
+    [ObservableProperty]
+    private ISeries[] _topSellersSeries;
+
+    [ObservableProperty]
+    private IEnumerable<ICartesianAxis> _topSellersXAxes;
+
+    [ObservableProperty]
+    private IEnumerable<ICartesianAxis> _topSellersYAxes;
+
     public int AgedInventoriesCurrentPage
     {
         get => _agedInventoriesCurrentPage;
@@ -263,6 +281,7 @@ public partial class InventoryReportViewModel : ObservableObject
             // Convert local time to UTC for PostgreSQL
             var startUtc = StartDate.UtcDateTime;
             var endUtc = EndDate.UtcDateTime;
+            var today = DateTime.UtcNow.Date;
             
             var data = await _inventoryReportService.GetInventoryData(startUtc, endUtc);
             
@@ -273,6 +292,16 @@ public partial class InventoryReportViewModel : ObservableObject
             AverageStockValue = data.AverageStockValue;
             StockTurnoverRate = data.StockTurnoverRate;
             LowStockProducts = data.LowStockProducts;
+
+            // Get today's summary
+            var dailySummary = await _inventoryReportService.GetDailySummary(today);
+            TodayOrderCount = dailySummary.OrderCount;
+            TodayRevenue = dailySummary.TotalRevenue;
+
+            // Get top selling products
+            var topSellers = await _inventoryReportService.GetTopSellingProducts(startUtc, endUtc);
+            TopSellingProducts = new ObservableCollection<TopSellingProduct>(topSellers);
+            UpdateTopSellersChart(topSellers);
 
             // Update with pagination
             AgedInventories = new ObservableCollection<AgedInventory>(data.AgedInventories ?? Enumerable.Empty<AgedInventory>());
@@ -318,7 +347,7 @@ public partial class InventoryReportViewModel : ObservableObject
             OnPropertyChanged(nameof(CanGoToPreviousRestockSuggestionsPage));
             OnPropertyChanged(nameof(CanGoToNextRestockSuggestionsPage));
             
-            // You might want to log the error or show it to the user
+            // Log the error
             Debug.WriteLine($"Error loading inventory data: {ex.Message}");
         }
     }
@@ -508,5 +537,55 @@ public partial class InventoryReportViewModel : ObservableObject
         if (days <= 90) return "61-90 ngày";
         if (days <= 180) return "91-180 ngày";
         return "> 180 ngày";
+    }
+
+    private void UpdateTopSellersChart(IEnumerable<TopSellingProduct> products)
+    {
+        TopSellersSeries = new ISeries[]
+        {
+            new StackedColumnSeries<double>
+            {
+                Name = "Số lượng bán",
+                Values = products.Select(p => (double)p.QuantitySold).ToArray(),
+                Fill = new SolidColorPaint(SKColors.DodgerBlue.WithAlpha(200)),
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => NumberFormatConverter.Format((double)point.Model)
+            },
+            new StackedColumnSeries<double>
+            {
+                Name = "Doanh thu",
+                Values = products.Select(p => (double)p.Revenue).ToArray(),
+                Fill = new SolidColorPaint(SKColors.ForestGreen.WithAlpha(200)),
+                Stroke = null,
+                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => CurrencyConverter.Format((double)point.Model)
+            }
+        };
+
+        TopSellersXAxes = new[]
+        {
+            new Axis
+            {
+                Name = "Sản phẩm",
+                Labels = products.Select(p => p.ModelName).ToArray(),
+                LabelsRotation = 45,
+                TextSize = 10,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray)
+            }
+        };
+
+        TopSellersYAxes = new[]
+        {
+            new Axis
+            {
+                Name = "Số lượng / Doanh thu (VNĐ)",
+                TextSize = 10,
+                LabelsPaint = new SolidColorPaint(SKColors.Gray),
+                Labeler = value => value >= 1000000 ? CurrencyConverter.Format(value) : NumberFormatConverter.Format(value)
+            }
+        };
     }
 } 

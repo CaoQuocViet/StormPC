@@ -82,87 +82,129 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0" Style="{StaticResource KPICardStyle}" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Tổng sản phẩm" Style="{StaticResource KPITitleStyle}"/>
-                        <TextBlock Text="{x:Bind ViewModel.TotalProducts, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" Style="{StaticResource KPIValueStyle}"/>
+                <Grid Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Tổng sản phẩm" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.TotalProducts, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="1" Style="{StaticResource KPICardStyle}" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Tổng tồn kho" Style="{StaticResource KPITitleStyle}"/>
-                        <TextBlock Text="{x:Bind ViewModel.TotalStock, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" Style="{StaticResource KPIValueStyle}"/>
+                <Grid Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Tổng tồn kho" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.TotalStock, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="2" Style="{StaticResource KPICardStyle}" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Giá trị tồn kho" Style="{StaticResource KPITitleStyle}"/>
-                        <TextBlock Text="{x:Bind ViewModel.TotalValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" Style="{StaticResource KPIValueStyle}"/>
+                <Grid Grid.Column="2" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Giá trị tồn kho" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.TotalValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="3" Style="{StaticResource KPICardStyle}" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Giá trị TB/SP" Style="{StaticResource KPITitleStyle}"/>
-                        <TextBlock Text="{x:Bind ViewModel.AverageStockValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" Style="{StaticResource KPIValueStyle}"/>
+                <Grid Grid.Column="3" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Giá trị TB/SP" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.AverageStockValue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="4" Style="{StaticResource KPICardStyle}" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Tỷ lệ quay vòng" Style="{StaticResource KPITitleStyle}"/>
-                        <TextBlock Style="{StaticResource KPIValueStyle}">
-                            <Run Text="{x:Bind ViewModel.StockTurnoverRate, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}"/>
-                            <Run Text="lần"/>
-                        </TextBlock>
+                <Grid Grid.Column="4" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Vòng quay tồn kho" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.StockTurnoverRate, Mode=OneWay, Converter={StaticResource PercentageConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="5" Style="{StaticResource KPICardStyle}" Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="Sắp hết hàng" Style="{StaticResource KPITitleStyle}"/>
-                        <TextBlock Text="{x:Bind ViewModel.LowStockProducts, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" Style="{StaticResource KPIValueStyle}"/>
+                <Grid Grid.Column="5" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="SP sắp hết" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.LowStockProducts, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Column="6" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Đơn hàng hôm nay" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.TodayOrderCount, Mode=OneWay, Converter={StaticResource NumberFormatConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Column="7" Style="{StaticResource CardStyle}">
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Doanh thu hôm nay" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.TodayRevenue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" 
+                                 Style="{StaticResource SubtitleTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
             </Grid>
 
-            <!-- Stock Trend Chart -->
+            <!-- Charts Grid -->
             <Grid Grid.Row="2" Margin="0,0,0,20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="400"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Xu hướng tồn kho" 
-                         Style="{StaticResource SubtitleTextBlockStyle}"
-                         Margin="0,0,0,10"/>
-
-                <lvc:CartesianChart Grid.Row="1"
-                    Series="{x:Bind ViewModel.StockTrendSeries, Mode=OneWay}"
-                    XAxes="{x:Bind ViewModel.StockTrendXAxes, Mode=OneWay}"
-                    YAxes="{x:Bind ViewModel.StockTrendYAxes, Mode=OneWay}"/>
-            </Grid>
-
-            <!-- Category and Brand Analysis -->
-            <Grid Grid.Row="3" Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <!-- Category Analysis -->
-                <Grid Grid.Column="0" Margin="0,0,10,0">
+                <!-- Stock Trend Chart -->
+                <Grid Grid.Column="0" Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,10,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="300"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Phân tích theo danh mục" 
+                    <TextBlock Text="Xu hướng tồn kho" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,10"/>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                        Series="{x:Bind ViewModel.StockTrendSeries, Mode=OneWay}"
+                        XAxes="{x:Bind ViewModel.StockTrendXAxes, Mode=OneWay}"
+                        YAxes="{x:Bind ViewModel.StockTrendYAxes, Mode=OneWay}"/>
+                </Grid>
+
+                <!-- Top Selling Products Chart -->
+                <Grid Grid.Column="1" Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Top 5 sản phẩm bán chạy" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,10"/>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                        Series="{x:Bind ViewModel.TopSellersSeries, Mode=OneWay}"
+                        XAxes="{x:Bind ViewModel.TopSellersXAxes, Mode=OneWay}"
+                        YAxes="{x:Bind ViewModel.TopSellersYAxes, Mode=OneWay}"/>
+                </Grid>
+
+                <!-- Category Distribution Chart -->
+                <Grid Grid.Column="0" Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Phân bố theo danh mục" 
                              Style="{StaticResource SubtitleTextBlockStyle}"
                              Margin="0,0,0,10"/>
 
@@ -170,31 +212,16 @@
                         Series="{x:Bind ViewModel.CategoryDistributionSeries, Mode=OneWay}"
                         XAxes="{x:Bind ViewModel.CategoryXAxes, Mode=OneWay}"
                         YAxes="{x:Bind ViewModel.CategoryYAxes, Mode=OneWay}"/>
-
-                    <grid:DataGrid Grid.Row="2"
-                             ItemsSource="{x:Bind ViewModel.CategoryAnalytics, Mode=OneWay}"
-                             AutoGenerateColumns="False"
-                             IsReadOnly="True"
-                             Margin="0,10,0,0">
-                        <grid:DataGrid.Columns>
-                            <grid:DataGridTextColumn Header="Danh mục" Binding="{Binding CategoryName}"/>
-                            <grid:DataGridTextColumn Header="Số SP" Binding="{Binding TotalProducts, Converter={StaticResource NumberFormatConverter}}"/>
-                            <grid:DataGridTextColumn Header="Tồn kho" Binding="{Binding TotalStock, Converter={StaticResource NumberFormatConverter}}"/>
-                            <grid:DataGridTextColumn Header="Giá trị" Binding="{Binding TotalValue, Converter={StaticResource CurrencyConverter}}"/>
-                            <grid:DataGridTextColumn Header="% Tổng" Binding="{Binding PercentageOfTotal, Converter={StaticResource PercentageConverter}}"/>
-                        </grid:DataGrid.Columns>
-                    </grid:DataGrid>
                 </Grid>
 
-                <!-- Brand Analysis -->
-                <Grid Grid.Column="1" Margin="10,0,0,0">
+                <!-- Brand Distribution Chart -->
+                <Grid Grid.Column="1" Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="300"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Phân tích theo thương hiệu" 
+                    <TextBlock Text="Phân bố theo thương hiệu" 
                              Style="{StaticResource SubtitleTextBlockStyle}"
                              Margin="0,0,0,10"/>
 
@@ -202,25 +229,56 @@
                         Series="{x:Bind ViewModel.BrandDistributionSeries, Mode=OneWay}"
                         XAxes="{x:Bind ViewModel.BrandXAxes, Mode=OneWay}"
                         YAxes="{x:Bind ViewModel.BrandYAxes, Mode=OneWay}"/>
+                </Grid>
 
-                    <grid:DataGrid Grid.Row="2"
-                             ItemsSource="{x:Bind ViewModel.BrandAnalytics, Mode=OneWay}"
-                             AutoGenerateColumns="False"
-                             IsReadOnly="True"
-                             Margin="0,10,0,0">
+                <!-- Stock Aging Chart -->
+                <Grid Grid.Column="0" Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,0,10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Phân tích tuổi tồn kho" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,10"/>
+
+                    <lvc:CartesianChart Grid.Row="1"
+                        Series="{x:Bind ViewModel.StockAgingSeries, Mode=OneWay}"
+                        XAxes="{x:Bind ViewModel.AgingXAxes, Mode=OneWay}"
+                        YAxes="{x:Bind ViewModel.AgingYAxes, Mode=OneWay}"/>
+                </Grid>
+
+                <!-- Top Selling Products Table -->
+                <Grid Grid.Column="1" Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Chi tiết top bán chạy" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,10"/>
+
+                    <grid:DataGrid Grid.Row="1"
+                         ItemsSource="{x:Bind ViewModel.TopSellingProducts, Mode=OneWay}"
+                         AutoGenerateColumns="False"
+                         IsReadOnly="True"
+                         HorizontalAlignment="Stretch"
+                         HorizontalScrollBarVisibility="Auto">
                         <grid:DataGrid.Columns>
-                            <grid:DataGridTextColumn Header="Thương hiệu" Binding="{Binding BrandName}"/>
-                            <grid:DataGridTextColumn Header="Số SP" Binding="{Binding TotalProducts, Converter={StaticResource NumberFormatConverter}}"/>
-                            <grid:DataGridTextColumn Header="Tồn kho" Binding="{Binding TotalStock, Converter={StaticResource NumberFormatConverter}}"/>
-                            <grid:DataGridTextColumn Header="Giá trị" Binding="{Binding TotalValue, Converter={StaticResource CurrencyConverter}}"/>
-                            <grid:DataGridTextColumn Header="% Tổng" Binding="{Binding PercentageOfTotal, Converter={StaticResource PercentageConverter}}"/>
+                            <grid:DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="*"/>
+                            <grid:DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ModelName}" Width="2*"/>
+                            <grid:DataGridTextColumn Header="Danh mục" Binding="{Binding CategoryName}" Width="*"/>
+                            <grid:DataGridTextColumn Header="Thương hiệu" Binding="{Binding BrandName}" Width="*"/>
+                            <grid:DataGridTextColumn Header="Số lượng bán" Binding="{Binding QuantitySold, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
+                            <grid:DataGridTextColumn Header="Doanh thu" Binding="{Binding Revenue, Converter={StaticResource CurrencyConverter}}" Width="*"/>
                         </grid:DataGrid.Columns>
                     </grid:DataGrid>
                 </Grid>
             </Grid>
 
-            <!-- Stock Aging Analysis -->
-            <Grid Grid.Row="4" Margin="0,0,0,20">
+            <!-- Aged Inventories Table -->
+            <Grid Grid.Row="3" Style="{StaticResource CardStyle}" Margin="0,0,0,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="300"/>
@@ -232,12 +290,7 @@
                          Style="{StaticResource SubtitleTextBlockStyle}"
                          Margin="0,0,0,10"/>
 
-                <lvc:CartesianChart Grid.Row="1"
-                    Series="{x:Bind ViewModel.StockAgingSeries, Mode=OneWay}"
-                    XAxes="{x:Bind ViewModel.AgingXAxes, Mode=OneWay}"
-                    YAxes="{x:Bind ViewModel.AgingYAxes, Mode=OneWay}"/>
-
-                <grid:DataGrid Grid.Row="2"
+                <grid:DataGrid Grid.Row="1"
                          ItemsSource="{x:Bind ViewModel.AgedInventoriesPagedItems, Mode=OneWay}"
                          AutoGenerateColumns="False"
                          IsReadOnly="True"
@@ -257,7 +310,7 @@
                 </grid:DataGrid>
 
                 <!-- Phân trang cho bảng thời gian tồn kho -->
-                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
                     <Button Content="&lt;" 
                             Command="{x:Bind ViewModel.PreviousAgedInventoriesPageCommand}"
                             IsEnabled="{x:Bind ViewModel.CanGoToPreviousAgedInventoriesPage, Mode=OneWay}"/>
@@ -275,7 +328,7 @@
             </Grid>
 
             <!-- Restock Suggestions -->
-            <Grid Grid.Row="5">
+            <Grid Grid.Row="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -322,6 +375,6 @@
                             IsEnabled="{x:Bind ViewModel.CanGoToNextRestockSuggestionsPage, Mode=OneWay}"/>
                 </StackPanel>
             </Grid>
-    </Grid>
+        </Grid>
     </ScrollViewer>
 </Page> 
