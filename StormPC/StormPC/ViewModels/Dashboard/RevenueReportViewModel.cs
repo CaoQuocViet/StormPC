@@ -18,7 +18,7 @@ public partial class RevenueReportViewModel : ObservableObject
     private readonly IRevenueReportService _revenueReportService;
 
     [ObservableProperty]
-    private DateTime _startDate = DateTime.Now.AddDays(-30);
+    private DateTime _startDate = DateTime.Now.AddMonths(-3);
 
     [ObservableProperty]
     private DateTime _endDate = DateTime.Now;

@@ -37,7 +37,7 @@ public partial class CustomerReportViewModel : ObservableObject
     private bool _isLoading;
     
     [ObservableProperty]
-    private DateTime _startDate = DateTime.Now.AddMonths(-6);
+    private DateTime _startDate = DateTime.Now.AddMonths(-3);
     
     [ObservableProperty]
     private DateTime _endDate = DateTime.Now;
