@@ -48,11 +48,11 @@ public partial class RevenueReportViewModel : ObservableObject
     {
         if (value >= 1_000_000_000) // Tỷ
         {
-            return $"{value / 1_000_000_000:N1} Tỷ VNĐ";
+            return $"{value / 1_000_000_000:N1} Tỷ";
         }
         else // Triệu
         {
-            return $"{value / 1_000_000:N0} Tr VNĐ";
+            return $"{value / 1_000_000:N0} Tr";
         }
     }
 
