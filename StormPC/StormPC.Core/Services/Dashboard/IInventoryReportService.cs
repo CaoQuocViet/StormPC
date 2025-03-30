@@ -7,6 +7,10 @@ public interface IInventoryReportService
     Task<IEnumerable<Category>> GetCategories();
     Task<IEnumerable<Brand>> GetBrands();
     Task<InventoryReportData> GetInventoryData(DateTime startDate, DateTime endDate);
+
+    // Thêm phân tích doanh số và doanh thu
+    Task<IEnumerable<TopSellingProduct>> GetTopSellingProducts(DateTime startDate, DateTime endDate, int limit = 5);
+    Task<(int OrderCount, decimal TotalRevenue)> GetDailySummary(DateTime date);
 }
 
 public class InventoryReportData
@@ -91,4 +95,14 @@ public class RestockSuggestion
     public int AverageMonthlySales { get; set; }
     public int SuggestedReorderQuantity { get; set; }
     public decimal EstimatedValue { get; set; }
+}
+
+public class TopSellingProduct
+{
+    public string SKU { get; set; }
+    public string ModelName { get; set; }
+    public string CategoryName { get; set; }
+    public string BrandName { get; set; }
+    public int QuantitySold { get; set; }
+    public decimal Revenue { get; set; }
 } 

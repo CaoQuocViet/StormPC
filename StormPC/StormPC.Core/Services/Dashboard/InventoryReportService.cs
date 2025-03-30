@@ -28,6 +28,10 @@ public class InventoryReportService : IInventoryReportService
 
     public async Task<InventoryReportData> GetInventoryData(DateTime startDate, DateTime endDate)
     {
+        // Ensure dates are in UTC
+        startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+        endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+
         // Lấy thông tin tồn kho hiện tại
         var currentInventory = await _context.LaptopSpecs
             .Include(ls => ls.Laptop)
@@ -175,5 +179,55 @@ public class InventoryReportService : IInventoryReportService
             LowStockItems = lowStockItems,
             RestockSuggestions = restockSuggestions
         };
+    }
+
+    public async Task<IEnumerable<TopSellingProduct>> GetTopSellingProducts(DateTime startDate, DateTime endDate, int limit = 5)
+    {
+        // Ensure dates are in UTC
+        startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+        endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+
+        var query = from oi in _context.OrderItems
+                   join o in _context.Orders on oi.OrderID equals o.OrderID
+                   join ls in _context.LaptopSpecs on oi.VariantID equals ls.VariantID
+                   join l in _context.Laptops on ls.LaptopID equals l.LaptopID
+                   join c in _context.Categories on l.CategoryID equals c.CategoryID
+                   join b in _context.Brands on l.BrandID equals b.BrandID
+                   where o.OrderDate >= startDate && o.OrderDate <= endDate
+                         && !o.IsDeleted
+                   group new { oi, ls } by new { ls.SKU, l.ModelName, c.CategoryName, b.BrandName } into g
+                   select new TopSellingProduct
+                   {
+                       SKU = g.Key.SKU,
+                       ModelName = g.Key.ModelName,
+                       CategoryName = g.Key.CategoryName,
+                       BrandName = g.Key.BrandName,
+                       QuantitySold = g.Sum(x => x.oi.Quantity),
+                       Revenue = g.Sum(x => x.oi.Quantity * x.oi.UnitPrice)
+                   };
+
+        return await query
+            .OrderByDescending(x => x.QuantitySold)
+            .Take(limit)
+            .ToListAsync();
+    }
+
+    public async Task<(int OrderCount, decimal TotalRevenue)> GetDailySummary(DateTime date)
+    {
+        // Ensure date is in UTC
+        date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+        var startDate = date.Date;
+        var endDate = startDate.AddDays(1);
+
+        var query = from o in _context.Orders
+                   where !o.IsDeleted && o.OrderDate >= startDate && o.OrderDate < endDate
+                   select o;
+
+        var orders = await query.ToListAsync();
+        
+        return (
+            OrderCount: orders.Count,
+            TotalRevenue: orders.Sum(o => o.TotalAmount)
+        );
     }
 } 
