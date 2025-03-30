@@ -47,6 +47,9 @@ public class LaptopSpec
     [Required]
     public int StockQuantity { get; set; }
 
+    [Column("createdAt")]
+    public DateTime CreatedAt { get; set; }
+
     // Thuộc tính navigation
     public Laptop Laptop { get; set; } = null!;
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

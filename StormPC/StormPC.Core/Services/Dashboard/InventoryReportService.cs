@@ -113,7 +113,7 @@ public class InventoryReportService : IInventoryReportService
                 StockQuantity = ls.StockQuantity,
                 StockValue = ls.StockQuantity * ls.ImportPrice,
                 LastSoldDate = lastOrderDates.ContainsKey(ls.VariantID) ? lastOrderDates[ls.VariantID] : DateTime.MinValue,
-                DaysInStock = (int)(DateTime.Now - (lastOrderDates.ContainsKey(ls.VariantID) ? lastOrderDates[ls.VariantID] : DateTime.MinValue)).TotalDays
+                DaysInStock = (int)(DateTime.Now - ls.CreatedAt).TotalDays
             })
             .Where(ai => ai.DaysInStock > 30) // Hàng tồn trên 30 ngày
             .OrderByDescending(ai => ai.DaysInStock)
