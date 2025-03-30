@@ -12,6 +12,7 @@ using StormPC.Core.Services.Dashboard;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using StormPC.Helpers;
 
 namespace StormPC.ViewModels.Dashboard;
 
@@ -193,7 +194,10 @@ public partial class InventoryReportViewModel : ObservableObject
                 Fill = null,
                 GeometryFill = new SolidColorPaint(SKColors.DodgerBlue),
                 GeometryStroke = new SolidColorPaint(SKColors.DodgerBlue) { StrokeThickness = 2 },
-                Stroke = new SolidColorPaint(SKColors.DodgerBlue) { StrokeThickness = 2 }
+                Stroke = new SolidColorPaint(SKColors.DodgerBlue) { StrokeThickness = 2 },
+                DataLabelsPaint = new SolidColorPaint(SKColors.DodgerBlue),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => NumberFormatConverter.Format((double)point.Model)
             },
             new LineSeries<double>
             {
@@ -202,7 +206,10 @@ public partial class InventoryReportViewModel : ObservableObject
                 Fill = null,
                 GeometryFill = new SolidColorPaint(SKColors.OrangeRed),
                 GeometryStroke = new SolidColorPaint(SKColors.OrangeRed) { StrokeThickness = 2 },
-                Stroke = new SolidColorPaint(SKColors.OrangeRed) { StrokeThickness = 2 }
+                Stroke = new SolidColorPaint(SKColors.OrangeRed) { StrokeThickness = 2 },
+                DataLabelsPaint = new SolidColorPaint(SKColors.OrangeRed),
+                DataLabelsSize = 12,
+                DataLabelsFormatter = point => NumberFormatConverter.Format((double)point.Model)
             }
         };
 
@@ -225,7 +232,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 Name = "Số lượng",
                 TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                Labeler = (value) => $"{value:N0}"
+                Labeler = value => NumberFormatConverter.Format(value)
             }
         };
     }
@@ -242,7 +249,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 Stroke = null,
                 DataLabelsPaint = new SolidColorPaint(SKColors.White),
                 DataLabelsSize = 12,
-                DataLabelsFormatter = point => FormatCurrency(point.Model)
+                DataLabelsFormatter = point => CurrencyConverter.Format((double)point.Model)
             }
         };
 
@@ -265,7 +272,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 Name = "Giá trị (VNĐ)",
                 TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                Labeler = (value) => FormatCurrency(value)
+                Labeler = value => CurrencyConverter.Format(value)
             }
         };
     }
@@ -282,7 +289,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 Stroke = null,
                 DataLabelsPaint = new SolidColorPaint(SKColors.White),
                 DataLabelsSize = 12,
-                DataLabelsFormatter = point => FormatCurrency(point.Model)
+                DataLabelsFormatter = point => CurrencyConverter.Format((double)point.Model)
             }
         };
 
@@ -305,7 +312,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 Name = "Giá trị (VNĐ)",
                 TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                Labeler = (value) => FormatCurrency(value)
+                Labeler = value => CurrencyConverter.Format(value)
             }
         };
     }
@@ -327,7 +334,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 Stroke = null,
                 DataLabelsPaint = new SolidColorPaint(SKColors.White),
                 DataLabelsSize = 12,
-                DataLabelsFormatter = point => FormatCurrency(point.Model)
+                DataLabelsFormatter = point => CurrencyConverter.Format((double)point.Model)
             }
         };
 
@@ -350,25 +357,9 @@ public partial class InventoryReportViewModel : ObservableObject
                 Name = "Giá trị (VNĐ)",
                 TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray),
-                Labeler = (value) => FormatCurrency(value)
+                Labeler = value => CurrencyConverter.Format(value)
             }
         };
-    }
-
-    private string FormatCurrency(double value)
-    {
-        if (value >= 1_000_000_000) // Tỷ
-        {
-            return $"{value / 1_000_000_000:N1}Tỉ";
-        }
-        else if (value >= 1_000_000) // Triệu
-        {
-            return $"{value / 1_000_000:N0}Tr";
-        }
-        else // Dưới triệu
-        {
-            return $"{value:N0}";
-        }
     }
 
     private string GetAgeGroup(int daysInStock)
