@@ -44,33 +44,31 @@
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid Grid.Row="0" Margin="16,16,16,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Báo cáo kho hàng" 
-                         Style="{StaticResource TitleTextBlockStyle}"
-                         VerticalAlignment="Center"/>
-
-                <CalendarDatePicker Grid.Column="1" 
-                                  Header="Từ ngày"
-                                  Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
-                                  Margin="10,0"/>
-
-                <CalendarDatePicker Grid.Column="2" 
-                                  Header="Đến ngày"
-                                  Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
-                                  Margin="10,0"/>
-
-                <Button Grid.Column="3"
-                        Content="Làm mới"
-                        Command="{x:Bind ViewModel.RefreshCommand}"
-                        Style="{StaticResource AccentButtonStyle}"
-                        Margin="10,0"/>
+                <TextBlock Text="Báo cáo tồn kho" 
+                         Style="{ThemeResource TitleTextBlockStyle}"/>
+                <StackPanel Grid.Column="1" 
+                          Orientation="Horizontal" 
+                          Spacing="8">
+                    <TextBlock Text="Từ" 
+                             VerticalAlignment="Center"/>
+                    <CalendarDatePicker Date="{x:Bind ViewModel.StartDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
+                                     MinWidth="100"/>
+                    <TextBlock Text="Đến" 
+                             VerticalAlignment="Center"/>
+                    <CalendarDatePicker Date="{x:Bind ViewModel.EndDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
+                                     MinWidth="100"/>
+                    <Button Command="{x:Bind ViewModel.RefreshCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE72C;"/>
+                            <TextBlock Text="Làm mới"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Grid>
 
             <!-- KPI Cards -->
@@ -281,12 +279,11 @@
             <Grid Grid.Row="3" Style="{StaticResource CardStyle}" Margin="0,0,0,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="300"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Phân tích tuổi tồn kho" 
+                <TextBlock Text="Phân tích thời gian tồn kho" 
                          Style="{StaticResource SubtitleTextBlockStyle}"
                          Margin="0,0,0,10"/>
 
@@ -295,40 +292,41 @@
                          AutoGenerateColumns="False"
                          IsReadOnly="True"
                          HorizontalAlignment="Stretch"
-                         HorizontalScrollBarVisibility="Auto"
-                         Margin="0,10,0,10">
+                         VerticalScrollBarVisibility="Disabled"
+                         HorizontalScrollBarVisibility="Disabled">
                     <grid:DataGrid.Columns>
                         <grid:DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="*"/>
                         <grid:DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ModelName}" Width="2*"/>
                         <grid:DataGridTextColumn Header="Danh mục" Binding="{Binding CategoryName}" Width="*"/>
                         <grid:DataGridTextColumn Header="Thương hiệu" Binding="{Binding BrandName}" Width="*"/>
-                        <grid:DataGridTextColumn Header="Tồn kho" Binding="{Binding StockQuantity, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
+                        <grid:DataGridTextColumn Header="Số lượng" Binding="{Binding StockQuantity, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
                         <grid:DataGridTextColumn Header="Giá trị" Binding="{Binding StockValue, Converter={StaticResource CurrencyConverter}}" Width="*"/>
+                        <grid:DataGridTextColumn Header="Ngày bán cuối" Binding="{Binding LastSoldDate, Converter={StaticResource DateTimeConverter}}" Width="*"/>
                         <grid:DataGridTextColumn Header="Số ngày tồn" Binding="{Binding DaysInStock, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
-                        <grid:DataGridTextColumn Header="Lần bán cuối" Binding="{Binding LastSoldDate, Converter={StaticResource DateTimeConverter}}" Width="*"/>
                     </grid:DataGrid.Columns>
                 </grid:DataGrid>
 
                 <!-- Phân trang cho bảng thời gian tồn kho -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <StackPanel Grid.Row="2" 
+                           Orientation="Horizontal" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,10,0,0"
+                           Spacing="8">
                     <Button Content="&lt;" 
-                            Command="{x:Bind ViewModel.PreviousAgedInventoriesPageCommand}"
-                            IsEnabled="{x:Bind ViewModel.CanGoToPreviousAgedInventoriesPage, Mode=OneWay}"/>
-                    <TextBlock Text="{x:Bind ViewModel.AgedInventoriesCurrentPage, Mode=OneWay}" 
-                             VerticalAlignment="Center" 
-                             Margin="10,0"/>
-                    <TextBlock Text="/" VerticalAlignment="Center"/>
-                    <TextBlock Text="{x:Bind ViewModel.AgedInventoriesTotalPages, Mode=OneWay}" 
-                             VerticalAlignment="Center" 
-                             Margin="10,0"/>
+                           Command="{x:Bind ViewModel.PreviousAgedInventoriesPageCommand}"/>
+                    <TextBlock VerticalAlignment="Center">
+                        <Run Text="Trang"/>
+                        <Run Text="{x:Bind ViewModel.AgedInventoriesCurrentPage, Mode=OneWay}"/>
+                        <Run Text="/"/>
+                        <Run Text="{x:Bind ViewModel.AgedInventoriesTotalPages, Mode=OneWay}"/>
+                    </TextBlock>
                     <Button Content="&gt;" 
-                            Command="{x:Bind ViewModel.NextAgedInventoriesPageCommand}"
-                            IsEnabled="{x:Bind ViewModel.CanGoToNextAgedInventoriesPage, Mode=OneWay}"/>
+                           Command="{x:Bind ViewModel.NextAgedInventoriesPageCommand}"/>
                 </StackPanel>
             </Grid>
 
             <!-- Restock Suggestions -->
-            <Grid Grid.Row="4">
+            <Grid Grid.Row="4" Style="{StaticResource CardStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -344,35 +342,37 @@
                          AutoGenerateColumns="False"
                          IsReadOnly="True"
                          HorizontalAlignment="Stretch"
-                         HorizontalScrollBarVisibility="Auto"
-                         Margin="0,0,0,10">
+                         VerticalScrollBarVisibility="Disabled"
+                         HorizontalScrollBarVisibility="Disabled"
+                         MaxHeight="400">
                     <grid:DataGrid.Columns>
                         <grid:DataGridTextColumn Header="SKU" Binding="{Binding SKU}" Width="*"/>
                         <grid:DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ModelName}" Width="2*"/>
                         <grid:DataGridTextColumn Header="Danh mục" Binding="{Binding CategoryName}" Width="*"/>
                         <grid:DataGridTextColumn Header="Thương hiệu" Binding="{Binding BrandName}" Width="*"/>
                         <grid:DataGridTextColumn Header="Tồn kho" Binding="{Binding CurrentStock, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
-                        <grid:DataGridTextColumn Header="TB bán/tháng" Binding="{Binding AverageMonthlySales, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
-                        <grid:DataGridTextColumn Header="Đề xuất nhập" Binding="{Binding SuggestedReorderQuantity, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
-                        <grid:DataGridTextColumn Header="Giá trị nhập" Binding="{Binding EstimatedValue, Converter={StaticResource CurrencyConverter}}" Width="*"/>
+                        <grid:DataGridTextColumn Header="TB tháng" Binding="{Binding AverageMonthlySales, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
+                        <grid:DataGridTextColumn Header="Đề xuất" Binding="{Binding SuggestedReorderQuantity, Converter={StaticResource NumberFormatConverter}}" Width="*"/>
+                        <grid:DataGridTextColumn Header="Giá trị" Binding="{Binding EstimatedValue, Converter={StaticResource CurrencyConverter}}" Width="*"/>
                     </grid:DataGrid.Columns>
                 </grid:DataGrid>
 
                 <!-- Phân trang cho bảng đề xuất nhập hàng -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <StackPanel Grid.Row="2" 
+                           Orientation="Horizontal" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,10,0,0"
+                           Spacing="8">
                     <Button Content="&lt;" 
-                            Command="{x:Bind ViewModel.PreviousRestockSuggestionsPageCommand}"
-                            IsEnabled="{x:Bind ViewModel.CanGoToPreviousRestockSuggestionsPage, Mode=OneWay}"/>
-                    <TextBlock Text="{x:Bind ViewModel.RestockSuggestionsCurrentPage, Mode=OneWay}" 
-                             VerticalAlignment="Center" 
-                             Margin="10,0"/>
-                    <TextBlock Text="/" VerticalAlignment="Center"/>
-                    <TextBlock Text="{x:Bind ViewModel.RestockSuggestionsTotalPages, Mode=OneWay}" 
-                             VerticalAlignment="Center" 
-                             Margin="10,0"/>
+                           Command="{x:Bind ViewModel.PreviousRestockSuggestionsPageCommand}"/>
+                    <TextBlock VerticalAlignment="Center">
+                        <Run Text="Trang"/>
+                        <Run Text="{x:Bind ViewModel.RestockSuggestionsCurrentPage, Mode=OneWay}"/>
+                        <Run Text="/"/>
+                        <Run Text="{x:Bind ViewModel.RestockSuggestionsTotalPages, Mode=OneWay}"/>
+                    </TextBlock>
                     <Button Content="&gt;" 
-                            Command="{x:Bind ViewModel.NextRestockSuggestionsPageCommand}"
-                            IsEnabled="{x:Bind ViewModel.CanGoToNextRestockSuggestionsPage, Mode=OneWay}"/>
+                           Command="{x:Bind ViewModel.NextRestockSuggestionsPageCommand}"/>
                 </StackPanel>
             </Grid>
         </Grid>
