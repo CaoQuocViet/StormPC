@@ -103,9 +103,18 @@ public class StormPCDbContext : DbContext
             .HasForeignKey(o => o.PaymentMethodID)
             .IsRequired();
 
-        // Configure soft delete filter
+        // Configure Order-OrderItem relationship
         modelBuilder.Entity<Order>()
-            .HasQueryFilter(o => !o.IsDeleted);
+            .HasMany(o => o.OrderItems)
+            .WithOne(oi => oi.Order)
+            .HasForeignKey(oi => oi.OrderID)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Add global query filter for both entities
+        modelBuilder.Entity<Order>().HasQueryFilter(o => !o.IsDeleted);
+        modelBuilder.Entity<OrderItem>().HasQueryFilter(oi => !oi.Order.IsDeleted);
+
+        // Configure soft delete filter
         modelBuilder.Entity<Customer>()
             .HasQueryFilter(c => !c.IsDeleted);
     }
