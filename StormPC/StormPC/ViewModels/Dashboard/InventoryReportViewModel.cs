@@ -343,8 +343,7 @@ public partial class InventoryReportViewModel : ObservableObject
             new Axis
             {
                 Name = "Thời gian tồn kho",
-                Labels = new[] { "0-30 ngày", "31-60 ngày", "61-90 ngày", "91-180 ngày", ">180 ngày" },
-                LabelsRotation = 45,
+                Labels = ageGroups.Select(g => g.Key).ToArray(),
                 TextSize = 10,
                 LabelsPaint = new SolidColorPaint(SKColors.Gray)
             }
@@ -362,27 +361,12 @@ public partial class InventoryReportViewModel : ObservableObject
         };
     }
 
-    private string GetAgeGroup(int daysInStock)
+    private string GetAgeGroup(int days)
     {
-        if (daysInStock <= 30)
-        {
-            return "0-30 ngày";
-        }
-        else if (daysInStock <= 60)
-        {
-            return "31-60 ngày";
-        }
-        else if (daysInStock <= 90)
-        {
-            return "61-90 ngày";
-        }
-        else if (daysInStock <= 180)
-        {
-            return "91-180 ngày";
-        }
-        else
-        {
-            return ">180 ngày";
-        }
+        if (days <= 30) return "≤ 30 ngày";
+        if (days <= 60) return "31-60 ngày";
+        if (days <= 90) return "61-90 ngày";
+        if (days <= 180) return "91-180 ngày";
+        return "> 180 ngày";
     }
 } 

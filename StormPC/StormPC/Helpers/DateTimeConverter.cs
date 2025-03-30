@@ -11,14 +11,24 @@ public class DateTimeConverter : IValueConverter
         if (targetType == typeof(string))
         {
             if (value is DateTime dateTime)
+            {
+                if (dateTime == DateTime.MinValue)
+                    return "Chưa bán";
                 return Format(dateTime);
+            }
             if (value is DateTimeOffset dateOffset)
+            {
+                if (dateOffset.DateTime == DateTime.MinValue)
+                    return "Chưa bán";
                 return Format(dateOffset.DateTime);
-            return string.Empty;
+            }
+            return "Chưa bán";
         }
 
-        // Nếu value là null, trả về null
-        if (value == null)
+        // Nếu value là null hoặc DateTime.MinValue, trả về null
+        if (value == null || 
+            (value is DateTime dt && dt == DateTime.MinValue) ||
+            (value is DateTimeOffset dto && dto.DateTime == DateTime.MinValue))
             return null;
 
         // Chuyển đổi sang DateTimeOffset cho CalendarDatePicker
@@ -52,18 +62,18 @@ public class DateTimeConverter : IValueConverter
         if (targetType == typeof(DateTime) || targetType == typeof(DateTime?))
         {
             if (value is DateTime dateTime)
-                return dateTime;
+                return dateTime == DateTime.MinValue ? null : dateTime;
             if (value is DateTimeOffset dateOffset)
-                return dateOffset.DateTime;
+                return dateOffset.DateTime == DateTime.MinValue ? null : dateOffset.DateTime;
         }
 
         // Chuyển đổi từ DateTime sang DateTimeOffset cho UI
         if (targetType == typeof(DateTimeOffset) || targetType == typeof(DateTimeOffset?))
         {
             if (value is DateTime dateTime)
-                return new DateTimeOffset(dateTime);
+                return dateTime == DateTime.MinValue ? null : new DateTimeOffset(dateTime);
             if (value is DateTimeOffset dateOffset)
-                return dateOffset;
+                return dateOffset.DateTime == DateTime.MinValue ? null : dateOffset;
         }
 
         return null;

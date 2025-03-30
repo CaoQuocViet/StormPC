@@ -279,6 +279,6 @@
                     </grid:DataGrid.Columns>
                 </grid:DataGrid>
             </Grid>
-        </Grid>
+    </Grid>
     </ScrollViewer>
 </Page> 
