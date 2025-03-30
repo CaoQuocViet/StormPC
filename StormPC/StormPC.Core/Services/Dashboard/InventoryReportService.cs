@@ -131,7 +131,7 @@ public class InventoryReportService : IInventoryReportService
             })
             .ToList();
 
-        // Đề xuất nhập hàng dựa trên doanh số
+        // Đề xuất nhập hàng dựa trên doanh số và sản phẩm sắp hết hàng
         var monthlySales = orders
             .SelectMany(o => o.OrderItems)
             .GroupBy(oi => oi.VariantID)
@@ -141,7 +141,7 @@ public class InventoryReportService : IInventoryReportService
             );
 
         var restockSuggestions = currentInventory
-            .Where(ls => monthlySales.ContainsKey(ls.VariantID) && ls.StockQuantity < monthlySales[ls.VariantID] * 2) // Tồn kho < 2 tháng doanh số
+            .Where(ls => ls.StockQuantity < 5) // Chỉ lấy các sản phẩm sắp hết hàng
             .Select(ls => new RestockSuggestion
             {
                 SKU = ls.Laptop.LaptopID,
@@ -149,9 +149,13 @@ public class InventoryReportService : IInventoryReportService
                 CategoryName = ls.Laptop.Category.CategoryName,
                 BrandName = ls.Laptop.Brand.BrandName,
                 CurrentStock = ls.StockQuantity,
-                AverageMonthlySales = (int)monthlySales[ls.VariantID],
-                SuggestedReorderQuantity = (int)(monthlySales[ls.VariantID] * 3 - ls.StockQuantity), // Nhập đủ 3 tháng doanh số
-                EstimatedValue = (monthlySales[ls.VariantID] * 3 - ls.StockQuantity) * ls.ImportPrice
+                AverageMonthlySales = monthlySales.ContainsKey(ls.VariantID) ? (int)monthlySales[ls.VariantID] : 0,
+                SuggestedReorderQuantity = Math.Max(5, monthlySales.ContainsKey(ls.VariantID) 
+                    ? (int)(monthlySales[ls.VariantID] * 3 - ls.StockQuantity) // Nhập đủ 3 tháng doanh số
+                    : 5), // Nếu chưa có doanh số thì nhập tối thiểu 5 cái
+                EstimatedValue = Math.Max(5, monthlySales.ContainsKey(ls.VariantID)
+                    ? (monthlySales[ls.VariantID] * 3 - ls.StockQuantity)
+                    : 5) * ls.ImportPrice
             })
             .OrderByDescending(rs => rs.AverageMonthlySales)
             .ToList();
