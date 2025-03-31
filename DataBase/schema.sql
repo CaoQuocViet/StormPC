@@ -25,8 +25,7 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public."Brands" (
-    id integer NOT NULL,
-    "BrandID" integer,
+    "BrandID" integer NOT NULL,
     "BrandName" character varying(255),
     "IsDeleted" boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone,
@@ -37,10 +36,10 @@ CREATE TABLE public."Brands" (
 ALTER TABLE public."Brands" OWNER TO vietcq;
 
 --
--- Name: Brands_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: Brands_BrandID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."Brands_id_seq"
+CREATE SEQUENCE public."Brands_BrandID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -49,13 +48,13 @@ CREATE SEQUENCE public."Brands_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Brands_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."Brands_BrandID_seq" OWNER TO vietcq;
 
 --
--- Name: Brands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: Brands_BrandID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."Brands_id_seq" OWNED BY public."Brands".id;
+ALTER SEQUENCE public."Brands_BrandID_seq" OWNED BY public."Brands"."BrandID";
 
 
 --
@@ -63,8 +62,7 @@ ALTER SEQUENCE public."Brands_id_seq" OWNED BY public."Brands".id;
 --
 
 CREATE TABLE public."Categories" (
-    id integer NOT NULL,
-    "CategoryID" integer,
+    "CategoryID" integer NOT NULL,
     "CategoryName" character varying(255),
     "Description" text,
     "IsDeleted" boolean DEFAULT false NOT NULL,
@@ -76,10 +74,10 @@ CREATE TABLE public."Categories" (
 ALTER TABLE public."Categories" OWNER TO vietcq;
 
 --
--- Name: Categories_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: Categories_CategoryID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."Categories_id_seq"
+CREATE SEQUENCE public."Categories_CategoryID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -88,13 +86,13 @@ CREATE SEQUENCE public."Categories_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Categories_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."Categories_CategoryID_seq" OWNER TO vietcq;
 
 --
--- Name: Categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: Categories_CategoryID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."Categories_id_seq" OWNED BY public."Categories".id;
+ALTER SEQUENCE public."Categories_CategoryID_seq" OWNED BY public."Categories"."CategoryID";
 
 
 --
@@ -139,13 +137,12 @@ ALTER SEQUENCE public."Cities_id_seq" OWNED BY public."Cities".id;
 --
 
 CREATE TABLE public."Customers" (
-    id integer NOT NULL,
-    "CustomerID" integer,
+    "CustomerID" integer NOT NULL,
     "FullName" character varying(255),
     "Email" character varying(255),
     "Phone" character varying(255),
     "Address" text,
-    "CityCode" character varying(3) NOT NULL,
+    "CityCode" integer NOT NULL,
     "IsDeleted" boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone
@@ -155,10 +152,10 @@ CREATE TABLE public."Customers" (
 ALTER TABLE public."Customers" OWNER TO vietcq;
 
 --
--- Name: Customers_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: Customers_CustomerID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."Customers_id_seq"
+CREATE SEQUENCE public."Customers_CustomerID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -167,13 +164,13 @@ CREATE SEQUENCE public."Customers_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Customers_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."Customers_CustomerID_seq" OWNER TO vietcq;
 
 --
--- Name: Customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: Customers_CustomerID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."Customers_id_seq" OWNED BY public."Customers".id;
+ALTER SEQUENCE public."Customers_CustomerID_seq" OWNED BY public."Customers"."CustomerID";
 
 
 --
@@ -181,10 +178,9 @@ ALTER SEQUENCE public."Customers_id_seq" OWNED BY public."Customers".id;
 --
 
 CREATE TABLE public."LaptopSpecs" (
-    id integer NOT NULL,
+    "VariantID" integer NOT NULL,
     "SKU" character varying(255) NOT NULL,
-    "VariantID" character varying(255),
-    "LaptopID" character varying(255),
+    "LaptopID" integer,
     "CPU" character varying(255),
     "GPU" character varying(255),
     "RAM" integer,
@@ -203,10 +199,10 @@ CREATE TABLE public."LaptopSpecs" (
 ALTER TABLE public."LaptopSpecs" OWNER TO vietcq;
 
 --
--- Name: LaptopSpecs_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: LaptopSpecs_VariantID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."LaptopSpecs_id_seq"
+CREATE SEQUENCE public."LaptopSpecs_VariantID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -215,13 +211,13 @@ CREATE SEQUENCE public."LaptopSpecs_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."LaptopSpecs_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."LaptopSpecs_VariantID_seq" OWNER TO vietcq;
 
 --
--- Name: LaptopSpecs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: LaptopSpecs_VariantID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."LaptopSpecs_id_seq" OWNED BY public."LaptopSpecs".id;
+ALTER SEQUENCE public."LaptopSpecs_VariantID_seq" OWNED BY public."LaptopSpecs"."VariantID";
 
 
 --
@@ -229,8 +225,7 @@ ALTER SEQUENCE public."LaptopSpecs_id_seq" OWNED BY public."LaptopSpecs".id;
 --
 
 CREATE TABLE public."Laptops" (
-    id integer NOT NULL,
-    "LaptopID" character varying(255),
+    "LaptopID" integer NOT NULL,
     "BrandID" integer,
     "CategoryID" integer,
     "Picture" character varying(255),
@@ -251,10 +246,10 @@ CREATE TABLE public."Laptops" (
 ALTER TABLE public."Laptops" OWNER TO vietcq;
 
 --
--- Name: Laptops_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: Laptops_LaptopID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."Laptops_id_seq"
+CREATE SEQUENCE public."Laptops_LaptopID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -263,13 +258,13 @@ CREATE SEQUENCE public."Laptops_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Laptops_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."Laptops_LaptopID_seq" OWNER TO vietcq;
 
 --
--- Name: Laptops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: Laptops_LaptopID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."Laptops_id_seq" OWNED BY public."Laptops".id;
+ALTER SEQUENCE public."Laptops_LaptopID_seq" OWNED BY public."Laptops"."LaptopID";
 
 
 --
@@ -279,7 +274,7 @@ ALTER SEQUENCE public."Laptops_id_seq" OWNED BY public."Laptops".id;
 CREATE TABLE public."OrderItems" (
     id integer NOT NULL,
     "OrderID" integer,
-    "VariantID" character varying(255),
+    "VariantID" integer,
     "Quantity" integer,
     "UnitPrice" numeric,
     "createdAt" timestamp with time zone,
@@ -316,8 +311,7 @@ ALTER SEQUENCE public."OrderItems_id_seq" OWNED BY public."OrderItems".id;
 --
 
 CREATE TABLE public."OrderStatuses" (
-    id integer NOT NULL,
-    "StatusID" integer,
+    "StatusID" integer NOT NULL,
     "StatusName" character varying(255),
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone
@@ -327,10 +321,10 @@ CREATE TABLE public."OrderStatuses" (
 ALTER TABLE public."OrderStatuses" OWNER TO vietcq;
 
 --
--- Name: OrderStatuses_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: OrderStatuses_StatusID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."OrderStatuses_id_seq"
+CREATE SEQUENCE public."OrderStatuses_StatusID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -339,13 +333,13 @@ CREATE SEQUENCE public."OrderStatuses_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."OrderStatuses_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."OrderStatuses_StatusID_seq" OWNER TO vietcq;
 
 --
--- Name: OrderStatuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: OrderStatuses_StatusID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."OrderStatuses_id_seq" OWNED BY public."OrderStatuses".id;
+ALTER SEQUENCE public."OrderStatuses_StatusID_seq" OWNED BY public."OrderStatuses"."StatusID";
 
 
 --
@@ -353,8 +347,7 @@ ALTER SEQUENCE public."OrderStatuses_id_seq" OWNED BY public."OrderStatuses".id;
 --
 
 CREATE TABLE public."Orders" (
-    id integer NOT NULL,
-    "OrderID" integer,
+    "OrderID" integer NOT NULL,
     "CustomerID" integer,
     "OrderDate" timestamp with time zone,
     "StatusID" integer,
@@ -373,10 +366,10 @@ CREATE TABLE public."Orders" (
 ALTER TABLE public."Orders" OWNER TO vietcq;
 
 --
--- Name: Orders_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: Orders_OrderID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."Orders_id_seq"
+CREATE SEQUENCE public."Orders_OrderID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -385,13 +378,13 @@ CREATE SEQUENCE public."Orders_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."Orders_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."Orders_OrderID_seq" OWNER TO vietcq;
 
 --
--- Name: Orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: Orders_OrderID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."Orders_id_seq" OWNED BY public."Orders".id;
+ALTER SEQUENCE public."Orders_OrderID_seq" OWNED BY public."Orders"."OrderID";
 
 
 --
@@ -399,8 +392,7 @@ ALTER SEQUENCE public."Orders_id_seq" OWNED BY public."Orders".id;
 --
 
 CREATE TABLE public."PaymentMethods" (
-    id integer NOT NULL,
-    "PaymentMethodID" integer,
+    "PaymentMethodID" integer NOT NULL,
     "MethodName" character varying(255),
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone
@@ -410,10 +402,10 @@ CREATE TABLE public."PaymentMethods" (
 ALTER TABLE public."PaymentMethods" OWNER TO vietcq;
 
 --
--- Name: PaymentMethods_id_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
+-- Name: PaymentMethods_PaymentMethodID_seq; Type: SEQUENCE; Schema: public; Owner: vietcq
 --
 
-CREATE SEQUENCE public."PaymentMethods_id_seq"
+CREATE SEQUENCE public."PaymentMethods_PaymentMethodID_seq"
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -422,13 +414,13 @@ CREATE SEQUENCE public."PaymentMethods_id_seq"
     CACHE 1;
 
 
-ALTER SEQUENCE public."PaymentMethods_id_seq" OWNER TO vietcq;
+ALTER SEQUENCE public."PaymentMethods_PaymentMethodID_seq" OWNER TO vietcq;
 
 --
--- Name: PaymentMethods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
+-- Name: PaymentMethods_PaymentMethodID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vietcq
 --
 
-ALTER SEQUENCE public."PaymentMethods_id_seq" OWNED BY public."PaymentMethods".id;
+ALTER SEQUENCE public."PaymentMethods_PaymentMethodID_seq" OWNED BY public."PaymentMethods"."PaymentMethodID";
 
 
 --
@@ -456,17 +448,17 @@ CREATE TABLE public."SoftwareVersion" (
 ALTER TABLE public."SoftwareVersion" OWNER TO vietcq;
 
 --
--- Name: Brands id; Type: DEFAULT; Schema: public; Owner: vietcq
+-- Name: Brands BrandID; Type: DEFAULT; Schema: public; Owner: vietcq
 --
 
-ALTER TABLE ONLY public."Brands" ALTER COLUMN id SET DEFAULT nextval('public."Brands_id_seq"'::regclass);
+ALTER TABLE ONLY public."Brands" ALTER COLUMN "BrandID" SET DEFAULT nextval('public."Brands_BrandID_seq"'::regclass);
 
 
 --
--- Name: Categories id; Type: DEFAULT; Schema: public; Owner: vietcq
+-- Name: Categories CategoryID; Type: DEFAULT; Schema: public; Owner: vietcq
 --
 
-ALTER TABLE ONLY public."Categories" ALTER COLUMN id SET DEFAULT nextval('public."Categories_id_seq"'::regclass);
+ALTER TABLE ONLY public."Categories" ALTER COLUMN "CategoryID" SET DEFAULT nextval('public."Categories_CategoryID_seq"'::regclass);
 
 
 --
@@ -477,24 +469,24 @@ ALTER TABLE ONLY public."Cities" ALTER COLUMN id SET DEFAULT nextval('public."Ci
 
 
 --
--- Name: Customers id; Type: DEFAULT; Schema: public; Owner: vietcq
+-- Name: Customers CustomerID; Type: DEFAULT; Schema: public; Owner: vietcq
 --
 
-ALTER TABLE ONLY public."Customers" ALTER COLUMN id SET DEFAULT nextval('public."Customers_id_seq"'::regclass);
-
-
---
--- Name: LaptopSpecs id; Type: DEFAULT; Schema: public; Owner: vietcq
---
-
-ALTER TABLE ONLY public."LaptopSpecs" ALTER COLUMN id SET DEFAULT nextval('public."LaptopSpecs_id_seq"'::regclass);
+ALTER TABLE ONLY public."Customers" ALTER COLUMN "CustomerID" SET DEFAULT nextval('public."Customers_CustomerID_seq"'::regclass);
 
 
 --
--- Name: Laptops id; Type: DEFAULT; Schema: public; Owner: vietcq
+-- Name: LaptopSpecs VariantID; Type: DEFAULT; Schema: public; Owner: vietcq
 --
 
-ALTER TABLE ONLY public."Laptops" ALTER COLUMN id SET DEFAULT nextval('public."Laptops_id_seq"'::regclass);
+ALTER TABLE ONLY public."LaptopSpecs" ALTER COLUMN "VariantID" SET DEFAULT nextval('public."LaptopSpecs_VariantID_seq"'::regclass);
+
+
+--
+-- Name: Laptops LaptopID; Type: DEFAULT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Laptops" ALTER COLUMN "LaptopID" SET DEFAULT nextval('public."Laptops_LaptopID_seq"'::regclass);
 
 
 --
@@ -505,24 +497,24 @@ ALTER TABLE ONLY public."OrderItems" ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: OrderStatuses id; Type: DEFAULT; Schema: public; Owner: vietcq
+-- Name: OrderStatuses StatusID; Type: DEFAULT; Schema: public; Owner: vietcq
 --
 
-ALTER TABLE ONLY public."OrderStatuses" ALTER COLUMN id SET DEFAULT nextval('public."OrderStatuses_id_seq"'::regclass);
-
-
---
--- Name: Orders id; Type: DEFAULT; Schema: public; Owner: vietcq
---
-
-ALTER TABLE ONLY public."Orders" ALTER COLUMN id SET DEFAULT nextval('public."Orders_id_seq"'::regclass);
+ALTER TABLE ONLY public."OrderStatuses" ALTER COLUMN "StatusID" SET DEFAULT nextval('public."OrderStatuses_StatusID_seq"'::regclass);
 
 
 --
--- Name: PaymentMethods id; Type: DEFAULT; Schema: public; Owner: vietcq
+-- Name: Orders OrderID; Type: DEFAULT; Schema: public; Owner: vietcq
 --
 
-ALTER TABLE ONLY public."PaymentMethods" ALTER COLUMN id SET DEFAULT nextval('public."PaymentMethods_id_seq"'::regclass);
+ALTER TABLE ONLY public."Orders" ALTER COLUMN "OrderID" SET DEFAULT nextval('public."Orders_OrderID_seq"'::regclass);
+
+
+--
+-- Name: PaymentMethods PaymentMethodID; Type: DEFAULT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."PaymentMethods" ALTER COLUMN "PaymentMethodID" SET DEFAULT nextval('public."PaymentMethods_PaymentMethodID_seq"'::regclass);
 
 
 --
@@ -530,7 +522,7 @@ ALTER TABLE ONLY public."PaymentMethods" ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public."Brands"
-    ADD CONSTRAINT "Brands_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "Brands_pkey" PRIMARY KEY ("BrandID");
 
 
 --
@@ -538,7 +530,7 @@ ALTER TABLE ONLY public."Brands"
 --
 
 ALTER TABLE ONLY public."Categories"
-    ADD CONSTRAINT "Categories_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "Categories_pkey" PRIMARY KEY ("CategoryID");
 
 
 --
@@ -554,7 +546,7 @@ ALTER TABLE ONLY public."Cities"
 --
 
 ALTER TABLE ONLY public."Customers"
-    ADD CONSTRAINT "Customers_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "Customers_pkey" PRIMARY KEY ("CustomerID");
 
 
 --
@@ -570,7 +562,7 @@ ALTER TABLE ONLY public."LaptopSpecs"
 --
 
 ALTER TABLE ONLY public."LaptopSpecs"
-    ADD CONSTRAINT "LaptopSpecs_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "LaptopSpecs_pkey" PRIMARY KEY ("VariantID");
 
 
 --
@@ -578,7 +570,7 @@ ALTER TABLE ONLY public."LaptopSpecs"
 --
 
 ALTER TABLE ONLY public."Laptops"
-    ADD CONSTRAINT "Laptops_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "Laptops_pkey" PRIMARY KEY ("LaptopID");
 
 
 --
@@ -594,7 +586,7 @@ ALTER TABLE ONLY public."OrderItems"
 --
 
 ALTER TABLE ONLY public."OrderStatuses"
-    ADD CONSTRAINT "OrderStatuses_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "OrderStatuses_pkey" PRIMARY KEY ("StatusID");
 
 
 --
@@ -602,7 +594,7 @@ ALTER TABLE ONLY public."OrderStatuses"
 --
 
 ALTER TABLE ONLY public."Orders"
-    ADD CONSTRAINT "Orders_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "Orders_pkey" PRIMARY KEY ("OrderID");
 
 
 --
@@ -610,7 +602,7 @@ ALTER TABLE ONLY public."Orders"
 --
 
 ALTER TABLE ONLY public."PaymentMethods"
-    ADD CONSTRAINT "PaymentMethods_pkey" PRIMARY KEY (id);
+    ADD CONSTRAINT "PaymentMethods_pkey" PRIMARY KEY ("PaymentMethodID");
 
 
 --
@@ -619,6 +611,78 @@ ALTER TABLE ONLY public."PaymentMethods"
 
 ALTER TABLE ONLY public."SequelizeMeta"
     ADD CONSTRAINT "SequelizeMeta_pkey" PRIMARY KEY (name);
+
+
+--
+-- Name: Customers Customers_CityCode_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Customers"
+    ADD CONSTRAINT "Customers_CityCode_fkey" FOREIGN KEY ("CityCode") REFERENCES public."Cities"(id);
+
+
+--
+-- Name: LaptopSpecs LaptopSpecs_LaptopID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."LaptopSpecs"
+    ADD CONSTRAINT "LaptopSpecs_LaptopID_fkey" FOREIGN KEY ("LaptopID") REFERENCES public."Laptops"("LaptopID");
+
+
+--
+-- Name: Laptops Laptops_BrandID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Laptops"
+    ADD CONSTRAINT "Laptops_BrandID_fkey" FOREIGN KEY ("BrandID") REFERENCES public."Brands"("BrandID");
+
+
+--
+-- Name: Laptops Laptops_CategoryID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Laptops"
+    ADD CONSTRAINT "Laptops_CategoryID_fkey" FOREIGN KEY ("CategoryID") REFERENCES public."Categories"("CategoryID");
+
+
+--
+-- Name: OrderItems OrderItems_OrderID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."OrderItems"
+    ADD CONSTRAINT "OrderItems_OrderID_fkey" FOREIGN KEY ("OrderID") REFERENCES public."Orders"("OrderID");
+
+
+--
+-- Name: OrderItems OrderItems_VariantID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."OrderItems"
+    ADD CONSTRAINT "OrderItems_VariantID_fkey" FOREIGN KEY ("VariantID") REFERENCES public."LaptopSpecs"("VariantID");
+
+
+--
+-- Name: Orders Orders_CustomerID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Orders"
+    ADD CONSTRAINT "Orders_CustomerID_fkey" FOREIGN KEY ("CustomerID") REFERENCES public."Customers"("CustomerID");
+
+
+--
+-- Name: Orders Orders_PaymentMethodID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Orders"
+    ADD CONSTRAINT "Orders_PaymentMethodID_fkey" FOREIGN KEY ("PaymentMethodID") REFERENCES public."PaymentMethods"("PaymentMethodID");
+
+
+--
+-- Name: Orders Orders_StatusID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Orders"
+    ADD CONSTRAINT "Orders_StatusID_fkey" FOREIGN KEY ("StatusID") REFERENCES public."OrderStatuses"("StatusID");
 
 
 --
