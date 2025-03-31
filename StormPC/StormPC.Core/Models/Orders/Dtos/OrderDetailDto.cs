@@ -22,7 +22,7 @@ public class OrderDetailDto
 public class OrderItemDto
 {
     public int OrderItemID { get; set; }
-    public string VariantID { get; set; } = string.Empty;
+    public int VariantID { get; set; }
     public string ModelName { get; set; } = string.Empty;
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }

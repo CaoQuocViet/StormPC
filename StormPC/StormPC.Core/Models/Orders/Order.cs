@@ -24,14 +24,14 @@ public class Order
     public int PaymentMethodID { get; set; }
 
     [Required]
-    [MaxLength(3)]
-    public string ShipCityCode { get; set; } = null!;
+    [Column("ShipCityID")]
+    public int ShipCityId { get; set; }
 
     [Required]
     public string ShippingAddress { get; set; } = null!;
 
     [Required]
-    [MaxLength(50)]
+    [MaxLength(255)]
     public string ShippingCity { get; set; } = null!;
 
     [MaxLength(10)]

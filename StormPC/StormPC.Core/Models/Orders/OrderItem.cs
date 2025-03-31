@@ -8,7 +8,7 @@ namespace StormPC.Core.Models.Orders;
 public class OrderItem
 {
     public int OrderID { get; set; }
-    public string VariantID { get; set; } = null!;
+    public int VariantID { get; set; }
 
     [Required]
     public int Quantity { get; set; }
