@@ -3,29 +3,38 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Orders', {
-      id: {
+      OrderID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      OrderID: {
-        type: Sequelize.INTEGER
-      },
       CustomerID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Customers',
+          key: 'CustomerID'
+        }
       },
       OrderDate: {
         type: Sequelize.DATE
       },
       StatusID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'OrderStatuses',
+          key: 'StatusID'
+        }
       },
       TotalAmount: {
         type: Sequelize.DECIMAL
       },
       PaymentMethodID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'PaymentMethods',
+          key: 'PaymentMethodID'
+        }
       },
       ShipCityCode: {
         type: Sequelize.STRING

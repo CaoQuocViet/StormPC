@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('LaptopSpecs', {
-      id: {
+      VariantID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -14,11 +14,12 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      VariantID: {
-        type: Sequelize.STRING
-      },
       LaptopID: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Laptops',
+          key: 'LaptopID'
+        }
       },
       CPU: {
         type: Sequelize.STRING

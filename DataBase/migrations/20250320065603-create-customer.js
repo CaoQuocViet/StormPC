@@ -3,13 +3,10 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Customers', {
-      id: {
+      CustomerID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      CustomerID: {
         type: Sequelize.INTEGER
       },
       FullName: {
@@ -25,8 +22,12 @@ module.exports = {
         type: Sequelize.TEXT
       },
       CityCode: {
-        type: Sequelize.STRING(3),
-        allowNull: false
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Cities',
+          key: 'id'
+        }
       },
       IsDeleted: {
         type: Sequelize.BOOLEAN,
