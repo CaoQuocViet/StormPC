@@ -11,7 +11,7 @@ module.exports = {
         StatusID: 4,
         TotalAmount: 390000000,
         PaymentMethodID: 2,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '123 Lê Lợi, Phường Bến Nghé, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -26,7 +26,7 @@ module.exports = {
         StatusID: 3,
         TotalAmount: 579000000,
         PaymentMethodID: 1,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '45 Nguyễn Huệ, Phường Bến Nghé, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -41,7 +41,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 866000000,
         PaymentMethodID: 3,
-        ShipCityCode: 'HAN',
+        ShipCityID: 2,  // HAN
         ShippingAddress: '89 Lý Tự Trọng, Hoàn Kiếm',
         ShippingCity: 'Hà Nội',
         ShippingPostalCode: '100000',
@@ -56,7 +56,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 382999988,
         PaymentMethodID: 7,
-        ShipCityCode: 'DAN',
+        ShipCityID: 3,  // DAN
         ShippingAddress: '234 Trần Phú, Hải Châu',
         ShippingCity: 'Đà Nẵng',
         ShippingPostalCode: '550000',
@@ -71,7 +71,7 @@ module.exports = {
         StatusID: 5,
         TotalAmount: 1187800000,
         PaymentMethodID: 5,
-        ShipCityCode: 'CTO',
+        ShipCityID: 4,  // CTO
         ShippingAddress: '78 Phan Chu Trinh, Ninh Kiều',
         ShippingCity: 'Cần Thơ',
         ShippingPostalCode: '900000',
@@ -86,7 +86,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 484600000,
         PaymentMethodID: 4,
-        ShipCityCode: 'HAP',
+        ShipCityID: 5,  // HAP
         ShippingAddress: '90 Lê Duẩn, Hải An',
         ShippingCity: 'Hải Phòng',
         ShippingPostalCode: '180000',
@@ -101,7 +101,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 689000000,
         PaymentMethodID: 8,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '67 Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -116,7 +116,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 512000000,
         PaymentMethodID: 6,
-        ShipCityCode: 'NTH',
+        ShipCityID: 6,  // NTH
         ShippingAddress: '123 Trần Phú, Lộc Thọ',
         ShippingCity: 'Nha Trang',
         ShippingPostalCode: '650000',
@@ -131,7 +131,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 398200000,
         PaymentMethodID: 2,
-        ShipCityCode: 'HUE',
+        ShipCityID: 8,  // HUE
         ShippingAddress: '45 Nguyễn Huệ, Thành phố Huế',
         ShippingCity: 'Huế',
         ShippingPostalCode: '530000',
@@ -146,7 +146,7 @@ module.exports = {
         StatusID: 3,
         TotalAmount: 862000000,
         PaymentMethodID: 1,
-        ShipCityCode: 'DAN',
+        ShipCityID: 3,  // DAN
         ShippingAddress: '56 Nguyễn Văn Linh, Hải Châu',
         ShippingCity: 'Đà Nẵng',
         ShippingPostalCode: '550000',
@@ -161,7 +161,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 639000000,
         PaymentMethodID: 2,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '28 Phan Xích Long, Phường 2, Phú Nhuận',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -176,7 +176,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 558000000,
         PaymentMethodID: 3,
-        ShipCityCode: 'HAN',
+        ShipCityID: 2,  // HAN
         ShippingAddress: '175 Tây Sơn, Đống Đa',
         ShippingCity: 'Hà Nội',
         ShippingPostalCode: '100000',
@@ -191,7 +191,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 576000000,
         PaymentMethodID: 1,
-        ShipCityCode: 'DAN',
+        ShipCityID: 3,  // DAN
         ShippingAddress: '45 Nguyễn Thị Minh Khai, Hải Châu',
         ShippingCity: 'Đà Nẵng',
         ShippingPostalCode: '550000',
@@ -206,7 +206,7 @@ module.exports = {
         StatusID: 3,
         TotalAmount: 846000000,
         PaymentMethodID: 4,
-        ShipCityCode: 'HAP',
+        ShipCityID: 5,  // HAP
         ShippingAddress: '101 Lê Hồng Phong, Ngô Quyền',
         ShippingCity: 'Hải Phòng',
         ShippingPostalCode: '180000',
@@ -221,7 +221,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 387000000,
         PaymentMethodID: 2,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '65 Lê Duẩn, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -236,7 +236,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 405000000,
         PaymentMethodID: 5,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '28 Phan Xích Long, Phường 2, Phú Nhuận',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -251,7 +251,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 567000000,
         PaymentMethodID: 1,
-        ShipCityCode: 'HAN',
+        ShipCityID: 2,  // HAN
         ShippingAddress: '175 Tây Sơn, Đống Đa',
         ShippingCity: 'Hà Nội',
         ShippingPostalCode: '100000',
@@ -266,7 +266,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 495000000,
         PaymentMethodID: 5,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '123 Lê Lợi, Phường Bến Nghé, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -281,7 +281,7 @@ module.exports = {
         StatusID: 2,
         TotalAmount: 570000000,
         PaymentMethodID: 1,
-        ShipCityCode: 'HCM',
+        ShipCityID: 1,  // HCM
         ShippingAddress: '67 Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1',
         ShippingCity: 'Hồ Chí Minh',
         ShippingPostalCode: '700000',
@@ -296,7 +296,7 @@ module.exports = {
         StatusID: 3,
         TotalAmount: 670000000,
         PaymentMethodID: 2,
-        ShipCityCode: 'HAN',
+        ShipCityID: 2,  // HAN
         ShippingAddress: '89 Lý Tự Trọng, Hoàn Kiếm',
         ShippingCity: 'Hà Nội',
         ShippingPostalCode: '100000',
@@ -311,7 +311,7 @@ module.exports = {
         StatusID: 1,
         TotalAmount: 1520000000,
         PaymentMethodID: 3,
-        ShipCityCode: 'DAN',
+        ShipCityID: 3,  // DAN
         ShippingAddress: '45 Nguyễn Thị Minh Khai, Hải Châu',
         ShippingCity: 'Đà Nẵng',
         ShippingPostalCode: '550000',

@@ -36,8 +36,12 @@ module.exports = {
           key: 'PaymentMethodID'
         }
       },
-      ShipCityCode: {
-        type: Sequelize.STRING
+      ShipCityID: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Cities',
+          key: 'id'
+        }
       },
       ShippingAddress: {
         type: Sequelize.TEXT
