@@ -27,9 +27,32 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     private int _pageSize = 10;
     private int _totalItems;
 
-    // New properties for editing
-    [ObservableProperty]
-    private CategoryDisplayDto? editingCategory;
+    // Properties for editing
+    private CategoryDisplayDto? _editingCategory;
+    public CategoryDisplayDto? EditingCategory
+    {
+        get => _editingCategory;
+        set
+        {
+            if (_editingCategory != value)
+            {
+                if (_editingCategory != null)
+                {
+                    _editingCategory.PropertyChanged -= EditingCategory_PropertyChanged;
+                }
+
+                _editingCategory = value;
+
+                if (_editingCategory != null)
+                {
+                    _editingCategory.PropertyChanged += EditingCategory_PropertyChanged;
+                }
+
+                OnPropertyChanged(nameof(EditingCategory));
+                ValidateCategoryInput();
+            }
+        }
+    }
     
     [ObservableProperty]
     private bool isValidCategoryInput;
@@ -138,15 +161,42 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    private void EditingCategory_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(CategoryDisplayDto.CategoryName))
+        {
+            ValidateCategoryInput();
+        }
+    }
+
+    private void ValidateCategoryInput()
+    {
+        IsValidCategoryInput = EditingCategory != null && 
+                              !string.IsNullOrWhiteSpace(EditingCategory.CategoryName?.Trim());
+        OnPropertyChanged(nameof(IsValidCategoryInput));
+    }
+
     // Add new category
     public async Task<bool> AddCategoryAsync(CategoryDisplayDto newCategory)
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(newCategory.CategoryName?.Trim()))
+                return false;
+
+            // Check if category name already exists
+            var exists = await _dbContext.Categories
+                .Where(c => !c.IsDeleted)
+                .AnyAsync(c => c.CategoryName.ToLower() == newCategory.CategoryName.Trim().ToLower());
+
+            if (exists)
+                return false;
+
             var category = new Category
             {
-                CategoryName = newCategory.CategoryName,
-                Description = newCategory.Description,
+                CategoryName = newCategory.CategoryName.Trim(),
+                Description = newCategory.Description?.Trim(),
+                IsDeleted = false,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -215,18 +265,6 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
             Debug.WriteLine($"Error deleting category: {ex.Message}");
             return (false, "Có lỗi xảy ra khi xóa loại sản phẩm.");
         }
-    }
-
-    // Validate category input
-    partial void OnEditingCategoryChanged(CategoryDisplayDto? value)
-    {
-        ValidateCategoryInput();
-    }
-
-    private void ValidateCategoryInput()
-    {
-        IsValidCategoryInput = EditingCategory != null && 
-                              !string.IsNullOrWhiteSpace(EditingCategory.CategoryName);
     }
 
     // Existing methods...

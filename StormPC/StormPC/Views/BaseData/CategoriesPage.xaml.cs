@@ -45,8 +45,16 @@ public sealed partial class CategoriesPage : Page
     
     private async void AddButton_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.EditingCategory = new CategoryDisplayDto();
+        // Initialize with empty strings and trigger property change
+        var newCategory = new CategoryDisplayDto
+        {
+            CategoryName = string.Empty,
+            Description = string.Empty
+        };
+        
+        ViewModel.EditingCategory = newCategory;
         CategoryDialog.Title = "Thêm loại sản phẩm mới";
+        CategoryDialog.XamlRoot = this.XamlRoot;
         var result = await CategoryDialog.ShowAsync();
 
         if (result == ContentDialogResult.Primary)
