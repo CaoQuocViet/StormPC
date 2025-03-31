@@ -28,6 +28,7 @@ CREATE TABLE public."Brands" (
     id integer NOT NULL,
     "BrandID" integer,
     "BrandName" character varying(255),
+    "IsDeleted" boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone
 );
@@ -193,6 +194,7 @@ CREATE TABLE public."LaptopSpecs" (
     "ImportPrice" numeric NOT NULL,
     "Price" numeric,
     "StockQuantity" integer,
+    "IsDeleted" boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone,
     "updatedAt" timestamp with time zone
 );
