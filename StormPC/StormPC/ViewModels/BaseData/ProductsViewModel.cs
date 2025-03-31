@@ -1,11 +1,13 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using StormPC.Core.Models.Products.Dtos;
 using StormPC.Core.Services.Products;
 using StormPC.Core.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Windows.Input;
 
 namespace StormPC.ViewModels.BaseData;
 
@@ -20,6 +22,37 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private int _pageSize = 10; 
     private int _totalItems;
     private int _selectedSortIndex;
+    private LaptopDisplayDto _selectedLaptop;
+
+    public LaptopDisplayDto SelectedLaptop
+    {
+        get => _selectedLaptop;
+        set => SetProperty(ref _selectedLaptop, value);
+    }
+
+    [RelayCommand]
+    private async Task AddSpec()
+    {
+        if (SelectedLaptop == null) return;
+        // TODO: Implement add spec logic
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private async Task Edit()
+    {
+        if (SelectedLaptop == null) return;
+        // TODO: Implement edit logic
+        await Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private async Task Delete()
+    {
+        if (SelectedLaptop == null) return;
+        // TODO: Implement delete logic
+        await Task.CompletedTask;
+    }
 
     public int SelectedSortIndex
     {
