@@ -43,6 +43,94 @@ public sealed partial class CategoriesPage : Page
         }
     }
     
+    private async void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.EditingCategory = new CategoryDisplayDto();
+        CategoryDialog.Title = "Thêm loại sản phẩm mới";
+        var result = await CategoryDialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            var success = await ViewModel.AddCategoryAsync(ViewModel.EditingCategory);
+            if (!success)
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Không thể thêm loại sản phẩm. Vui lòng thử lại sau.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
+        }
+    }
+
+    private async void EditButton_Click(object sender, RoutedEventArgs e)
+    {
+        var button = sender as Button;
+        if (button?.DataContext is CategoryDisplayDto category)
+        {
+            ViewModel.EditingCategory = new CategoryDisplayDto
+            {
+                CategoryID = category.CategoryID,
+                CategoryName = category.CategoryName,
+                Description = category.Description
+            };
+
+            CategoryDialog.Title = "Sửa loại sản phẩm";
+            var result = await CategoryDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                var success = await ViewModel.UpdateCategoryAsync(ViewModel.EditingCategory);
+                if (!success)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Lỗi",
+                        Content = "Không thể cập nhật loại sản phẩm. Vui lòng thử lại sau.",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = this.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                }
+            }
+        }
+    }
+
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        var button = sender as Button;
+        if (button?.DataContext is CategoryDisplayDto category)
+        {
+            DeleteConfirmationText.Text = $"Bạn có chắc chắn muốn xóa loại sản phẩm \"{category.CategoryName}\" không?";
+            var result = await DeleteConfirmationDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                var (success, message) = await ViewModel.DeleteCategoryAsync(category.CategoryID);
+                var dialog = new ContentDialog
+                {
+                    Title = success ? "Thành công" : "Lỗi",
+                    Content = message,
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.XamlRoot
+                };
+                await dialog.ShowAsync();
+            }
+        }
+    }
+
+    private void CategoryDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+    {
+        // Validation is handled by the ViewModel through IsValidCategoryInput
+        if (!ViewModel.IsValidCategoryInput)
+        {
+            args.Cancel = true;
+        }
+    }
+
     private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
         var dataGrid = sender as DataGrid;
