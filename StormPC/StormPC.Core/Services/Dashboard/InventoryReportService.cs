@@ -110,7 +110,7 @@ public class InventoryReportService : IInventoryReportService
         var agedInventories = currentInventory
             .Select(ls => new AgedInventory
             {
-                SKU = ls.Laptop.LaptopID,
+                SKU = ls.SKU,
                 ModelName = ls.Laptop.ModelName,
                 CategoryName = ls.Laptop.Category.CategoryName,
                 BrandName = ls.Laptop.Brand.BrandName,
@@ -128,7 +128,7 @@ public class InventoryReportService : IInventoryReportService
             .Where(ls => ls.StockQuantity < 5)
             .Select(ls => new LowStockItem
             {
-                SKU = ls.Laptop.LaptopID,
+                SKU = ls.SKU,
                 ModelName = ls.Laptop.ModelName,
                 StockQuantity = ls.StockQuantity,
                 Price = ls.ImportPrice
@@ -148,15 +148,15 @@ public class InventoryReportService : IInventoryReportService
             .Where(ls => ls.StockQuantity < 5) // Chỉ lấy các sản phẩm sắp hết hàng
             .Select(ls => new RestockSuggestion
             {
-                SKU = ls.Laptop.LaptopID,
+                SKU = ls.SKU,
                 ModelName = ls.Laptop.ModelName,
                 CategoryName = ls.Laptop.Category.CategoryName,
                 BrandName = ls.Laptop.Brand.BrandName,
                 CurrentStock = ls.StockQuantity,
                 AverageMonthlySales = monthlySales.ContainsKey(ls.VariantID) ? (int)monthlySales[ls.VariantID] : 0,
                 SuggestedReorderQuantity = Math.Max(5, monthlySales.ContainsKey(ls.VariantID) 
-                    ? (int)(monthlySales[ls.VariantID] * 3 - ls.StockQuantity) // Nhập đủ 3 tháng doanh số
-                    : 5), // Nếu chưa có doanh số thì nhập tối thiểu 5 cái
+                    ? (int)(monthlySales[ls.VariantID] * 3 - ls.StockQuantity)
+                    : 5),
                 EstimatedValue = Math.Max(5, monthlySales.ContainsKey(ls.VariantID)
                     ? (monthlySales[ls.VariantID] * 3 - ls.StockQuantity)
                     : 5) * ls.ImportPrice
@@ -171,7 +171,7 @@ public class InventoryReportService : IInventoryReportService
             TotalValue = totalValue,
             AverageStockValue = averageStockValue,
             StockTurnoverRate = stockTurnoverRate,
-            LowStockProducts = lowStockItems.Count,
+            LowStockProducts = lowStockItems.Count(),
             CategoryAnalytics = categoryAnalytics,
             BrandAnalytics = brandAnalytics,
             StockTrends = stockTrends,

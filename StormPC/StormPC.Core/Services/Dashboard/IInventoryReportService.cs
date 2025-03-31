@@ -75,10 +75,10 @@ public class StockTrend
 
 public class AgedInventory
 {
-    public string SKU { get; set; }
-    public string ModelName { get; set; }
-    public string CategoryName { get; set; }
-    public string BrandName { get; set; }
+    public string SKU { get; set; } = string.Empty;
+    public string ModelName { get; set; } = string.Empty;
+    public string CategoryName { get; set; } = string.Empty;
+    public string BrandName { get; set; } = string.Empty;
     public int StockQuantity { get; set; }
     public decimal StockValue { get; set; }
     public int DaysInStock { get; set; }
@@ -87,10 +87,10 @@ public class AgedInventory
 
 public class RestockSuggestion
 {
-    public string SKU { get; set; }
-    public string ModelName { get; set; }
-    public string CategoryName { get; set; }
-    public string BrandName { get; set; }
+    public string SKU { get; set; } = string.Empty;
+    public string ModelName { get; set; } = string.Empty;
+    public string CategoryName { get; set; } = string.Empty;
+    public string BrandName { get; set; } = string.Empty;
     public int CurrentStock { get; set; }
     public int AverageMonthlySales { get; set; }
     public int SuggestedReorderQuantity { get; set; }
@@ -99,10 +99,10 @@ public class RestockSuggestion
 
 public class TopSellingProduct
 {
-    public string SKU { get; set; }
-    public string ModelName { get; set; }
-    public string CategoryName { get; set; }
-    public string BrandName { get; set; }
+    public string SKU { get; set; } = string.Empty;
+    public string ModelName { get; set; } = string.Empty;
+    public string CategoryName { get; set; } = string.Empty;
+    public string BrandName { get; set; } = string.Empty;
     public int QuantitySold { get; set; }
     public decimal Revenue { get; set; }
 } 
