@@ -2,7 +2,7 @@ namespace StormPC.Core.Models.Products.Dtos;
 
 public class LaptopDisplayDto
 {
-    public string LaptopID { get; set; } = null!;
+    public int LaptopID { get; set; }
     public string ModelName { get; set; } = null!;
     public string BrandName { get; set; } = null!;
     public string CategoryName { get; set; } = null!;

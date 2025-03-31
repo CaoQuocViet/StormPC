@@ -7,7 +7,7 @@ namespace StormPC.Core.Models.Products;
 public class Laptop
 {
     [Key]
-    public string LaptopID { get; set; } = null!;
+    public int LaptopID { get; set; }
 
     public int BrandID { get; set; }
 

@@ -7,6 +7,7 @@ namespace StormPC.Core.Models.Products;
 public class Category
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int CategoryID { get; set; }
 
     [Required]
@@ -25,8 +26,8 @@ public class Category
     [Column("updatedAt")]
     public DateTime? UpdatedAt { get; set; }
 
-    // Thuộc tính navigation
-    public ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
+    // Navigation properties
+    public virtual ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
 
     [NotMapped]
     public int ProductCount { get; set; }

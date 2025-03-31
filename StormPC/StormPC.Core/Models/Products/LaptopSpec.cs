@@ -8,13 +8,13 @@ namespace StormPC.Core.Models.Products;
 public class LaptopSpec
 {
     [Key]
-    public string VariantID { get; set; } = null!;
+    public int VariantID { get; set; }
 
     [Required]
     [MaxLength(50)]
     public string SKU { get; set; } = null!;
 
-    public string LaptopID { get; set; } = null!;
+    public int LaptopID { get; set; }
 
     [Required]
     [MaxLength(100)]
