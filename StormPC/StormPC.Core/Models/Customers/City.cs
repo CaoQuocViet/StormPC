@@ -8,14 +8,20 @@ namespace StormPC.Core.Models.Customers;
 public class City
 {
     [Key]
-    [MaxLength(3)]
+    [Column("id")]
+    public int Id { get; set; }
+
+    [Required]
+    [MaxLength(255)]
+    [Column("CityCode")]
     public string CityCode { get; set; } = null!;
 
     [Required]
-    [MaxLength(100)]
+    [MaxLength(255)]
+    [Column("CityName")]
     public string CityName { get; set; } = null!;
 
-    // Thuộc tính navigation
+    // Navigation properties
     public ICollection<Customer> Customers { get; set; } = new List<Customer>();
     public ICollection<Order> ShippingOrders { get; set; } = new List<Order>();
 } 

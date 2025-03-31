@@ -11,15 +11,15 @@ public class Customer
     public int CustomerID { get; set; }
 
     [Required]
-    [MaxLength(100)]
+    [MaxLength(255)]
     public string FullName { get; set; } = null!;
 
     [Required]
-    [MaxLength(100)]
+    [MaxLength(255)]
     [EmailAddress]
     public string Email { get; set; } = null!;
 
-    [MaxLength(20)]
+    [MaxLength(255)]
     [Phone]
     public string? Phone { get; set; }
 
@@ -27,13 +27,13 @@ public class Customer
     public string Address { get; set; } = null!;
 
     [Required]
-    [MaxLength(3)]
-    public string CityCode { get; set; } = null!;
+    [Column("CityCode")]
+    public int CityId { get; set; }
 
     [Required]
     public bool IsDeleted { get; set; }
 
-    // Thuộc tính navigation
+    // Navigation properties
     public City City { get; set; } = null!;
     public ICollection<Order> Orders { get; set; } = new List<Order>();
 } 
