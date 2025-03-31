@@ -27,6 +27,13 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     private int _pageSize = 10;
     private int _totalItems;
 
+    // New properties for editing
+    [ObservableProperty]
+    private CategoryDisplayDto? editingCategory;
+    
+    [ObservableProperty]
+    private bool isValidCategoryInput;
+
     // Sorting properties
     private List<string> _sortProperties = new();
     private List<ListSortDirection> _sortDirections = new();
@@ -84,14 +91,13 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     [RelayCommand]
     private async Task LoadCategories()
     {
-        if (IsLoading) return; // Prevent multiple simultaneous loads
+        if (IsLoading) return;
 
         try
         {
             IsLoading = true;
             Debug.WriteLine("Loading categories...");
 
-            // Get categories with product counts in a single query
             var categories = await _dbContext.Categories
                 .Where(c => !c.IsDeleted)
                 .Select(c => new
@@ -125,7 +131,6 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         {
             Debug.WriteLine($"Error loading categories: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-            // Consider showing error message to user
         }
         finally
         {
@@ -133,37 +138,101 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
-    partial void OnSearchTextChanged(string value)
-    {
-        FilterAndPaginateCategories();
-    }
-
-    public async Task LoadCategoriesAsync()
+    // Add new category
+    public async Task<bool> AddCategoryAsync(CategoryDisplayDto newCategory)
     {
         try
         {
-            IsLoading = true;
-            var categories = await _dbContext.Categories
-                .Where(c => !c.IsDeleted)
-                .Select(c => new CategoryDisplayDto
-                {
-                    CategoryID = c.CategoryID,
-                    CategoryName = c.CategoryName,
-                    Description = c.Description,
-                    ProductCount = _dbContext.Laptops.Count(l => l.CategoryID == c.CategoryID && !l.IsDeleted),
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt ?? c.CreatedAt
-                })
-                .OrderBy(c => c.CategoryName)
-                .ToListAsync();
-            
-            _allCategories = categories;
-            FilterAndPaginateCategories();
+            var category = new Category
+            {
+                CategoryName = newCategory.CategoryName,
+                Description = newCategory.Description,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _dbContext.Categories.Add(category);
+            await _dbContext.SaveChangesAsync();
+            await LoadCategories(); // Reload to get updated list
+            return true;
         }
-        finally
+        catch (Exception ex)
         {
-            IsLoading = false;
+            Debug.WriteLine($"Error adding category: {ex.Message}");
+            return false;
         }
+    }
+
+    // Update existing category
+    public async Task<bool> UpdateCategoryAsync(CategoryDisplayDto updatedCategory)
+    {
+        try
+        {
+            var category = await _dbContext.Categories
+                .FirstOrDefaultAsync(c => c.CategoryID == updatedCategory.CategoryID);
+
+            if (category == null) return false;
+
+            category.CategoryName = updatedCategory.CategoryName;
+            category.Description = updatedCategory.Description;
+            category.UpdatedAt = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+            await LoadCategories(); // Reload to get updated list
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error updating category: {ex.Message}");
+            return false;
+        }
+    }
+
+    // Delete category
+    public async Task<(bool success, string message)> DeleteCategoryAsync(int categoryId)
+    {
+        try
+        {
+            var category = await _dbContext.Categories
+                .Include(c => c.Laptops.Where(l => !l.IsDeleted))
+                .FirstOrDefaultAsync(c => c.CategoryID == categoryId);
+
+            if (category == null)
+                return (false, "Không tìm thấy loại sản phẩm này.");
+
+            if (category.Laptops.Any())
+                return (false, "Không thể xóa loại sản phẩm này vì đang có sản phẩm thuộc loại này.");
+
+            category.IsDeleted = true;
+            category.UpdatedAt = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+            await LoadCategories(); // Reload to get updated list
+            return (true, "Xóa loại sản phẩm thành công.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error deleting category: {ex.Message}");
+            return (false, "Có lỗi xảy ra khi xóa loại sản phẩm.");
+        }
+    }
+
+    // Validate category input
+    partial void OnEditingCategoryChanged(CategoryDisplayDto? value)
+    {
+        ValidateCategoryInput();
+    }
+
+    private void ValidateCategoryInput()
+    {
+        IsValidCategoryInput = EditingCategory != null && 
+                              !string.IsNullOrWhiteSpace(EditingCategory.CategoryName);
+    }
+
+    // Existing methods...
+    partial void OnSearchTextChanged(string value)
+    {
+        FilterAndPaginateCategories();
     }
 
     public void UpdateSorting(List<string> properties, List<ListSortDirection> directions)
@@ -216,7 +285,6 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 
     private List<CategoryDisplayDto> ApplySorting(List<CategoryDisplayDto> categories)
     {
-        // Apply sorting if any sort properties are defined
         if (_sortProperties.Any())
         {
             categories = Core.Helpers.DataGridSortHelper.ApplySort(
