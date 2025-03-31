@@ -7,7 +7,7 @@ public interface IProductService
 {
     Task<List<LaptopDisplayDto>> GetLaptopsAsync();
     Task<IEnumerable<LaptopDisplayDto>> GetAllLaptopsForDisplayAsync();
-    Task<Laptop?> GetLaptopByIdAsync(string id);
-    Task<LaptopSpec?> GetCheapestSpecForLaptopAsync(string laptopId);
-    Task<int> GetVariantsCountAsync(string laptopId);
+    Task<Laptop?> GetLaptopByIdAsync(int id);
+    Task<LaptopSpec?> GetCheapestSpecForLaptopAsync(int laptopId);
+    Task<int> GetVariantsCountAsync(int laptopId);
 } 

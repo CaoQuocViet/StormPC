@@ -61,7 +61,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
         return result;
     }
 
-    public async Task<Laptop?> GetLaptopByIdAsync(string id)
+    public async Task<Laptop?> GetLaptopByIdAsync(int id)
     {
         return await _dbContext.Set<Laptop>()
             .Where(l => !l.IsDeleted)
@@ -71,7 +71,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
             .FirstOrDefaultAsync(l => l.LaptopID == id);
     }
 
-    public async Task<LaptopSpec?> GetCheapestSpecForLaptopAsync(string laptopId)
+    public async Task<LaptopSpec?> GetCheapestSpecForLaptopAsync(int laptopId)
     {
         return await _dbContext.Set<LaptopSpec>()
             .Where(ls => ls.LaptopID == laptopId)
@@ -79,7 +79,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
             .FirstOrDefaultAsync();
     }
 
-    public async Task<int> GetVariantsCountAsync(string laptopId)
+    public async Task<int> GetVariantsCountAsync(int laptopId)
     {
         return await _dbContext.LaptopSpecs
             .Where(spec => spec.LaptopID == laptopId)
