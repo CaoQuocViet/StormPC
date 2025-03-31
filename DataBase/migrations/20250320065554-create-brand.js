@@ -15,6 +15,11 @@ module.exports = {
       BrandName: {
         type: Sequelize.STRING
       },
+      IsDeleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE
