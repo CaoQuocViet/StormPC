@@ -99,3 +99,10 @@ psql postgresql://vietcq:123456789000@localhost:5444/stormpc_db
 
 # dump database
 pg_dump -U vietcq -h localhost -p 5444 -d stormpc_db -s > schema.sql
+
+===============================================
+
+# Thường dùng khi debug - khởi động lại trạng thái data ban đầu, thêm trường mới vào header line
+npx sequelize-cli db:migrate:undo:all
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
