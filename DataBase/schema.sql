@@ -353,7 +353,7 @@ CREATE TABLE public."Orders" (
     "StatusID" integer,
     "TotalAmount" numeric,
     "PaymentMethodID" integer,
-    "ShipCityCode" character varying(255),
+    "ShipCityID" integer,
     "ShippingAddress" text,
     "ShippingCity" character varying(255),
     "ShippingPostalCode" character varying(10),
@@ -675,6 +675,14 @@ ALTER TABLE ONLY public."Orders"
 
 ALTER TABLE ONLY public."Orders"
     ADD CONSTRAINT "Orders_PaymentMethodID_fkey" FOREIGN KEY ("PaymentMethodID") REFERENCES public."PaymentMethods"("PaymentMethodID");
+
+
+--
+-- Name: Orders Orders_ShipCityID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vietcq
+--
+
+ALTER TABLE ONLY public."Orders"
+    ADD CONSTRAINT "Orders_ShipCityID_fkey" FOREIGN KEY ("ShipCityID") REFERENCES public."Cities"(id);
 
 
 --
