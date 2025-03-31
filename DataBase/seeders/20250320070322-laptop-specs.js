@@ -979,6 +979,108 @@ module.exports = {
         StockQuantity: 4,
         createdAt: new Date('2025-02-23T14:45:00Z'),
         updatedAt: new Date('2025-02-23T14:45:00Z')
+      },
+      // Asus Zenbook Duo OLED - cấu hình cơ bản
+      {
+        SKU: 'ASU-21365-1-GRY',
+        VariantID: '21365-1',
+        LaptopID: '21365',
+        CPU: 'Intel Core Ultra 9 185H',
+        GPU: 'Intel Arc Graphics',
+        RAM: 32,
+        Storage: 1024,
+        StorageType: 'SSD',
+        Color: 'Meteor Grey',
+        ImportPrice: 180000000,
+        Price: 212000000,
+        StockQuantity: 15,
+        createdAt: new Date('2025-02-25T10:30:00Z'),
+        updatedAt: new Date('2025-02-25T10:30:00Z')
+      },
+      // Asus Zenbook Duo OLED - cấu hình cao cấp
+      {
+        SKU: 'ASU-21365-2-GRY',
+        VariantID: '21365-2',
+        LaptopID: '21365',
+        CPU: 'Intel Core Ultra 9 185H',
+        GPU: 'Intel Arc Graphics',
+        RAM: 64,
+        Storage: 2048,
+        StorageType: 'SSD',
+        Color: 'Meteor Grey',
+        ImportPrice: 210000000,
+        Price: 245000000,
+        StockQuantity: 8,
+        createdAt: new Date('2025-02-25T11:15:00Z'),
+        updatedAt: new Date('2025-02-25T11:15:00Z')
+      },
+      // Dell Alienware x17 R2 - cấu hình cơ bản
+      {
+        SKU: 'DEL-21370-1-BLK',
+        VariantID: '21370-1',
+        LaptopID: '21370',
+        CPU: 'Intel Core i7-12700H',
+        GPU: 'NVIDIA GeForce RTX 3070 Ti',
+        RAM: 32,
+        Storage: 1024,
+        StorageType: 'SSD',
+        Color: 'Lunar Light',
+        ImportPrice: 220000000,
+        Price: 260000000,
+        StockQuantity: 12,
+        createdAt: new Date('2025-02-26T13:30:00Z'),
+        updatedAt: new Date('2025-02-26T13:30:00Z')
+      },
+      // Dell Alienware x17 R2 - cấu hình cao cấp
+      {
+        SKU: 'DEL-21370-2-BLK',
+        VariantID: '21370-2',
+        LaptopID: '21370',
+        CPU: 'Intel Core i9-12900HK',
+        GPU: 'NVIDIA GeForce RTX 3080 Ti',
+        RAM: 64,
+        Storage: 2048,
+        StorageType: 'SSD',
+        Color: 'Dark Side of the Moon',
+        ImportPrice: 280000000,
+        Price: 330000000,
+        StockQuantity: 6,
+        createdAt: new Date('2025-02-26T14:15:00Z'),
+        updatedAt: new Date('2025-02-26T14:15:00Z')
+      },
+      // Razer Blade 16 - cấu hình cơ bản
+      {
+        SKU: 'RZR-21375-1-BLK',
+        VariantID: '21375-1',
+        LaptopID: '21375',
+        CPU: 'Intel Core i9-13950HX',
+        GPU: 'NVIDIA GeForce RTX 4060',
+        RAM: 16,
+        Storage: 1024,
+        StorageType: 'SSD',
+        Color: 'Black',
+        ImportPrice: 250000000,
+        Price: 294000000,
+        StockQuantity: 10,
+        createdAt: new Date('2025-02-27T10:30:00Z'),
+        updatedAt: new Date('2025-02-27T10:30:00Z')
+      },
+      // Razer Blade 16 - cấu hình cao cấp
+      {
+        SKU: 'RZR-21375-2-BLK',
+        VariantID: '21375-2',
+        LaptopID: '21375',
+        CPU: 'Intel Core i9-13950HX',
+        GPU: 'NVIDIA GeForce RTX 4070',
+        RAM: 32,
+        Storage: 1024,
+        StorageType: 'SSD',
+        Color: 'Black',
+        ImportPrice: 270000000,
+        Price: 320000000,
+        StockQuantity: 8,
+        createdAt: new Date('2025-02-27T11:15:00Z'),
+        updatedAt: new Date('2025-02-27T11:15:00Z')
       }
     ], {});
   },
