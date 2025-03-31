@@ -10,7 +10,7 @@ module.exports = {
         Email: 'vananh@email.com',
         Phone: '0901234567',
         Address: '123 Lê Lợi, Phường Bến Nghé, Quận 1',
-        CityCode: 'HCM',
+        CityCode: 1,  // HCM
         IsDeleted: false,
         createdAt: new Date('2025-01-15T09:30:00Z'),
         updatedAt: new Date('2025-01-15T09:30:00Z')
@@ -21,7 +21,7 @@ module.exports = {
         Email: 'maitr@email.com',
         Phone: '0912345678',
         Address: '45 Nguyễn Huệ, Phường Bến Nghé, Quận 1',
-        CityCode: 'HCM',
+        CityCode: 1,  // HCM
         IsDeleted: false,
         createdAt: new Date('2025-01-15T14:15:00Z'),
         updatedAt: new Date('2025-01-15T14:15:00Z')
@@ -32,7 +32,7 @@ module.exports = {
         Email: 'namlh@email.com',
         Phone: '0923456789',
         Address: '67 Trần Hưng Đạo, Phường Cầu Ông Lãnh, Quận 1',
-        CityCode: 'HCM',
+        CityCode: 1,  // HCM
         IsDeleted: false,
         createdAt: new Date('2025-01-16T10:20:00Z'),
         updatedAt: new Date('2025-01-16T10:20:00Z')
@@ -43,7 +43,7 @@ module.exports = {
         Email: 'tuanpm@email.com',
         Phone: '0934567890',
         Address: '89 Lý Tự Trọng, Hoàn Kiếm',
-        CityCode: 'HAN',
+        CityCode: 2,  // HAN
         IsDeleted: false,
         createdAt: new Date('2025-01-17T11:45:00Z'),
         updatedAt: new Date('2025-01-17T11:45:00Z')
@@ -54,7 +54,7 @@ module.exports = {
         Email: 'lanht@email.com',
         Phone: '0945678901',
         Address: '234 Trần Phú, Hải Châu',
-        CityCode: 'DAN',
+        CityCode: 3,  // DAN
         IsDeleted: false,
         createdAt: new Date('2025-01-18T13:30:00Z'),
         updatedAt: new Date('2025-01-18T13:30:00Z')
@@ -65,7 +65,7 @@ module.exports = {
         Email: 'minhvd@email.com',
         Phone: '0956789012',
         Address: '56 Nguyễn Văn Linh, Hải Châu',
-        CityCode: 'DAN',
+        CityCode: 3,  // DAN
         IsDeleted: false,
         createdAt: new Date('2025-01-19T10:15:00Z'),
         updatedAt: new Date('2025-01-19T10:15:00Z')
@@ -76,7 +76,7 @@ module.exports = {
         Email: 'hadt@email.com',
         Phone: '0967890123',
         Address: '78 Phan Chu Trinh, Ninh Kiều',
-        CityCode: 'CTO',
+        CityCode: 4,  // CTO
         IsDeleted: false,
         createdAt: new Date('2025-01-20T14:45:00Z'),
         updatedAt: new Date('2025-01-20T14:45:00Z')
@@ -87,7 +87,7 @@ module.exports = {
         Email: 'huybq@email.com',
         Phone: '0978901234',
         Address: '90 Lê Duẩn, Hải An',
-        CityCode: 'HAP',
+        CityCode: 5,  // HAP
         IsDeleted: false,
         createdAt: new Date('2025-01-21T11:30:00Z'),
         updatedAt: new Date('2025-01-21T11:30:00Z')
@@ -98,7 +98,7 @@ module.exports = {
         Email: 'thanhnt@email.com',
         Phone: '0989012345',
         Address: '123 Trần Phú, Lộc Thọ',
-        CityCode: 'NTH',
+        CityCode: 6,  // NTH
         IsDeleted: false,
         createdAt: new Date('2025-01-22T09:20:00Z'),
         updatedAt: new Date('2025-01-22T09:20:00Z')
@@ -109,7 +109,7 @@ module.exports = {
         Email: 'hungdv@email.com',
         Phone: '0990123456',
         Address: '45 Nguyễn Huệ, Thành phố Huế',
-        CityCode: 'HUE',
+        CityCode: 8,  // HUE
         IsDeleted: false,
         createdAt: new Date('2025-01-23T15:10:00Z'),
         updatedAt: new Date('2025-01-23T15:10:00Z')
@@ -120,7 +120,7 @@ module.exports = {
         Email: 'hieutd@email.com',
         Phone: '0912345987',
         Address: '28 Phan Xích Long, Phường 2, Phú Nhuận',
-        CityCode: 'HCM',
+        CityCode: 1,  // HCM
         IsDeleted: false,
         createdAt: new Date('2025-01-24T08:40:00Z'),
         updatedAt: new Date('2025-01-24T08:40:00Z')
@@ -131,7 +131,7 @@ module.exports = {
         Email: 'trangntk@email.com',
         Phone: '0923456987',
         Address: '175 Tây Sơn, Đống Đa',
-        CityCode: 'HAN',
+        CityCode: 2,  // HAN
         IsDeleted: false,
         createdAt: new Date('2025-01-25T13:15:00Z'),
         updatedAt: new Date('2025-01-25T13:15:00Z')
@@ -142,7 +142,7 @@ module.exports = {
         Email: 'hoanglm@email.com',
         Phone: '0934567891',
         Address: '45 Nguyễn Thị Minh Khai, Hải Châu',
-        CityCode: 'DAN',
+        CityCode: 3,  // DAN
         IsDeleted: false,
         createdAt: new Date('2025-01-26T11:30:00Z'),
         updatedAt: new Date('2025-01-26T11:30:00Z')
@@ -153,7 +153,7 @@ module.exports = {
         Email: 'huongpt@email.com',
         Phone: '0945678902',
         Address: '101 Lê Hồng Phong, Ngô Quyền',
-        CityCode: 'HAP',
+        CityCode: 5,  // HAP
         IsDeleted: false,
         createdAt: new Date('2025-01-27T10:20:00Z'),
         updatedAt: new Date('2025-01-27T10:20:00Z')
@@ -164,7 +164,7 @@ module.exports = {
         Email: 'congtv@email.com',
         Phone: '0956789198',
         Address: '65 Lê Duẩn, Quận 1',
-        CityCode: 'HCM',
+        CityCode: 1,  // HCM
         IsDeleted: false,
         createdAt: new Date('2025-01-28T14:40:00Z'),
         updatedAt: new Date('2025-01-28T14:40:00Z')

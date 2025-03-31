@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert('LaptopSpecs', [
       {
         SKU: 'LEN-12768-1-WHT',
-        VariantID: '12768-1',
+        VariantID: '127681',
         LaptopID: '12768',
         CPU: 'Intel Core i7-1360P',
         GPU: 'Intel Iris Xe Graphics',
@@ -22,7 +22,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-12768-2-BLK',
-        VariantID: '12768-2',
+        VariantID: '127682',
         LaptopID: '12768',
         CPU: 'Intel Core i7-1360P',
         GPU: 'Intel Iris Xe Graphics',
@@ -38,7 +38,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-12768-3-SLV',
-        VariantID: '12768-3',
+        VariantID: '127683',
         LaptopID: '12768',
         CPU: 'Intel Core i7-1360P',
         GPU: 'Intel Iris Xe Graphics',
@@ -54,7 +54,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-16354-1-GRY',
-        VariantID: '16354-1',
+        VariantID: '163541',
         LaptopID: '16354',
         CPU: 'Intel Core i7-14700HX',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -70,7 +70,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-16354-2-GRY',
-        VariantID: '16354-2',
+        VariantID: '163542',
         LaptopID: '16354',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4080',
@@ -86,7 +86,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-16354-3-GRY',
-        VariantID: '16354-3',
+        VariantID: '163543',
         LaptopID: '16354',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4090',
@@ -102,7 +102,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-18351-1-BLU',
-        VariantID: '18351-1',
+        VariantID: '183511',
         LaptopID: '18351',
         CPU: 'Intel Core i7-13700H',
         GPU: 'Intel Iris Xe Graphics',
@@ -118,7 +118,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-18351-2-BLU',
-        VariantID: '18351-2',
+        VariantID: '183512',
         LaptopID: '18351',
         CPU: 'Intel Core i7-13700H',
         GPU: 'Intel Iris Xe Graphics',
@@ -134,7 +134,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-18351-3-BLK',
-        VariantID: '18351-3',
+        VariantID: '183513',
         LaptopID: '18351',
         CPU: 'Intel Core i9-13900H',
         GPU: 'Intel Iris Xe Graphics',
@@ -150,7 +150,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-18950-1-GRY',
-        VariantID: '18950-1',
+        VariantID: '189501',
         LaptopID: '18950',
         CPU: 'AMD Ryzen 7 7840HS',
         GPU: 'AMD Radeon RX 7600S',
@@ -166,7 +166,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-18950-2-GRY',
-        VariantID: '18950-2',
+        VariantID: '189502',
         LaptopID: '18950',
         CPU: 'AMD Ryzen 9 7940HS',
         GPU: 'AMD Radeon RX 7700S',
@@ -182,7 +182,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-18950-3-BLK',
-        VariantID: '18950-3',
+        VariantID: '189503',
         LaptopID: '18950',
         CPU: 'AMD Ryzen 9 7940HS',
         GPU: 'AMD Radeon RX 7700S',
@@ -198,7 +198,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-19325-1-SLV',
-        VariantID: '19325-1',
+        VariantID: '193251',
         LaptopID: '19325',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -214,7 +214,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-19325-2-SLV',
-        VariantID: '19325-2',
+        VariantID: '193252',
         LaptopID: '19325',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -230,7 +230,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-19927-1-GRY',
-        VariantID: '19927-1',
+        VariantID: '199271',
         LaptopID: '19927',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4080',
@@ -246,7 +246,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-19927-2-GRY',
-        VariantID: '19927-2',
+        VariantID: '199272',
         LaptopID: '19927',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4090',
@@ -262,7 +262,7 @@ module.exports = {
       },
       {
         SKU: 'ASU-20225-1-WHT',
-        VariantID: '20225-1',
+        VariantID: '202251',
         LaptopID: '20225',
         CPU: 'AMD Ryzen 9 7940HS',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -278,7 +278,7 @@ module.exports = {
       },
       {
         SKU: 'ASU-20225-2-GRY',
-        VariantID: '20225-2',
+        VariantID: '202252',
         LaptopID: '20225',
         CPU: 'AMD Ryzen 9 7940HS',
         GPU: 'NVIDIA GeForce RTX 4080',
@@ -294,7 +294,7 @@ module.exports = {
       },
       {
         SKU: 'ASU-20269-1-BLK',
-        VariantID: '20269-1',
+        VariantID: '202691',
         LaptopID: '20269',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -310,7 +310,7 @@ module.exports = {
       },
       {
         SKU: 'ASU-20269-2-BLK',
-        VariantID: '20269-2',
+        VariantID: '202692',
         LaptopID: '20269',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -326,7 +326,7 @@ module.exports = {
       },
       {
         SKU: 'DEL-20353-1-SLV',
-        VariantID: '20353-1',
+        VariantID: '203531',
         LaptopID: '20353',
         CPU: 'Intel Core i7-13700H',
         GPU: 'NVIDIA RTX A2000',
@@ -342,7 +342,7 @@ module.exports = {
       },
       {
         SKU: 'DEL-20353-2-SLV',
-        VariantID: '20353-2',
+        VariantID: '203532',
         LaptopID: '20353',
         CPU: 'Intel Core i9-13900H',
         GPU: 'NVIDIA RTX A3000',
@@ -358,7 +358,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-20388-1-GRY',
-        VariantID: '20388-1',
+        VariantID: '203881',
         LaptopID: '20388',
         CPU: 'Intel Core i5-13500H',
         GPU: 'NVIDIA GeForce RTX 3050',
@@ -374,7 +374,7 @@ module.exports = {
       },
       {
         SKU: 'HPP-20577-1-BLU',
-        VariantID: '20577-1',
+        VariantID: '205771',
         LaptopID: '20577',
         CPU: 'Intel Core i5-14500H',
         GPU: 'NVIDIA GeForce RTX 4050',
@@ -390,7 +390,7 @@ module.exports = {
       },
       {
         SKU: 'HPP-20577-2-BLU',
-        VariantID: '20577-2',
+        VariantID: '205772',
         LaptopID: '20577',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -406,7 +406,7 @@ module.exports = {
       },
       {
         SKU: 'GGB-20626-1-BLK',
-        VariantID: '20626-1',
+        VariantID: '206261',
         LaptopID: '20626',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4080',
@@ -422,7 +422,7 @@ module.exports = {
       },
       {
         SKU: 'GGB-20626-2-BLK',
-        VariantID: '20626-2',
+        VariantID: '206262',
         LaptopID: '20626',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4090',
@@ -438,7 +438,7 @@ module.exports = {
       },
       {
         SKU: 'GGB-20627-1-BLK',
-        VariantID: '20627-1',
+        VariantID: '206271',
         LaptopID: '20627',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -454,7 +454,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-20692-1-BLK',
-        VariantID: '20692-1',
+        VariantID: '206921',
         LaptopID: '20692',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4090',
@@ -470,7 +470,7 @@ module.exports = {
       },
       {
         SKU: 'ASU-20724-1-BLK',
-        VariantID: '20724-1',
+        VariantID: '207241',
         LaptopID: '20724',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4080',
@@ -486,7 +486,7 @@ module.exports = {
       },
       {
         SKU: 'ASU-20724-2-BLK',
-        VariantID: '20724-2',
+        VariantID: '207242',
         LaptopID: '20724',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4090',
@@ -502,7 +502,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-20993-1-GRY',
-        VariantID: '20993-1',
+        VariantID: '209931',
         LaptopID: '20993',
         CPU: 'AMD Ryzen 7 7840U',
         GPU: 'AMD Radeon 780M',
@@ -518,7 +518,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-20993-2-GRY',
-        VariantID: '20993-2',
+        VariantID: '209932',
         LaptopID: '20993',
         CPU: 'AMD Ryzen 9 7940U',
         GPU: 'AMD Radeon 780M',
@@ -534,7 +534,7 @@ module.exports = {
       },
       {
         SKU: 'HPP-21037-1-BLK',
-        VariantID: '21037-1',
+        VariantID: '210371',
         LaptopID: '21037',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -550,7 +550,7 @@ module.exports = {
       },
       {
         SKU: 'HPP-21037-2-BLK',
-        VariantID: '21037-2',
+        VariantID: '210372',
         LaptopID: '21037',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -566,7 +566,7 @@ module.exports = {
       },
       {
         SKU: 'ACR-21042-1-BLK',
-        VariantID: '21042-1',
+        VariantID: '210421',
         LaptopID: '21042',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -582,7 +582,7 @@ module.exports = {
       },
       {
         SKU: 'ACR-21042-2-BLK',
-        VariantID: '21042-2',
+        VariantID: '210422',
         LaptopID: '21042',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -598,7 +598,7 @@ module.exports = {
       },
       {
         SKU: 'HPP-21056-1-SLV',
-        VariantID: '21056-1',
+        VariantID: '210561',
         LaptopID: '21056',
         CPU: 'Intel Core i5-14500H',
         GPU: 'NVIDIA GeForce RTX 4050',
@@ -614,7 +614,7 @@ module.exports = {
       },
       {
         SKU: 'HPP-21056-2-SLV',
-        VariantID: '21056-2',
+        VariantID: '210562',
         LaptopID: '21056',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -630,7 +630,7 @@ module.exports = {
       },
       {
         SKU: 'ACR-21108-1-BLK',
-        VariantID: '21108-1',
+        VariantID: '211081',
         LaptopID: '21108',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -646,7 +646,7 @@ module.exports = {
       },
       {
         SKU: 'ACR-21108-2-BLK',
-        VariantID: '21108-2',
+        VariantID: '211082',
         LaptopID: '21108',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4080',
@@ -662,7 +662,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21171-1-OAT',
-        VariantID: '21171-1',
+        VariantID: '211711',
         LaptopID: '21171',
         CPU: 'Intel Core i7-1360P',
         GPU: 'Intel Iris Xe Graphics',
@@ -678,7 +678,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21171-2-OAT',
-        VariantID: '21171-2',
+        VariantID: '211712',
         LaptopID: '21171',
         CPU: 'Intel Core i7-1360P',
         GPU: 'Intel Iris Xe Graphics',
@@ -694,7 +694,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21175-1-GRY',
-        VariantID: '21175-1',
+        VariantID: '211751',
         LaptopID: '21175',
         CPU: 'Intel Core i5-1340P',
         GPU: 'Intel Iris Xe Graphics',
@@ -710,7 +710,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21175-2-GRY',
-        VariantID: '21175-2',
+        VariantID: '211752',
         LaptopID: '21175',
         CPU: 'Intel Core i7-1360P',
         GPU: 'Intel Iris Xe Graphics',
@@ -726,7 +726,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21183-1-GRY',
-        VariantID: '21183-1',
+        VariantID: '211831',
         LaptopID: '21183',
         CPU: 'AMD Ryzen 7 7840HS',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -742,7 +742,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21183-2-GRY',
-        VariantID: '21183-2',
+        VariantID: '211832',
         LaptopID: '21183',
         CPU: 'AMD Ryzen 9 7940HS',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -758,7 +758,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-21253-1-BLK',
-        VariantID: '21253-1',
+        VariantID: '212531',
         LaptopID: '21253',
         CPU: 'Intel Core i9-14900HX',
         GPU: 'NVIDIA GeForce RTX 4090',
@@ -774,7 +774,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-21302-1-BLK',
-        VariantID: '21302-1',
+        VariantID: '213021',
         LaptopID: '21302',
         CPU: 'Intel Core i5-13500H',
         GPU: 'NVIDIA GeForce RTX 4050',
@@ -790,7 +790,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-21302-2-BLK',
-        VariantID: '21302-2',
+        VariantID: '213022',
         LaptopID: '21302',
         CPU: 'Intel Core i7-13700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -806,7 +806,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-21310-1-BLK',
-        VariantID: '21310-1',
+        VariantID: '213101',
         LaptopID: '21310',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -822,7 +822,7 @@ module.exports = {
       },
       {
         SKU: 'MSI-21310-2-BLK',
-        VariantID: '21310-2',
+        VariantID: '213102',
         LaptopID: '21310',
         CPU: 'Intel Core i9-14900H',
         GPU: 'NVIDIA GeForce RTX 4070',
@@ -838,7 +838,7 @@ module.exports = {
       },
       {
         SKU: 'DEL-21330-1-GRY',
-        VariantID: '21330-1',
+        VariantID: '213301',
         LaptopID: '21330',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -854,7 +854,7 @@ module.exports = {
       },
       {
         SKU: 'DEL-21330-2-GRY',
-        VariantID: '21330-2',
+        VariantID: '213302',
         LaptopID: '21330',
         CPU: 'Intel Core i7-14700H',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -870,7 +870,7 @@ module.exports = {
       },
       {
         SKU: 'DEL-21340-1-GRY',
-        VariantID: '21340-1',
+        VariantID: '213401',
         LaptopID: '21340',
         CPU: 'Intel Core i5-1335U',
         GPU: 'Intel Iris Xe Graphics',
@@ -886,7 +886,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21345-1-BLK',
-        VariantID: '21345-1',
+        VariantID: '213451',
         LaptopID: '21345',
         CPU: 'Intel Core i7-1355U',
         GPU: 'Intel Iris Xe Graphics',
@@ -902,7 +902,7 @@ module.exports = {
       },
       {
         SKU: 'LEN-21345-2-BLK',
-        VariantID: '21345-2',
+        VariantID: '213452',
         LaptopID: '21345',
         CPU: 'Intel Core i7-1355U',
         GPU: 'Intel Iris Xe Graphics',
@@ -918,7 +918,7 @@ module.exports = {
       },
       {
         SKU: 'APL-21355-1-SLV',
-        VariantID: '21355-1',
+        VariantID: '213551',
         LaptopID: '21355',
         CPU: 'Apple M4 Pro 14-Core',
         GPU: 'Apple M4 Pro 20-Core GPU',
@@ -934,7 +934,7 @@ module.exports = {
       },
       {
         SKU: 'APL-21355-2-SGY',
-        VariantID: '21355-2',
+        VariantID: '213552',
         LaptopID: '21355',
         CPU: 'Apple M4 Pro 14-Core',
         GPU: 'Apple M4 Pro 20-Core GPU',
@@ -950,7 +950,7 @@ module.exports = {
       },
       {
         SKU: 'APL-21360-1-SLV',
-        VariantID: '21360-1',
+        VariantID: '213601',
         LaptopID: '21360',
         CPU: 'Apple M4 Max 14-Core',
         GPU: 'Apple M4 Max 32-Core GPU',
@@ -966,7 +966,7 @@ module.exports = {
       },
       {
         SKU: 'APL-21360-2-SGY',
-        VariantID: '21360-2',
+        VariantID: '213602',
         LaptopID: '21360',
         CPU: 'Apple M4 Max 14-Core',
         GPU: 'Apple M4 Max 38-Core GPU',
@@ -983,7 +983,7 @@ module.exports = {
       // Asus Zenbook Duo OLED - cấu hình cơ bản
       {
         SKU: 'ASU-21365-1-GRY',
-        VariantID: '21365-1',
+        VariantID: '213651',
         LaptopID: '21365',
         CPU: 'Intel Core Ultra 9 185H',
         GPU: 'Intel Arc Graphics',
@@ -1000,7 +1000,7 @@ module.exports = {
       // Asus Zenbook Duo OLED - cấu hình cao cấp
       {
         SKU: 'ASU-21365-2-GRY',
-        VariantID: '21365-2',
+        VariantID: '213652',
         LaptopID: '21365',
         CPU: 'Intel Core Ultra 9 185H',
         GPU: 'Intel Arc Graphics',
@@ -1017,7 +1017,7 @@ module.exports = {
       // Dell Alienware x17 R2 - cấu hình cơ bản
       {
         SKU: 'DEL-21370-1-BLK',
-        VariantID: '21370-1',
+        VariantID: '213701',
         LaptopID: '21370',
         CPU: 'Intel Core i7-12700H',
         GPU: 'NVIDIA GeForce RTX 3070 Ti',
@@ -1034,7 +1034,7 @@ module.exports = {
       // Dell Alienware x17 R2 - cấu hình cao cấp
       {
         SKU: 'DEL-21370-2-BLK',
-        VariantID: '21370-2',
+        VariantID: '213702',
         LaptopID: '21370',
         CPU: 'Intel Core i9-12900HK',
         GPU: 'NVIDIA GeForce RTX 3080 Ti',
@@ -1051,7 +1051,7 @@ module.exports = {
       // Razer Blade 16 - cấu hình cơ bản
       {
         SKU: 'RZR-21375-1-BLK',
-        VariantID: '21375-1',
+        VariantID: '213751',
         LaptopID: '21375',
         CPU: 'Intel Core i9-13950HX',
         GPU: 'NVIDIA GeForce RTX 4060',
@@ -1068,7 +1068,7 @@ module.exports = {
       // Razer Blade 16 - cấu hình cao cấp
       {
         SKU: 'RZR-21375-2-BLK',
-        VariantID: '21375-2',
+        VariantID: '213752',
         LaptopID: '21375',
         CPU: 'Intel Core i9-13950HX',
         GPU: 'NVIDIA GeForce RTX 4070',

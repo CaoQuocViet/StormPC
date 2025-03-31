@@ -567,7 +567,7 @@ module.exports = {
       },
       {
         LaptopID: '21375',
-        BrandID: 11,
+        BrandID: 5,
         CategoryID: 2,
         Picture: '/Assets/data/laptops/34.jpg',
         ModelName: 'Razer Blade 16 (2023)',
