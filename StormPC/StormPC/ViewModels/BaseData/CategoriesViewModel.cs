@@ -192,8 +192,21 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
             if (exists)
                 return false;
 
+            // Get max CategoryID from database
+            var maxId = await _dbContext.Categories
+                .MaxAsync(c => (int?)c.CategoryID) ?? 0;
+
+            // Make sure the new ID doesn't exist (in case of concurrent operations)
+            var newId = maxId + 1;
+            while (await _dbContext.Categories.AnyAsync(c => c.CategoryID == newId))
+            {
+                newId++;
+            }
+
+            // Create new category with next available ID
             var category = new Category
             {
+                CategoryID = newId,
                 CategoryName = newCategory.CategoryName.Trim(),
                 Description = newCategory.Description?.Trim(),
                 IsDeleted = false,
