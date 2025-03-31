@@ -130,7 +130,8 @@ public sealed partial class OrderDetailPage : Page
                 // Table content
                 foreach (var item in ViewModel.OrderDetail.Items)
                 {
-                    items.AddCell(new Cell().Add(new Paragraph(item.VariantID).SetFont(font))
+                    var variantIdString = item.VariantID.ToString();
+                    items.AddCell(new Cell().Add(new Paragraph(variantIdString).SetFont(font))
                         .SetPadding(5));
                     items.AddCell(new Cell().Add(new Paragraph(item.ModelName).SetFont(font))
                         .SetPadding(5));

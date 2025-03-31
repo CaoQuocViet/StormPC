@@ -14,6 +14,8 @@
 
             <x:String x:Key="CurrencyFormatConverter">{0:N0}</x:String>
 
+            <helpers:IntToStringConverter x:Key="IntToStringConverter"/>
+
             <Style x:Key="KPICardStyle" TargetType="Grid">
                 <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
                 <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />

@@ -64,22 +64,26 @@ public class StormPCDbContext : DbContext
 
         // Configure City entity
         modelBuilder.Entity<City>()
-            .HasKey(c => c.CityCode);
+            .HasKey(c => c.Id);
+
+        modelBuilder.Entity<City>()
+            .HasIndex(c => c.CityCode)
+            .IsUnique();
 
         // Configure Order-City relationship
         modelBuilder.Entity<Order>()
             .HasOne(o => o.ShipCity)
             .WithMany(c => c.ShippingOrders)
-            .HasForeignKey(o => o.ShipCityCode)
-            .HasPrincipalKey(c => c.CityCode)
+            .HasForeignKey(o => o.ShipCityId)
+            .HasPrincipalKey(c => c.Id)
             .IsRequired();
 
         // Configure Customer-City relationship
         modelBuilder.Entity<Customer>()
             .HasOne(c => c.City)
             .WithMany(c => c.Customers)
-            .HasForeignKey(c => c.CityCode)
-            .HasPrincipalKey(c => c.CityCode)
+            .HasForeignKey(c => c.CityId)
+            .HasPrincipalKey(c => c.Id)
             .IsRequired();
 
         // Configure Order-Customer relationship

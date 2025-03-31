@@ -227,7 +227,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel>
-                                    <TextBlock Text="{x:Bind VariantID}" 
+                                    <TextBlock Text="{x:Bind VariantID, Mode=OneWay, Converter={StaticResource IntToStringConverter}}" 
                                              Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                                 </StackPanel>
 
