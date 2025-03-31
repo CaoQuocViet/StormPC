@@ -80,11 +80,11 @@
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"/>
 
-            <Button Grid.Column="3"
+            <!-- <Button Grid.Column="3"
                     Content="Xóa"
                     Style="{StaticResource ActionButtonStyle}"
                     Background="#E81123"
-                    Foreground="White"/>
+                    Foreground="White"/> -->
         </Grid>
 
         <Grid Grid.Row="2">
@@ -166,7 +166,9 @@
                                             Style="{StaticResource AccentButtonStyle}"/>
                                     <Button Content="&#xE74D;"
                                             FontFamily="Segoe MDL2 Assets"
-                                            Style="{StaticResource AccentButtonStyle}"/>
+                                            Style="{StaticResource AccentButtonStyle}"
+                                            Background="#E81123"
+                                            Foreground="White"/>
                                 </StackPanel>
                             </DataTemplate>
                         </controls:DataGridTemplateColumn.CellTemplate>
