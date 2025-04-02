@@ -24,7 +24,7 @@ public sealed partial class LoginWindow : Window
         var appWindow = AppWindow.GetFromWindowId(windowId);
         
         // Set size
-        var size = new Windows.Graphics.SizeInt32(400, 640);
+        var size = new Windows.Graphics.SizeInt32(666, 640);
         appWindow.Resize(size);
 
         // Center on screen
