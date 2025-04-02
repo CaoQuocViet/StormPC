@@ -32,11 +32,6 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
                 .OrderBy(s => s.Price)
                 .FirstOrDefault();
 
-            if (cheapestSpec == null)
-            {
-                continue;
-            }
-
             result.Add(new LaptopDisplayDto
             {
                 LaptopID = laptop.LaptopID,
@@ -49,12 +44,12 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
                 ReleaseYear = laptop.ReleaseYear,
                 Discount = laptop.Discount,
                 DiscountEndDate = laptop.DiscountEndDate,
-                LowestPrice = cheapestSpec.Price,
-                CPU = cheapestSpec.CPU ?? "N/A",
-                GPU = cheapestSpec.GPU ?? "N/A",
-                RAM = cheapestSpec.RAM,
-                Storage = cheapestSpec.Storage,
-                StorageType = cheapestSpec.StorageType ?? "N/A"
+                LowestPrice = cheapestSpec?.Price ?? 0,
+                CPU = cheapestSpec?.CPU ?? "Chưa có thông tin",
+                GPU = cheapestSpec?.GPU ?? "Chưa có thông tin",
+                RAM = cheapestSpec?.RAM ?? 0,
+                Storage = cheapestSpec?.Storage ?? 0,
+                StorageType = cheapestSpec?.StorageType ?? "Chưa có thông tin"
             });
         }
 
@@ -108,7 +103,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
 
             // Lấy số lượng phiên bản
             laptop.OptionsCount = await _dbContext.LaptopSpecs
-                .CountAsync(s => s.LaptopID == laptop.LaptopID) - 1;
+                .CountAsync(s => s.LaptopID == laptop.LaptopID);
         }
 
         return laptops.OrderByDescending(l => l.ReleaseYear).ToList();
