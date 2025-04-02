@@ -385,7 +385,7 @@
                                              Foreground="#ADD8E6">
                                         <Run Text="+"/>
                                         <Run Text="{Binding OptionsCount}"/>
-                                        <Run Text=" tùy chọn khác"/>
+                                        <Run Text=" tùy chọn"/>
                                     </TextBlock>
                                 </Grid>
 

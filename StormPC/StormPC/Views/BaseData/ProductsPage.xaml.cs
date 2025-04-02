@@ -137,7 +137,7 @@ public sealed partial class ProductsPage : Page
         var pictureBox = new TextBox
         {
             PlaceholderText = "Nhập đường dẫn ảnh (URL hoặc đường dẫn local)",
-            Text = ViewModel.Picture
+            Text = string.IsNullOrEmpty(ViewModel.Picture) ? "/Assets/Products/default-product.png" : ViewModel.Picture
         };
         pictureBox.TextChanged += (s, args) => { ViewModel.Picture = pictureBox.Text; };
         stackPanel.Children.Add(pictureBox);
