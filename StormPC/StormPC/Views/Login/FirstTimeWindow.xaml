@@ -97,7 +97,7 @@
                     <TextBlock Grid.Row="4"
                               Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}"
                               HorizontalAlignment="Center"
-                              Margin="0,15,0,0"
+                              Margin="0,8,0,8"
                               Opacity="0.7"
                               FontSize="12"/>
                 </Grid>
