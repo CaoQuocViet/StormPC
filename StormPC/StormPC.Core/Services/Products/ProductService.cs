@@ -113,4 +113,126 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
 
         return laptops.OrderByDescending(l => l.ReleaseYear).ToList();
     }
+
+    public async Task<bool> AddLaptopAsync(Laptop laptop)
+    {
+        try
+        {
+            // Đảm bảo giá trị hợp lệ
+            laptop.IsDeleted = false;
+            if (laptop.Discount < 0)
+                laptop.Discount = 0;
+                
+            // Làm tròn giá trị tiền tệ xuống đơn vị 1000 VNĐ
+            laptop.Discount = Math.Floor(laptop.Discount / 1000) * 1000;
+            
+            _dbContext.Set<Laptop>().Add(laptop);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    
+    public async Task<bool> DeleteLaptopAsync(int laptopId)
+    {
+        try
+        {
+            // Kiểm tra xem có thể xóa laptop không
+            if (!await CanDeleteLaptopAsync(laptopId))
+                return false;
+                
+            // Tìm laptop để xóa
+            var laptop = await _dbContext.Set<Laptop>()
+                .Include(l => l.Specs)
+                .FirstOrDefaultAsync(l => l.LaptopID == laptopId);
+                
+            if (laptop == null)
+                return false;
+                
+            // Đánh dấu laptop là đã xóa
+            laptop.IsDeleted = true;
+            
+            // Đánh dấu tất cả các specs là đã xóa
+            foreach (var spec in laptop.Specs)
+            {
+                spec.IsDeleted = true;
+            }
+            
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    
+    public async Task<bool> DeleteMultipleLaptopsAsync(List<int> laptopIds)
+    {
+        try
+        {
+            // Lọc ra danh sách laptop có thể xóa
+            var deletableIds = new List<int>();
+            foreach (var id in laptopIds)
+            {
+                if (await CanDeleteLaptopAsync(id))
+                    deletableIds.Add(id);
+            }
+            
+            if (deletableIds.Count == 0)
+                return false;
+                
+            // Tìm các laptop để xóa
+            var laptops = await _dbContext.Set<Laptop>()
+                .Include(l => l.Specs)
+                .Where(l => deletableIds.Contains(l.LaptopID))
+                .ToListAsync();
+                
+            // Đánh dấu laptops và specs là đã xóa
+            foreach (var laptop in laptops)
+            {
+                laptop.IsDeleted = true;
+                foreach (var spec in laptop.Specs)
+                {
+                    spec.IsDeleted = true;
+                }
+            }
+            
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    
+    public async Task<bool> CanDeleteLaptopAsync(int laptopId)
+    {
+        // Kiểm tra xem có specs nào của laptop đã từng được đặt hàng chưa
+        var hasOrder = await _dbContext.Set<LaptopSpec>()
+            .Where(s => s.LaptopID == laptopId)
+            .AnyAsync(s => s.OrderItems.Any());
+            
+        return !hasOrder;
+    }
+    
+    public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
+    {
+        return await _dbContext.Set<Brand>()
+            .Where(b => !b.IsDeleted)
+            .OrderBy(b => b.BrandName)
+            .ToListAsync();
+    }
+    
+    public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+    {
+        return await _dbContext.Set<Category>()
+            .Where(c => !c.IsDeleted)
+            .OrderBy(c => c.CategoryName)
+            .ToListAsync();
+    }
 } 
