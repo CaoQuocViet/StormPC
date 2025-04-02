@@ -32,6 +32,8 @@
                         SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
                         IsSettingsVisible="True"
                         PaneTitle="Storm PC"
+                        CompactPaneLength="48"
+                        OpenPaneLength="250"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             
             <NavigationView.AutoSuggestBox>
