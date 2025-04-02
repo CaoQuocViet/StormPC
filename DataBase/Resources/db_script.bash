@@ -106,5 +106,6 @@ pg_dump -U vietcq -h localhost -p 5444 -d stormpc_db -s > schema.sql
 # Thứ duy nhất cần làm là copy đống này dán 1 phát vào terminal
 npx sequelize-cli db:drop
 npx sequelize-cli db:create
+npx sequelize-cli db:migrate:undo:all
 npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all
