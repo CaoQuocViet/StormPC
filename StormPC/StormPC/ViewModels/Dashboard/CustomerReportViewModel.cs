@@ -257,17 +257,16 @@ public partial class CustomerReportViewModel : ObservableObject
                     if (point.Visual is null) return;
                     point.Visual.Fill = point.Model!.Paint;
                 };
+                BrandXAxes[0].MinLimit = 0;
+                BrandXAxes[0].MaxLimit = maxOrders;
+                BrandXAxes[0].Labeler = value => ((int)value).ToString();
+                BrandXAxes[0].TextSize = 12;
+                BrandXAxes[0].MinStep = 1;
+                BrandXAxes[0].ForceStepToMin = true;
+                BrandXAxes[0].SeparatorsPaint = new SolidColorPaint(new SKColor(220, 220, 220));
 
-                _brandXAxes[0].MinLimit = 0;
-                _brandXAxes[0].MaxLimit = maxOrders;
-                _brandXAxes[0].Labeler = value => ((int)value).ToString();
-                _brandXAxes[0].TextSize = 12;
-                _brandXAxes[0].MinStep = 1;
-                _brandXAxes[0].ForceStepToMin = true;
-                _brandXAxes[0].SeparatorsPaint = new SolidColorPaint(new SKColor(220, 220, 220));
-
-                _brandYAxes[0].ShowSeparatorLines = false;
-                _brandYAxes[0].IsVisible = false;
+                BrandYAxes[0].ShowSeparatorLines = false;
+                BrandYAxes[0].IsVisible = false;
 
                 CustomerPreferenceSeries = new[] { rowSeries };
             }
