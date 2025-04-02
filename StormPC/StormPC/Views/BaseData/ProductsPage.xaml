@@ -45,6 +45,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <AutoSuggestBox
@@ -71,13 +72,24 @@
             <Button Grid.Column="2"
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
-                    Margin="0,0,12,0"/>
+                    Margin="0,0,12,0"
+                    x:Name="AddButton"
+                    Click="AddButton_Click"/>
 
             <Button Grid.Column="3"
-                    Content="Xóa"
+                    Content="Chọn nhiều"
+                    Style="{StaticResource ActionButtonStyle}"
+                    Margin="0,0,12,0"
+                    Background="{ThemeResource SystemAccentColorDark1}"
+                    Command="{x:Bind ViewModel.ToggleSelectionModeCommand}"/>
+
+            <Button Grid.Column="4"
+                    Content="Xóa đã chọn"
                     Style="{StaticResource ActionButtonStyle}"
                     Background="#E81123"
-                    Foreground="White"/>
+                    Foreground="White"
+                    Command="{x:Bind ViewModel.DeleteMultipleCommand}"
+                    Visibility="{x:Bind ViewModel.IsMultipleSelectionEnabled, Mode=OneWay}"/>
         </Grid>
 
         <!-- Products GridView -->
@@ -91,7 +103,8 @@
                 <GridView x:Name="productsGridView"
                          ItemsSource="{x:Bind ViewModel.Laptops, Mode=OneWay}"
                          SelectedItem="{x:Bind ViewModel.SelectedLaptop, Mode=TwoWay}"
-                         SelectionMode="Single">
+                         SelectionMode="{x:Bind ViewModel.IsMultipleSelectionEnabled, Mode=OneWay, Converter={StaticResource BoolToSelectionModeConverter}}"
+                         SelectionChanged="ProductsGridView_SelectionChanged">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid x:Name="ProductsWrapGrid" 
@@ -153,6 +166,7 @@
                                                                             Padding="16,8"
                                                                             CornerRadius="4"
                                                                             Command="{Binding ElementName=page, Path=ViewModel.AddSpecCommand}"
+                                                                            CommandParameter="{Binding}"
                                                                             IsTabStop="True"
                                                                             Margin="0,0,0,10"
                                                                             HorizontalAlignment="Center">
@@ -259,6 +273,7 @@
                                                                             Padding="16,8"
                                                                             CornerRadius="4"
                                                                             Command="{Binding ElementName=page, Path=ViewModel.EditCommand}"
+                                                                            CommandParameter="{Binding}"
                                                                             IsTabStop="True">
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <FontIcon Glyph="&#xE70F;" FontSize="12"/>
@@ -271,6 +286,7 @@
                                                                             Padding="16,8"
                                                                             CornerRadius="4"
                                                                             Command="{Binding ElementName=page, Path=ViewModel.DeleteCommand}"
+                                                                            CommandParameter="{Binding}"
                                                                             IsTabStop="True">
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <FontIcon Glyph="&#xE74D;" FontSize="12"/>
@@ -470,6 +486,7 @@
                                                         Padding="16,8"
                                                         CornerRadius="4"
                                                         Command="{Binding ElementName=page, Path=ViewModel.AddSpecCommand}"
+                                                        CommandParameter="{Binding}"
                                                         IsTabStop="True">
                                                     <StackPanel Orientation="Horizontal">
                                                         <FontIcon Glyph="&#xE710;" FontSize="12"/>
@@ -482,6 +499,7 @@
                                                         Padding="16,8"
                                                         CornerRadius="4"
                                                         Command="{Binding ElementName=page, Path=ViewModel.EditCommand}"
+                                                        CommandParameter="{Binding}"
                                                         IsTabStop="True">
                                                     <StackPanel Orientation="Horizontal">
                                                         <FontIcon Glyph="&#xE70F;" FontSize="12"/>
@@ -494,6 +512,7 @@
                                                         Padding="16,8"
                                                         CornerRadius="4"
                                                         Command="{Binding ElementName=page, Path=ViewModel.DeleteCommand}"
+                                                        CommandParameter="{Binding}"
                                                         IsTabStop="True">
                                                     <StackPanel Orientation="Horizontal">
                                                         <FontIcon Glyph="&#xE74D;" FontSize="12"/>
