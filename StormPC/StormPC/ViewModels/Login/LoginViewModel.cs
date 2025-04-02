@@ -85,7 +85,7 @@ public partial class LoginViewModel : ObservableObject
         else
         {
             // Clear expired remembered login
-            _secureStorage.SaveSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY, null);
+            _secureStorage.SaveSecureData<RememberedLogin?>(REMEMBERED_LOGIN_KEY, null);
         }
     }
 
@@ -118,7 +118,7 @@ public partial class LoginViewModel : ObservableObject
                 }
                 else
                 {
-                    _secureStorage.SaveSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY, null);
+                    _secureStorage.SaveSecureData<RememberedLogin?>(REMEMBERED_LOGIN_KEY, null);
                 }
 
                 await App.GetService<IActivationService>().ActivateAsync(null!);

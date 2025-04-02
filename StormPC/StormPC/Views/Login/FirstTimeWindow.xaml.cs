@@ -49,7 +49,7 @@ public sealed partial class FirstTimeWindow : Window
     private async void ViewModel_AccountCreated(object? sender, EventArgs e)
     {
         // Show backup key dialog
-        var result = await BackupKeyDialog.ShowAsync();
+        _ = await BackupKeyDialog.ShowAsync();
         
         // After dialog is closed, show login window
         var loginWindow = App.GetService<LoginWindow>();
@@ -64,7 +64,7 @@ public sealed partial class FirstTimeWindow : Window
         await ViewModel.CreateAdminAccountCommand.ExecuteAsync((password, confirmPassword));
     }
 
-    private async void OnCopyBackupKey(object sender, ContentDialogButtonClickEventArgs e)
+    private void OnCopyBackupKey(object sender, ContentDialogButtonClickEventArgs e)
     {
         if (!string.IsNullOrEmpty(ViewModel.BackupKey))
         {
