@@ -16,7 +16,7 @@ public sealed partial class CategoriesPage : Page
     public CategoriesViewModel ViewModel { get; }
     private List<CategoryDisplayDto> _originalCategories;
     // Keeps track of the currently active DataGrid
-    private DataGrid _activeDataGrid;
+    private DataGrid? _activeDataGrid;
 
     public CategoriesPage()
     {
@@ -148,7 +148,7 @@ public sealed partial class CategoriesPage : Page
         _activeDataGrid = dataGrid;
         
         // Get property name from Tag property
-        string propertyName = e.Column.Tag?.ToString();
+        var propertyName = e.Column.Tag?.ToString();
         if (string.IsNullOrEmpty(propertyName))
             return;
 
@@ -177,10 +177,14 @@ public sealed partial class CategoriesPage : Page
             {
                 if (column.SortDirection != null && column.Tag != null && column != e.Column)
                 {
-                    sortProperties.Add(column.Tag.ToString());
-                    sortDirections.Add(column.SortDirection == DataGridSortDirection.Ascending 
-                        ? ListSortDirection.Ascending 
-                        : ListSortDirection.Descending);
+                    var tagString = column.Tag.ToString();
+                    if (!string.IsNullOrEmpty(tagString))
+                    {
+                        sortProperties.Add(tagString);
+                        sortDirections.Add(column.SortDirection == DataGridSortDirection.Ascending 
+                            ? ListSortDirection.Ascending 
+                            : ListSortDirection.Descending);
+                    }
                 }
             }
             
@@ -210,7 +214,7 @@ public sealed partial class CategoriesPage : Page
     {
         if (sender is ToggleButton toggleButton)
         {
-            bool isMultiColumnMode = toggleButton.IsChecked ?? false;
+            var isMultiColumnMode = toggleButton.IsChecked ?? false;
             
             // Enable or disable multi-column sorting based on toggle state
             DataGridSortingHelper.SetMultiColumnSortMode(isMultiColumnMode);
@@ -234,13 +238,17 @@ public sealed partial class CategoriesPage : Page
                 // Update sorting in ViewModel
                 if (primarySortColumn != null && primarySortColumn.Tag != null)
                 {
-                    var direction = primarySortColumn.SortDirection == DataGridSortDirection.Ascending
-                        ? ListSortDirection.Ascending
-                        : ListSortDirection.Descending;
-                    ViewModel.UpdateSorting(
-                        new List<string> { primarySortColumn.Tag.ToString() },
-                        new List<ListSortDirection> { direction }
-                    );
+                    var tagString = primarySortColumn.Tag.ToString();
+                    if (!string.IsNullOrEmpty(tagString))
+                    {
+                        var direction = primarySortColumn.SortDirection == DataGridSortDirection.Ascending
+                            ? ListSortDirection.Ascending
+                            : ListSortDirection.Descending;
+                        ViewModel.UpdateSorting(
+                            new List<string> { tagString },
+                            new List<ListSortDirection> { direction }
+                        );
+                    }
                 }
                 else
                 {
