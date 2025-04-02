@@ -5,7 +5,7 @@ namespace StormPC.Helpers;
 
 public class DateTimeConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, string language)
+    public object? Convert(object value, Type targetType, object parameter, string language)
     {
         // Nếu targetType là string, trả về chuỗi định dạng
         if (targetType == typeof(string))
@@ -52,7 +52,7 @@ public class DateTimeConverter : IValueConverter
         return null;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    public object? ConvertBack(object value, Type targetType, object parameter, string language)
     {
         // Nếu value là null, trả về null
         if (value == null)
