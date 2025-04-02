@@ -24,27 +24,27 @@ public class InventoryReportData
     public decimal StockTurnoverRate { get; set; }
 
     // Phân tích theo danh mục
-    public IEnumerable<CategoryAnalysis> CategoryAnalytics { get; set; }
+    public IEnumerable<CategoryAnalysis>? CategoryAnalytics { get; set; }
     
     // Phân tích theo thương hiệu
-    public IEnumerable<BrandAnalysis> BrandAnalytics { get; set; }
+    public IEnumerable<BrandAnalysis>? BrandAnalytics { get; set; }
     
     // Phân tích theo thời gian
-    public IEnumerable<StockTrend> StockTrends { get; set; }
+    public IEnumerable<StockTrend>? StockTrends { get; set; }
     
     // Sản phẩm tồn kho lâu
-    public IEnumerable<AgedInventory> AgedInventories { get; set; }
+    public IEnumerable<AgedInventory>? AgedInventories { get; set; }
     
     // Sản phẩm sắp hết hàng
-    public IEnumerable<LowStockItem> LowStockItems { get; set; }
+    public IEnumerable<LowStockItem>? LowStockItems { get; set; }
     
     // Sản phẩm bán chạy cần nhập thêm
-    public IEnumerable<RestockSuggestion> RestockSuggestions { get; set; }
+    public IEnumerable<RestockSuggestion>? RestockSuggestions { get; set; }
 }
 
 public class CategoryAnalysis
 {
-    public string CategoryName { get; set; }
+    public string CategoryName { get; set; } = string.Empty;
     public int TotalProducts { get; set; }
     public int TotalStock { get; set; }
     public decimal TotalValue { get; set; }
@@ -55,7 +55,7 @@ public class CategoryAnalysis
 
 public class BrandAnalysis 
 {
-    public string BrandName { get; set; }
+    public string BrandName { get; set; } = string.Empty;
     public int TotalProducts { get; set; }
     public int TotalStock { get; set; }
     public decimal TotalValue { get; set; }

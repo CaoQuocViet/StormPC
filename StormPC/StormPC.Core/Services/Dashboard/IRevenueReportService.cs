@@ -12,7 +12,7 @@ public class RevenueData
 
 public class CategoryRevenueData
 {
-    public string CategoryName { get; set; }
+    public string CategoryName { get; set; } = string.Empty;
     public decimal Revenue { get; set; }
     public decimal Profit { get; set; }
 }
@@ -26,7 +26,7 @@ public class DailyRevenueData
 
 public class PaymentMethodData
 {
-    public string MethodName { get; set; }
+    public string MethodName { get; set; } = string.Empty;
     public decimal Amount { get; set; }
     public int Count { get; set; }
 } 
