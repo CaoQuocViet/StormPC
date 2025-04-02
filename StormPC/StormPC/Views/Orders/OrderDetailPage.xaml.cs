@@ -39,7 +39,7 @@ public sealed partial class OrderDetailPage : Page
         }
     }
 
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    protected async override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
@@ -52,6 +52,19 @@ public sealed partial class OrderDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.OrderDetail == null)
+        {
+            var errorDialog = new ContentDialog
+            {
+                Title = "Lỗi",
+                Content = "Không có thông tin đơn hàng để xuất",
+                CloseButtonText = "Đóng",
+                XamlRoot = this.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            return;
+        }
+
         var savePicker = new FileSavePicker
         {
             SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
@@ -69,7 +82,7 @@ public sealed partial class OrderDetailPage : Page
             try
             {
                 // Tạo font hỗ trợ Unicode
-                string arialFontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "arial.ttf");
+                var arialFontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "arial.ttf");
                 var font = PdfFontFactory.CreateFont(arialFontPath, PdfEncodings.IDENTITY_H);
 
                 using var writer = new PdfWriter(await file.OpenStreamForWriteAsync());

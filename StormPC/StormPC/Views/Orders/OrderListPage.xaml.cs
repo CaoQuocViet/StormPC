@@ -21,7 +21,7 @@ public sealed partial class OrderListPage : Page
     private readonly INavigationService _navigationService;
     private List<OrderDisplayDto> _originalOrders;
     // Keeps track of the currently active DataGrid
-    private DataGrid _activeDataGrid;
+    private DataGrid? _activeDataGrid;
 
     public OrderListPage()
     {
@@ -67,7 +67,7 @@ public sealed partial class OrderListPage : Page
         _activeDataGrid = dataGrid;
         
         // Get property name from Tag property
-        string propertyName = e.Column.Tag?.ToString();
+        var propertyName = e.Column.Tag?.ToString();
         if (string.IsNullOrEmpty(propertyName))
             return;
 
@@ -96,10 +96,14 @@ public sealed partial class OrderListPage : Page
             {
                 if (column.SortDirection != null && column.Tag != null && column != e.Column)
                 {
-                    sortProperties.Add(column.Tag.ToString());
-                    sortDirections.Add(column.SortDirection == DataGridSortDirection.Ascending 
-                        ? ListSortDirection.Ascending 
-                        : ListSortDirection.Descending);
+                    var tagString = column.Tag.ToString();
+                    if (!string.IsNullOrEmpty(tagString))
+                    {
+                        sortProperties.Add(tagString);
+                        sortDirections.Add(column.SortDirection == DataGridSortDirection.Ascending 
+                            ? ListSortDirection.Ascending 
+                            : ListSortDirection.Descending);
+                    }
                 }
             }
             
@@ -129,7 +133,7 @@ public sealed partial class OrderListPage : Page
     {
         if (sender is ToggleButton toggleButton)
         {
-            bool isMultiColumnMode = toggleButton.IsChecked ?? false;
+            var isMultiColumnMode = toggleButton.IsChecked ?? false;
             
             // Enable or disable multi-column sorting based on toggle state
             DataGridSortingHelper.SetMultiColumnSortMode(isMultiColumnMode);
@@ -153,13 +157,17 @@ public sealed partial class OrderListPage : Page
                 // Update sorting in ViewModel
                 if (primarySortColumn != null && primarySortColumn.Tag != null)
                 {
-                    var direction = primarySortColumn.SortDirection == DataGridSortDirection.Ascending
-                        ? ListSortDirection.Ascending
-                        : ListSortDirection.Descending;
-                    ViewModel.UpdateSorting(
-                        new List<string> { primarySortColumn.Tag.ToString() },
-                        new List<ListSortDirection> { direction }
-                    );
+                    var tagString = primarySortColumn.Tag.ToString();
+                    if (!string.IsNullOrEmpty(tagString))
+                    {
+                        var direction = primarySortColumn.SortDirection == DataGridSortDirection.Ascending
+                            ? ListSortDirection.Ascending
+                            : ListSortDirection.Descending;
+                        ViewModel.UpdateSorting(
+                            new List<string> { tagString },
+                            new List<ListSortDirection> { direction }
+                        );
+                    }
                 }
                 else
                 {
