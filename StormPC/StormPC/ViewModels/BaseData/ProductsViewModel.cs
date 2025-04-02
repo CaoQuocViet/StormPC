@@ -17,14 +17,13 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private List<LaptopDisplayDto> _allLaptops;
     private ObservableCollection<LaptopDisplayDto> _laptops;
     private bool _isLoading;
-    private string _searchText;
     private int _currentPage = 1;
     private int _pageSize = 10; 
     private int _totalItems;
     private int _selectedSortIndex;
-    private LaptopDisplayDto _selectedLaptop;
+    private LaptopDisplayDto? _selectedLaptop;
 
-    public LaptopDisplayDto SelectedLaptop
+    public LaptopDisplayDto? SelectedLaptop
     {
         get => _selectedLaptop;
         set => SetProperty(ref _selectedLaptop, value);
