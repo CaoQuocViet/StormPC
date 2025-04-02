@@ -50,6 +50,8 @@ public class LaptopSpec
     [Column("createdAt")]
     public DateTime CreatedAt { get; set; }
 
+    public bool IsDeleted { get; set; } = false;
+
     // Thuộc tính navigation
     public Laptop Laptop { get; set; } = null!;
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

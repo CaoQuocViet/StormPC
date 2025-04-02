@@ -13,6 +13,8 @@ public class Brand
     [MaxLength(100)]
     public string BrandName { get; set; } = null!;
 
+    public bool IsDeleted { get; set; } = false;
+
     // Thuộc tính navigation
     public ICollection<Laptop> Laptops { get; set; } = new List<Laptop>();
 } 

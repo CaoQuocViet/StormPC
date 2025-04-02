@@ -39,6 +39,12 @@ public class Laptop
     [Required]
     public bool IsDeleted { get; set; }
 
+    [Column("createdAt")]
+    public DateTime CreatedAt { get; set; }
+
+    [Column("updatedAt")]
+    public DateTime UpdatedAt { get; set; }
+
     // Thuộc tính navigation
     public Brand Brand { get; set; } = null!;
     public Category Category { get; set; } = null!;
