@@ -1,20 +1,14 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
-using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.Drawing;
 using LiveChartsCore.Kernel.Sketches;
 using SkiaSharp;
 using StormPC.Core.Models.Products;
 using StormPC.Core.Services.Dashboard;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
 using StormPC.Helpers;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 
 namespace StormPC.ViewModels.Dashboard;
@@ -30,16 +24,16 @@ public partial class InventoryReportViewModel : ObservableObject
     private DateTimeOffset _endDate = DateTimeOffset.Now;
 
     [ObservableProperty]
-    private ObservableCollection<Category> _categories;
+    private ObservableCollection<Category>? _categories;
 
     [ObservableProperty]
-    private ObservableCollection<Brand> _brands;
+    private ObservableCollection<Brand>? _brands;
 
     [ObservableProperty]
-    private Category _selectedCategory;
+    private Category? _selectedCategory;
 
     [ObservableProperty]
-    private Brand _selectedBrand;
+    private Brand? _selectedBrand;
 
     [ObservableProperty]
     private int _totalProducts;
@@ -60,49 +54,49 @@ public partial class InventoryReportViewModel : ObservableObject
     private int _lowStockProducts;
 
     [ObservableProperty]
-    private ObservableCollection<LowStockItem> _lowStockItems;
+    private ObservableCollection<LowStockItem>? _lowStockItems;
 
     [ObservableProperty]
-    private ISeries[] _stockTrendSeries;
+    private ISeries[]? _stockTrendSeries;
 
     [ObservableProperty]
-    private ISeries[] _categoryDistributionSeries;
+    private ISeries[]? _categoryDistributionSeries;
 
     [ObservableProperty]
-    private ISeries[] _brandDistributionSeries;
+    private ISeries[]? _brandDistributionSeries;
 
     [ObservableProperty]
-    private ISeries[] _stockAgingSeries;
+    private ISeries[]? _stockAgingSeries;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _stockTrendXAxes;
+    private IEnumerable<ICartesianAxis>? _stockTrendXAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _stockTrendYAxes;
+    private IEnumerable<ICartesianAxis>? _stockTrendYAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _categoryXAxes;
+    private IEnumerable<ICartesianAxis>? _categoryXAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _categoryYAxes;
+    private IEnumerable<ICartesianAxis>? _categoryYAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _brandXAxes;
+    private IEnumerable<ICartesianAxis>? _brandXAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _brandYAxes;
+    private IEnumerable<ICartesianAxis>? _brandYAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _agingXAxes;
+    private IEnumerable<ICartesianAxis>? _agingXAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _agingYAxes;
+    private IEnumerable<ICartesianAxis>? _agingYAxes;
 
     [ObservableProperty]
-    private ObservableCollection<CategoryAnalysis> _categoryAnalytics;
+    private ObservableCollection<CategoryAnalysis>? _categoryAnalytics;
 
     [ObservableProperty]
-    private ObservableCollection<BrandAnalysis> _brandAnalytics;
+    private ObservableCollection<BrandAnalysis>? _brandAnalytics;
 
     [ObservableProperty]
     private ObservableCollection<AgedInventory> _agedInventories = new();
@@ -111,37 +105,37 @@ public partial class InventoryReportViewModel : ObservableObject
     private ObservableCollection<RestockSuggestion> _restockSuggestions = new();
 
     [ObservableProperty]
-    private ISeries[] _stockDistributionSeries;
+    private ISeries[]? _stockDistributionSeries;
 
     [ObservableProperty]
-    private ISeries[] _stockValueSeries;
+    private ISeries[]? _stockValueSeries;
 
     [ObservableProperty]
-    private ISeries[] _stockHeatSeries;
+    private ISeries[]? _stockHeatSeries;
 
     [ObservableProperty]
-    private List<IPolarAxis> _angleAxes;
+    private List<IPolarAxis>? _angleAxes;
 
     [ObservableProperty]
-    private List<IPolarAxis> _radiusAxes;
+    private List<IPolarAxis>? _radiusAxes;
 
     [ObservableProperty]
-    private List<ICartesianAxis> _valueXAxes;
+    private List<ICartesianAxis>? _valueXAxes;
 
     [ObservableProperty]
-    private List<ICartesianAxis> _valueYAxes;
+    private List<ICartesianAxis>? _valueYAxes;
 
     [ObservableProperty]
-    private List<ICartesianAxis> _heatXAxes;
+    private List<ICartesianAxis>? _heatXAxes;
 
     [ObservableProperty]
-    private List<ICartesianAxis> _heatYAxes;
+    private List<ICartesianAxis>? _heatYAxes;
 
     // Phân trang cho bảng thời gian tồn kho
     private int _agedInventoriesCurrentPage = 1;
-    private int _agedInventoriesItemsPerPage = 15;
+    private readonly int _agedInventoriesItemsPerPage = 15;
     private int _restockSuggestionsCurrentPage = 1;
-    private int _restockSuggestionsItemsPerPage = 15;
+    private readonly int _restockSuggestionsItemsPerPage = 15;
 
     [ObservableProperty]
     private int _todayOrderCount;
@@ -150,16 +144,16 @@ public partial class InventoryReportViewModel : ObservableObject
     private decimal _todayRevenue;
 
     [ObservableProperty]
-    private ObservableCollection<TopSellingProduct> _topSellingProducts;
+    private ObservableCollection<TopSellingProduct>? _topSellingProducts;
 
     [ObservableProperty]
-    private ISeries[] _topSellersSeries;
+    private ISeries[]? _topSellersSeries;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _topSellersXAxes;
+    private IEnumerable<ICartesianAxis>? _topSellersXAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _topSellersYAxes;
+    private IEnumerable<ICartesianAxis>? _topSellersYAxes;
 
     public int AgedInventoriesCurrentPage
     {
@@ -175,13 +169,13 @@ public partial class InventoryReportViewModel : ObservableObject
         }
     }
 
-    public int AgedInventoriesTotalPages => _agedInventories?.Count > 0 
-        ? (int)Math.Ceiling(_agedInventories.Count / (double)_agedInventoriesItemsPerPage) 
+    public int AgedInventoriesTotalPages => AgedInventories?.Count > 0 
+        ? (int)Math.Ceiling(AgedInventories.Count / (double)_agedInventoriesItemsPerPage) 
         : 1;
 
     public IEnumerable<AgedInventory> AgedInventoriesPagedItems =>
-        _agedInventories?.Count > 0
-            ? _agedInventories
+        AgedInventories?.Count > 0
+            ? AgedInventories
                 .Skip((AgedInventoriesCurrentPage - 1) * _agedInventoriesItemsPerPage)
                 .Take(_agedInventoriesItemsPerPage)
             : Enumerable.Empty<AgedInventory>();
@@ -200,13 +194,13 @@ public partial class InventoryReportViewModel : ObservableObject
         }
     }
 
-    public int RestockSuggestionsTotalPages => _restockSuggestions?.Count > 0
-        ? (int)Math.Ceiling(_restockSuggestions.Count / (double)_restockSuggestionsItemsPerPage)
+    public int RestockSuggestionsTotalPages => RestockSuggestions?.Count > 0
+        ? (int)Math.Ceiling(RestockSuggestions.Count / (double)_restockSuggestionsItemsPerPage)
         : 1;
 
     public IEnumerable<RestockSuggestion> RestockSuggestionsPagedItems =>
-        _restockSuggestions?.Count > 0
-            ? _restockSuggestions
+        RestockSuggestions?.Count > 0
+            ? RestockSuggestions
                 .Skip((RestockSuggestionsCurrentPage - 1) * _restockSuggestionsItemsPerPage)
                 .Take(_restockSuggestionsItemsPerPage)
             : Enumerable.Empty<RestockSuggestion>();

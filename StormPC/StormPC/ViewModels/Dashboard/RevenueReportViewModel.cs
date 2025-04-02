@@ -24,25 +24,25 @@ public partial class RevenueReportViewModel : ObservableObject
     private DateTime _endDate = DateTime.Now;
 
     [ObservableProperty]
-    private RevenueData _revenueData;
+    private RevenueData? _revenueData;
 
     [ObservableProperty]
-    private ISeries[] _revenueSeries;
+    private ISeries[]? _revenueSeries;
 
     [ObservableProperty]
-    private ISeries[] _categoryRevenueSeries;
+    private ISeries[]? _categoryRevenueSeries;
 
     [ObservableProperty]
-    private ISeries[] _paymentMethodSeries;
+    private ISeries[]? _paymentMethodSeries;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _xAxes;
+    private IEnumerable<ICartesianAxis>? _xAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _yAxes;
+    private IEnumerable<ICartesianAxis>? _yAxes;
 
     [ObservableProperty]
-    private IEnumerable<ICartesianAxis> _categoryYAxes;
+    private IEnumerable<ICartesianAxis>? _categoryYAxes;
 
     private string FormatCurrency(double value)
     {
