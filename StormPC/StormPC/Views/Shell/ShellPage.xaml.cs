@@ -37,7 +37,7 @@ public sealed partial class ShellPage : Page
         AppTitleBarText.Text = "AppDisplayName".GetLocalized();
 
         // Initialize last visited page
-        ViewModel.InitializeAsync();
+        _ = ViewModel.InitializeAsync();
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
