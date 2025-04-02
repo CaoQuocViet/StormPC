@@ -64,7 +64,7 @@ namespace StormPC.Helpers.UI
             var column = e.Column;
             
             // Get property name from Tag property
-            string propertyName = column.Tag?.ToString();
+            string? propertyName = column.Tag?.ToString();
             if (string.IsNullOrEmpty(propertyName))
                 return new ObservableCollection<T>(originalItems);
                 
@@ -186,7 +186,7 @@ namespace StormPC.Helpers.UI
                 
                 // Update sort order for single column
                 _sortOrder.Clear();
-                string propName = primarySortColumn.Tag?.ToString();
+                string? propName = primarySortColumn.Tag?.ToString();
                 if (!string.IsNullOrEmpty(propName))
                 {
                     _sortOrder.Add(propName);
