@@ -73,7 +73,7 @@ public sealed partial class ProductsPage : Page
             PrimaryButtonText = "Thêm",
             CloseButtonText = "Hủy",
             DefaultButton = ContentDialogButton.Primary,
-            MinWidth = 600 // Đặt chiều rộng tối thiểu cho dialog
+            MinWidth = 900 // Đặt chiều rộng tối thiểu cho dialog
         };
 
         var scrollViewer = new ScrollViewer
@@ -137,7 +137,7 @@ public sealed partial class ProductsPage : Page
         var pictureBox = new TextBox
         {
             PlaceholderText = "Nhập đường dẫn ảnh (URL hoặc đường dẫn local)",
-            Text = string.IsNullOrEmpty(ViewModel.Picture) ? "/Assets/Products/default-product.png" : ViewModel.Picture
+            Text = string.IsNullOrEmpty(ViewModel.Picture) ? "/Assets/Products/default-product.png/Assets/data/laptops/34.jpg" : ViewModel.Picture
         };
         pictureBox.TextChanged += (s, args) => { ViewModel.Picture = pictureBox.Text; };
         stackPanel.Children.Add(pictureBox);

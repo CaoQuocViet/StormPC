@@ -146,36 +146,42 @@
                                                   Background="#CC000000" 
                                                   Visibility="Collapsed"
                                                   CornerRadius="12"
-                                                  IsHitTestVisible="False">
+                                                  IsHitTestVisible="True">
                                                 <ContentPresenter Content="{Binding}">
                                                     <ContentPresenter.ContentTemplate>
                                                         <DataTemplate>
-                                                            <Grid Background="Transparent">
+                                                            <Grid Background="Transparent" 
+                                                                  IsHitTestVisible="True">
                                                                 <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
                                                                     <RowDefinition Height="*"/>
                                                                     <RowDefinition Height="Auto"/>
                                                                 </Grid.RowDefinitions>
 
-                                                                <!-- Product Details -->
+                                                                <!-- Action Buttons -->
                                                                 <StackPanel Grid.Row="0" 
-                                                                          Margin="20,10,20,20" 
-                                                                          VerticalAlignment="Top">
-                                                                    <Button Style="{ThemeResource AccentButtonStyle}"
-                                                                            Background="#28A745"
+                                                                          Orientation="Horizontal" 
+                                                                          HorizontalAlignment="Center"
+                                                                          Margin="0,20,0,0"
+                                                                          Spacing="8"
+                                                                          IsHitTestVisible="True">
+                                                                    <Button Background="#28A745"
                                                                             Foreground="White"
                                                                             Padding="16,8"
                                                                             CornerRadius="4"
                                                                             Command="{Binding ElementName=page, Path=ViewModel.AddSpecCommand}"
-                                                                            CommandParameter="{Binding}"
-                                                                            IsTabStop="True"
-                                                                            Margin="0,0,0,10"
-                                                                            HorizontalAlignment="Center">
+                                                                            CommandParameter="{Binding}">
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <FontIcon Glyph="&#xE710;" FontSize="12"/>
                                                                             <TextBlock Text="Thêm cấu hình" Margin="8,0,0,0"/>
                                                                         </StackPanel>
                                                                     </Button>
-                                                                    
+                                                                </StackPanel>
+
+                                                                <!-- Product Details -->
+                                                                <StackPanel Grid.Row="1" 
+                                                                          Margin="20,10,20,20" 
+                                                                          VerticalAlignment="Top">
                                                                     <TextBlock Text="{Binding ModelName}" 
                                                                              FontWeight="SemiBold" 
                                                                              FontSize="20"
@@ -184,8 +190,7 @@
                                                                              TextAlignment="Center"
                                                                              Margin="0,0,0,20"/>
 
-                                                                    <Grid ColumnSpacing="12" 
-                                                                          RowSpacing="12">
+                                                                    <Grid ColumnSpacing="12" RowSpacing="12">
                                                                         <Grid.ColumnDefinitions>
                                                                             <ColumnDefinition Width="Auto"/>
                                                                             <ColumnDefinition Width="*"/>
@@ -245,49 +250,42 @@
                                                                         </StackPanel>
 
                                                                         <TextBlock Grid.Row="4" 
-                                                                                 Grid.ColumnSpan="2"
-                                                                                 Margin="0,12,0,0"
-                                                                                 HorizontalAlignment="Center">
-                                                                            <Run Text="Giá từ: " 
-                                                                                 Foreground="#99FFFFFF"/>
-                                                                            <Run Text="{Binding FormattedPrice}" 
-                                                                                 FontSize="20" 
-                                                                                 Foreground="#00FF93"
+                                                                                 Text="Số tùy chọn:" 
+                                                                                 Foreground="#99FFFFFF"
                                                                                  FontWeight="SemiBold"/>
-                                                                            <Run Text=" VNĐ" 
-                                                                                 Foreground="#99FFFFFF"/>
+                                                                        <TextBlock Grid.Row="4" 
+                                                                                 Grid.Column="1"
+                                                                                 Foreground="White">
+                                                                            <Run Text="{Binding OptionsCount}"/>
+                                                                            <Run Text=" phiên bản"/>
                                                                         </TextBlock>
                                                                     </Grid>
                                                                 </StackPanel>
 
                                                                 <!-- Action Buttons -->
-                                                                <StackPanel Grid.Row="1" 
+                                                                <StackPanel Grid.Row="2" 
                                                                           Orientation="Horizontal" 
                                                                           HorizontalAlignment="Center"
                                                                           Margin="0,0,0,20"
                                                                           Spacing="8"
                                                                           IsHitTestVisible="True">
-                                                                    <Button Style="{ThemeResource AccentButtonStyle}"
-                                                                            Background="#007BFF"
+                                                                    <Button Background="#007BFF"
                                                                             Foreground="White"
                                                                             Padding="16,8"
                                                                             CornerRadius="4"
                                                                             Command="{Binding ElementName=page, Path=ViewModel.EditCommand}"
-                                                                            CommandParameter="{Binding}"
-                                                                            IsTabStop="True">
+                                                                            CommandParameter="{Binding}">
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <FontIcon Glyph="&#xE70F;" FontSize="12"/>
                                                                             <TextBlock Text="Sửa" Margin="8,0,0,0"/>
                                                                         </StackPanel>
                                                                     </Button>
-                                                                    <Button Style="{ThemeResource AccentButtonStyle}"
-                                                                            Background="#DC3545"
+                                                                    <Button Background="#DC3545"
                                                                             Foreground="White"
                                                                             Padding="16,8"
                                                                             CornerRadius="4"
                                                                             Command="{Binding ElementName=page, Path=ViewModel.DeleteCommand}"
-                                                                            CommandParameter="{Binding}"
-                                                                            IsTabStop="True">
+                                                                            CommandParameter="{Binding}">
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <FontIcon Glyph="&#xE74D;" FontSize="12"/>
                                                                             <TextBlock Text="Xóa" Margin="8,0,0,0"/>
@@ -479,7 +477,8 @@
                                                       Orientation="Horizontal" 
                                                       HorizontalAlignment="Center"
                                                       Margin="0,24,0,0"
-                                                      Spacing="8">
+                                                      Spacing="8"
+                                                      IsHitTestVisible="True">
                                                 <Button Style="{ThemeResource AccentButtonStyle}"
                                                         Background="#28A745"
                                                         Foreground="White"
