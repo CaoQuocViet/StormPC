@@ -2,12 +2,16 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StormPC.Core.Models.Products.Dtos;
+using StormPC.Core.Models.Products;
 using StormPC.Core.Services.Products;
 using StormPC.Core.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Windows.Input;
+using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
+using System;
 
 namespace StormPC.ViewModels.BaseData;
 
@@ -22,11 +26,76 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private int _totalItems;
     private int _selectedSortIndex;
     private LaptopDisplayDto? _selectedLaptop;
+    private ObservableCollection<LaptopDisplayDto> _selectedLaptops;
+
+    [ObservableProperty]
+    private List<Brand> brands;
+
+    [ObservableProperty]
+    private List<Category> categories;
+
+    [ObservableProperty]
+    private int selectedBrandId;
+
+    [ObservableProperty] 
+    private int selectedCategoryId;
+
+    [ObservableProperty]
+    private string modelName;
+
+    [ObservableProperty]
+    private decimal? screenSize;
+
+    [ObservableProperty]
+    private string operatingSystem;
+
+    [ObservableProperty]
+    private int releaseYear;
+
+    [ObservableProperty]
+    private decimal discount;
+
+    [ObservableProperty]
+    private string picture;
+
+    [ObservableProperty]
+    private string description;
+
+    [ObservableProperty]
+    private string errorMessage;
+
+    [ObservableProperty]
+    private bool isMultipleSelectionEnabled;
 
     public LaptopDisplayDto? SelectedLaptop
     {
         get => _selectedLaptop;
         set => SetProperty(ref _selectedLaptop, value);
+    }
+
+    public ObservableCollection<LaptopDisplayDto> SelectedLaptops
+    {
+        get => _selectedLaptops;
+        set => SetProperty(ref _selectedLaptops, value);
+    }
+
+    [RelayCommand]
+    public async Task LoadBrandsAndCategories()
+    {
+        try
+        {
+            IsLoading = true;
+            Brands = (await _productService.GetAllBrandsAsync()).ToList();
+            Categories = (await _productService.GetAllCategoriesAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Không thể tải thương hiệu và danh mục: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     [RelayCommand]
@@ -49,8 +118,274 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private async Task Delete()
     {
         if (SelectedLaptop == null) return;
-        // TODO: Implement delete logic
-        await Task.CompletedTask;
+
+        var canDelete = await _productService.CanDeleteLaptopAsync(SelectedLaptop.LaptopID);
+        if (!canDelete)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Không thể xóa",
+                Content = "Không thể xóa sản phẩm này vì đã có đơn hàng liên quan.",
+                CloseButtonText = "Đóng",
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            return;
+        }
+
+        ContentDialog confirmDialog = new ContentDialog
+        {
+            Title = "Xác nhận xóa",
+            Content = $"Bạn có chắc chắn muốn xóa laptop {SelectedLaptop.ModelName}?",
+            PrimaryButtonText = "Xóa",
+            CloseButtonText = "Hủy",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+
+        var result = await confirmDialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            IsLoading = true;
+            var success = await _productService.DeleteLaptopAsync(SelectedLaptop.LaptopID);
+            IsLoading = false;
+
+            if (success)
+            {
+                await LoadProductsAsync();
+            }
+            else
+            {
+                ContentDialog errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Không thể xóa sản phẩm. Vui lòng thử lại sau.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = App.MainWindow.Content.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
+        }
+    }
+
+    [RelayCommand]
+    private async Task DeleteMultiple()
+    {
+        if (SelectedLaptops == null || SelectedLaptops.Count == 0)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Lỗi",
+                Content = "Vui lòng chọn ít nhất một sản phẩm để xóa.",
+                CloseButtonText = "Đóng",
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            return;
+        }
+
+        // Kiểm tra từng laptop có thể xóa được không
+        var laptopIds = SelectedLaptops.Select(l => l.LaptopID).ToList();
+        var deletableLaptops = new List<int>();
+        var nonDeletableLaptops = new List<string>();
+
+        foreach (var laptop in SelectedLaptops)
+        {
+            var canDelete = await _productService.CanDeleteLaptopAsync(laptop.LaptopID);
+            if (canDelete)
+            {
+                deletableLaptops.Add(laptop.LaptopID);
+            }
+            else
+            {
+                nonDeletableLaptops.Add(laptop.ModelName);
+            }
+        }
+
+        if (deletableLaptops.Count == 0)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Không thể xóa",
+                Content = "Không thể xóa các sản phẩm đã chọn vì tất cả đều đã có đơn hàng.",
+                CloseButtonText = "Đóng",
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            return;
+        }
+
+        var confirmMessage = deletableLaptops.Count == SelectedLaptops.Count
+            ? $"Bạn có chắc chắn muốn xóa {deletableLaptops.Count} sản phẩm đã chọn?"
+            : $"Có {nonDeletableLaptops.Count} sản phẩm không thể xóa do đã có đơn hàng:\n" +
+              $"{string.Join("\n", nonDeletableLaptops)}\n\n" +
+              $"Bạn có muốn tiếp tục xóa {deletableLaptops.Count} sản phẩm còn lại?";
+
+        ContentDialog confirmDialog = new ContentDialog
+        {
+            Title = "Xác nhận xóa",
+            Content = confirmMessage,
+            PrimaryButtonText = "Xóa",
+            CloseButtonText = "Hủy",
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+
+        var result = await confirmDialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            IsLoading = true;
+            var success = await _productService.DeleteMultipleLaptopsAsync(deletableLaptops);
+            IsLoading = false;
+
+            if (success)
+            {
+                await LoadProductsAsync();
+                IsMultipleSelectionEnabled = false;
+
+                if (nonDeletableLaptops.Count > 0)
+                {
+                    ContentDialog resultDialog = new ContentDialog
+                    {
+                        Title = "Kết quả xóa",
+                        Content = $"Đã xóa thành công {deletableLaptops.Count} sản phẩm.\n" +
+                                 $"{nonDeletableLaptops.Count} sản phẩm không thể xóa do đã có đơn hàng.",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = App.MainWindow.Content.XamlRoot
+                    };
+                    await resultDialog.ShowAsync();
+                }
+            }
+            else
+            {
+                ContentDialog errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Đã xảy ra lỗi khi xóa sản phẩm. Vui lòng thử lại sau.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = App.MainWindow.Content.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleSelectionMode()
+    {
+        IsMultipleSelectionEnabled = !IsMultipleSelectionEnabled;
+        if (!IsMultipleSelectionEnabled)
+        {
+            SelectedLaptops?.Clear();
+        }
+    }
+
+    [RelayCommand]
+    public async Task AddLaptop()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(ModelName))
+            {
+                ErrorMessage = "Vui lòng nhập tên mẫu laptop.";
+                return;
+            }
+
+            if (SelectedBrandId <= 0)
+            {
+                ErrorMessage = "Vui lòng chọn thương hiệu.";
+                return;
+            }
+
+            if (SelectedCategoryId <= 0)
+            {
+                ErrorMessage = "Vui lòng chọn danh mục.";
+                return;
+            }
+
+            if (ScreenSize <= 0)
+            {
+                ErrorMessage = "Kích thước màn hình phải lớn hơn 0.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(OperatingSystem))
+            {
+                ErrorMessage = "Vui lòng nhập hệ điều hành.";
+                return;
+            }
+
+            if (ReleaseYear <= 0)
+            {
+                ErrorMessage = "Năm phát hành không hợp lệ.";
+                return;
+            }
+
+            if (Discount < 0)
+            {
+                ErrorMessage = "Giảm giá không thể âm.";
+                return;
+            }
+
+            // Làm tròn giảm giá xuống đơn vị 1000 VND
+            decimal roundedDiscount = Math.Floor(Discount / 1000) * 1000;
+
+            var now = DateTime.UtcNow;
+            var newLaptop = new Laptop
+            {
+                ModelName = ModelName,
+                BrandID = SelectedBrandId,
+                CategoryID = SelectedCategoryId,
+                ScreenSize = ScreenSize,
+                OperatingSystem = OperatingSystem,
+                ReleaseYear = ReleaseYear,
+                Discount = roundedDiscount,
+                Description = Description ?? string.Empty,
+                Picture = Picture,
+                IsDeleted = false,
+                CreatedAt = now,
+                UpdatedAt = now
+            };
+
+            // Nếu có giảm giá, thêm thời gian giảm giá (mặc định 1 tháng)
+            if (roundedDiscount > 0)
+            {
+                newLaptop.DiscountStartDate = now;
+                newLaptop.DiscountEndDate = now.AddMonths(1);
+            }
+
+            IsLoading = true;
+            var success = await _productService.AddLaptopAsync(newLaptop);
+            IsLoading = false;
+
+            if (success)
+            {
+                // Reset form
+                ModelName = string.Empty;
+                SelectedBrandId = 0;
+                SelectedCategoryId = 0;
+                ScreenSize = 0;
+                OperatingSystem = string.Empty;
+                ReleaseYear = DateTime.Now.Year;
+                Discount = 0;
+                Picture = string.Empty;
+                Description = string.Empty;
+
+                // Reload products
+                await LoadProductsAsync();
+
+                // Return success = true để dialog gọi phương thức này biết là thành công
+                ErrorMessage = string.Empty;
+            }
+            else
+            {
+                ErrorMessage = "Không thể thêm laptop mới. Vui lòng thử lại.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Lỗi: {ex.Message}";
+        }
     }
 
     public int SelectedSortIndex
@@ -111,6 +446,8 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         _productService = productService;
         _laptops = new ObservableCollection<LaptopDisplayDto>();
         _allLaptops = new List<LaptopDisplayDto>();
+        _selectedLaptops = new ObservableCollection<LaptopDisplayDto>();
+        ReleaseYear = DateTime.Now.Year;
     }
 
     partial void OnSearchTextChanged(string value)
