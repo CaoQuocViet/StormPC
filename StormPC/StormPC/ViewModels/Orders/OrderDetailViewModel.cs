@@ -8,6 +8,7 @@ namespace StormPC.ViewModels.Orders;
 public partial class OrderDetailViewModel : ObservableObject
 {
     private readonly IOrderDetailService _orderDetailService;
+    private readonly OrderListViewModel _orderListViewModel;
 
     [ObservableProperty]
     private OrderDetailDto? _orderDetail;
@@ -15,9 +16,10 @@ public partial class OrderDetailViewModel : ObservableObject
     [ObservableProperty]
     private bool _isLoading;
 
-    public OrderDetailViewModel(IOrderDetailService orderDetailService)
+    public OrderDetailViewModel(IOrderDetailService orderDetailService, OrderListViewModel orderListViewModel)
     {
         _orderDetailService = orderDetailService;
+        _orderListViewModel = orderListViewModel;
         Debug.WriteLine("OrderDetailViewModel constructed");
     }
 
@@ -99,5 +101,10 @@ public partial class OrderDetailViewModel : ObservableObject
             IsLoading = false;
             Debug.WriteLine($"LoadOrderByIdAsync completed for OrderID: {orderId}");
         }
+    }
+
+    public async Task<bool> DeleteOrderAsync(int orderId)
+    {
+        return await _orderListViewModel.DeleteOrderAsync(orderId);
     }
 } 

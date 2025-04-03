@@ -140,7 +140,8 @@
                             <TextBlock Text="Sửa"/>
                         </StackPanel>
                     </Button>
-                    <Button Style="{StaticResource ActionButtonStyle}" Background="#E81123" Foreground="White">
+                    <Button Style="{StaticResource ActionButtonStyle}" Background="#E81123" Foreground="White"
+                            Click="DeleteButton_Click">
                         <StackPanel Orientation="Horizontal" Spacing="8">
                             <FontIcon Glyph="&#xE74D;" FontSize="16"/>
                             <TextBlock Text="Xóa"/>

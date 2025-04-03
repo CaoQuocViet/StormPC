@@ -241,4 +241,53 @@ public sealed partial class OrderDetailPage : Page
             .Add(new Paragraph(value).SetFont(font))
             .SetPadding(5));
     }
+
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.OrderDetail == null) return;
+
+        try
+        {
+            var result = await ViewModel.DeleteOrderAsync(ViewModel.OrderDetail.OrderID);
+            if (result)
+            {
+                var successDialog = new ContentDialog
+                {
+                    Title = "Thành công",
+                    Content = "Đã xóa đơn hàng thành công!",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.XamlRoot
+                };
+                await successDialog.ShowAsync();
+                
+                // Navigate back to order list
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                }
+            }
+            else
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Không thể xóa đơn hàng. Chỉ có thể xóa đơn hàng có trạng thái 'Cancelled'.",
+                    CloseButtonText = "Đóng",
+                    XamlRoot = this.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            var errorDialog = new ContentDialog
+            {
+                Title = "Lỗi",
+                Content = $"Có lỗi xảy ra khi xóa đơn hàng: {ex.Message}",
+                CloseButtonText = "Đóng",
+                XamlRoot = this.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+        }
+    }
 } 
