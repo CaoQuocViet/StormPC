@@ -246,7 +246,7 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
             existingLaptop.Discount = laptop.Discount;
             existingLaptop.Description = laptop.Description;
             existingLaptop.Picture = laptop.Picture;
-            existingLaptop.UpdatedAt = laptop.UpdatedAt;
+            existingLaptop.UpdatedAt = DateTime.UtcNow;
             
             // Nếu có giảm giá, cập nhật thời gian giảm giá
             if (laptop.Discount > 0)
@@ -259,6 +259,9 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
                 existingLaptop.DiscountStartDate = null;
                 existingLaptop.DiscountEndDate = null;
             }
+            
+            // Đánh dấu entity là đã thay đổi để EF Core cập nhật tất cả các trường
+            _dbContext.Entry(existingLaptop).State = EntityState.Modified;
             
             await _dbContext.SaveChangesAsync();
             return true;

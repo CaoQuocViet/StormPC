@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Windows.Input;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 using Windows.Storage;
 using System;
 
@@ -110,8 +111,294 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private async Task Edit()
     {
         if (SelectedLaptop == null) return;
-        // TODO: Implement edit logic
-        await Task.CompletedTask;
+
+        var canEdit = await _productService.CanEditLaptopAsync(SelectedLaptop.LaptopID);
+        if (!canEdit)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Không thể sửa",
+                Content = "Không thể sửa sản phẩm này vì đã có đơn hàng liên quan.",
+                CloseButtonText = "Đóng",
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            return;
+        }
+
+        // Lấy thông tin laptop hiện tại
+        var currentLaptop = await _productService.GetLaptopByIdAsync(SelectedLaptop.LaptopID);
+        if (currentLaptop == null)
+        {
+            ContentDialog errorDialog = new ContentDialog
+            {
+                Title = "Lỗi",
+                Content = "Không tìm thấy thông tin sản phẩm.",
+                CloseButtonText = "Đóng",
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+            await errorDialog.ShowAsync();
+            return;
+        }
+
+        // Gán giá trị hiện tại cho các trường
+        ModelName = currentLaptop.ModelName;
+        SelectedBrandId = currentLaptop.BrandID;
+        SelectedCategoryId = currentLaptop.CategoryID;
+        ScreenSize = currentLaptop.ScreenSize;
+        OperatingSystem = currentLaptop.OperatingSystem;
+        ReleaseYear = currentLaptop.ReleaseYear ?? DateTime.Now.Year;
+        Discount = currentLaptop.Discount;
+        Picture = currentLaptop.Picture;
+        Description = currentLaptop.Description;
+
+        // Hiển thị dialog chỉnh sửa
+        var dialog = new ContentDialog
+        {
+            Title = "Sửa thông tin laptop",
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            PrimaryButtonText = "Lưu",
+            CloseButtonText = "Hủy",
+            DefaultButton = ContentDialogButton.Primary,
+            MinWidth = 900
+        };
+
+        var scrollViewer = new ScrollViewer
+        {
+            MaxHeight = 600,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+        };
+
+        var stackPanel = new StackPanel { Spacing = 12, Margin = new Thickness(0, 12, 0, 0) };
+
+        // Tên model
+        stackPanel.Children.Add(new TextBlock { Text = "Tên mẫu laptop *" });
+        var modelNameBox = new TextBox
+        {
+            PlaceholderText = "Ví dụ: MacBook Pro 14 inch",
+            Text = ModelName
+        };
+        modelNameBox.TextChanged += (s, args) => { ModelName = modelNameBox.Text; };
+        stackPanel.Children.Add(modelNameBox);
+
+        // Thương hiệu
+        stackPanel.Children.Add(new TextBlock { Text = "Thương hiệu *" });
+        var brandCombo = new ComboBox
+        {
+            Width = double.NaN,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            ItemsSource = Brands,
+            DisplayMemberPath = "BrandName",
+            SelectedValuePath = "BrandID",
+            SelectedValue = SelectedBrandId
+        };
+        brandCombo.SelectionChanged += (s, args) =>
+        {
+            if (brandCombo.SelectedItem is Brand brand)
+            {
+                SelectedBrandId = brand.BrandID;
+            }
+        };
+        stackPanel.Children.Add(brandCombo);
+
+        // Danh mục
+        stackPanel.Children.Add(new TextBlock { Text = "Danh mục *" });
+        var categoryCombo = new ComboBox
+        {
+            Width = double.NaN,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            ItemsSource = Categories,
+            DisplayMemberPath = "CategoryName",
+            SelectedValuePath = "CategoryID",
+            SelectedValue = SelectedCategoryId
+        };
+        categoryCombo.SelectionChanged += (s, args) =>
+        {
+            if (categoryCombo.SelectedItem is Category category)
+            {
+                SelectedCategoryId = category.CategoryID;
+            }
+        };
+        stackPanel.Children.Add(categoryCombo);
+
+        // Đường dẫn ảnh
+        stackPanel.Children.Add(new TextBlock { Text = "Đường dẫn ảnh" });
+        var pictureBox = new TextBox
+        {
+            PlaceholderText = "Nhập đường dẫn ảnh (URL hoặc đường dẫn local)",
+            Text = Picture
+        };
+        pictureBox.TextChanged += (s, args) => { Picture = pictureBox.Text; };
+        stackPanel.Children.Add(pictureBox);
+
+        // Mô tả
+        stackPanel.Children.Add(new TextBlock { Text = "Mô tả" });
+        var descriptionBox = new TextBox
+        {
+            PlaceholderText = "Nhập mô tả chi tiết về laptop",
+            Text = Description,
+            TextWrapping = TextWrapping.Wrap,
+            AcceptsReturn = true,
+            Height = 100
+        };
+        descriptionBox.TextChanged += (s, args) => { Description = descriptionBox.Text; };
+        stackPanel.Children.Add(descriptionBox);
+
+        // Kích thước màn hình
+        stackPanel.Children.Add(new TextBlock { Text = "Kích thước màn hình (inch) *" });
+        var screenSizeBox = new NumberBox
+        {
+            Value = (double)(ScreenSize ?? 0),
+            SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+            Minimum = 0,
+            Maximum = 30,
+            SmallChange = 0.1
+        };
+        screenSizeBox.ValueChanged += (s, args) => { ScreenSize = (decimal)screenSizeBox.Value; };
+        stackPanel.Children.Add(screenSizeBox);
+
+        // Hệ điều hành
+        stackPanel.Children.Add(new TextBlock { Text = "Hệ điều hành *" });
+        var osBox = new TextBox
+        {
+            PlaceholderText = "Ví dụ: Windows 11 Home",
+            Text = OperatingSystem
+        };
+        osBox.TextChanged += (s, args) => { OperatingSystem = osBox.Text; };
+        stackPanel.Children.Add(osBox);
+
+        // Năm phát hành
+        stackPanel.Children.Add(new TextBlock { Text = "Năm phát hành *" });
+        var yearBox = new NumberBox
+        {
+            Value = ReleaseYear,
+            SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+            Minimum = 2000,
+            Maximum = DateTime.Now.Year + 1,
+            SmallChange = 1
+        };
+        yearBox.ValueChanged += (s, args) => { ReleaseYear = (int)yearBox.Value; };
+        stackPanel.Children.Add(yearBox);
+
+        // Giảm giá
+        stackPanel.Children.Add(new TextBlock { Text = "Giảm giá (VNĐ)" });
+        var discountBox = new NumberBox
+        {
+            Value = (double)Discount,
+            SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+            Minimum = 0,
+            Maximum = 100000000,
+            SmallChange = 1000
+        };
+        discountBox.ValueChanged += (s, args) => { Discount = (decimal)discountBox.Value; };
+        stackPanel.Children.Add(discountBox);
+
+        scrollViewer.Content = stackPanel;
+        dialog.Content = scrollViewer;
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            await EditLaptop(currentLaptop.LaptopID);
+        }
+    }
+
+    private async Task EditLaptop(int laptopId)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(ModelName))
+            {
+                ErrorMessage = "Vui lòng nhập tên mẫu laptop.";
+                return;
+            }
+
+            if (SelectedBrandId <= 0)
+            {
+                ErrorMessage = "Vui lòng chọn thương hiệu.";
+                return;
+            }
+
+            if (SelectedCategoryId <= 0)
+            {
+                ErrorMessage = "Vui lòng chọn danh mục.";
+                return;
+            }
+
+            if (ScreenSize <= 0)
+            {
+                ErrorMessage = "Kích thước màn hình phải lớn hơn 0.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(OperatingSystem))
+            {
+                ErrorMessage = "Vui lòng nhập hệ điều hành.";
+                return;
+            }
+
+            if (ReleaseYear <= 0)
+            {
+                ErrorMessage = "Năm phát hành không hợp lệ.";
+                return;
+            }
+
+            if (Discount < 0)
+            {
+                ErrorMessage = "Giảm giá không thể âm.";
+                return;
+            }
+
+            // Làm tròn giảm giá xuống đơn vị 1000 VND
+            decimal roundedDiscount = Math.Floor(Discount / 1000) * 1000;
+
+            var now = DateTime.UtcNow;
+            var updatedLaptop = new Laptop
+            {
+                LaptopID = laptopId,
+                ModelName = ModelName,
+                BrandID = SelectedBrandId,
+                CategoryID = SelectedCategoryId,
+                ScreenSize = ScreenSize,
+                OperatingSystem = OperatingSystem,
+                ReleaseYear = ReleaseYear,
+                Discount = roundedDiscount,
+                Description = Description ?? string.Empty,
+                Picture = Picture,
+                UpdatedAt = now
+            };
+
+            IsLoading = true;
+            var success = await _productService.EditLaptopAsync(updatedLaptop);
+            IsLoading = false;
+
+            if (success)
+            {
+                // Reset form
+                ModelName = string.Empty;
+                SelectedBrandId = 0;
+                SelectedCategoryId = 0;
+                ScreenSize = 0;
+                OperatingSystem = string.Empty;
+                ReleaseYear = DateTime.Now.Year;
+                Discount = 0;
+                Picture = string.Empty;
+                Description = string.Empty;
+
+                // Reload products
+                await LoadProductsAsync();
+
+                ErrorMessage = string.Empty;
+            }
+            else
+            {
+                ErrorMessage = "Không thể cập nhật laptop. Vui lòng thử lại.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Lỗi: {ex.Message}";
+        }
     }
 
     [RelayCommand]
