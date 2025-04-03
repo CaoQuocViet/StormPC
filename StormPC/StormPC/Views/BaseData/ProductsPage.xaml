@@ -25,6 +25,28 @@
             <Setter Property="Height" Value="40"/>
             <Setter Property="CornerRadius" Value="4"/>
         </Style>
+
+        <Style TargetType="ContentDialog">
+            <Setter Property="MinWidth" Value="500"/>
+            <Setter Property="MaxHeight" Value="600"/>
+            <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+            <Setter Property="PrimaryButtonStyle">
+                <Setter.Value>
+                    <Style TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+                        <Setter Property="Padding" Value="16,8"/>
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CloseButtonStyle">
+                <Setter.Value>
+                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                        <Setter Property="Padding" Value="16,8"/>
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -74,7 +96,15 @@
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"
                     x:Name="AddButton"
-                    Click="AddButton_Click"/>
+                    Click="AddButton_Click">
+                <Button.Resources>
+                    <Style TargetType="ContentDialog">
+                        <Setter Property="MinWidth" Value="500"/>
+                        <Setter Property="MaxHeight" Value="600"/>
+                        <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
 
             <Button Grid.Column="3"
                     Content="Chọn nhiều"
