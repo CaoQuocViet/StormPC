@@ -287,4 +287,66 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
             .OrderBy(c => c.CategoryName)
             .ToListAsync();
     }
+
+    public async Task<bool> AddLaptopSpecAsync(LaptopSpec spec)
+    {
+        try
+        {
+            // Đảm bảo giá trị hợp lệ
+            spec.IsDeleted = false;
+            
+            // Tạo SKU nếu chưa có
+            if (string.IsNullOrEmpty(spec.SKU))
+            {
+                spec.SKU = await GenerateSkuAsync(spec.LaptopID);
+            }
+            
+            // Làm tròn giá trị tiền tệ xuống đơn vị 1000 VNĐ
+            spec.ImportPrice = Math.Floor(spec.ImportPrice / 1000) * 1000;
+            spec.Price = Math.Floor(spec.Price / 1000) * 1000;
+            
+            // Thêm thời gian
+            spec.CreatedAt = DateTime.UtcNow;
+            
+            _dbContext.Set<LaptopSpec>().Add(spec);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    
+    public async Task<string> GenerateSkuAsync(int laptopId)
+    {
+        try
+        {
+            // Lấy thông tin laptop
+            var laptop = await _dbContext.Set<Laptop>()
+                .Include(l => l.Brand)
+                .FirstOrDefaultAsync(l => l.LaptopID == laptopId);
+                
+            if (laptop == null || laptop.Brand == null)
+                throw new Exception("Không tìm thấy laptop");
+                
+            // Lấy số lượng specs hiện tại
+            var specsCount = await _dbContext.Set<LaptopSpec>()
+                .Where(s => s.LaptopID == laptopId)
+                .CountAsync();
+                
+            // Tạo SKU theo format: BRAND-MODELNAME-VARIANT
+            // Ví dụ: DELL-XPS13-001
+            var brandCode = laptop.Brand.BrandName.ToUpper().Replace(" ", "");
+            var modelCode = laptop.ModelName.ToUpper().Replace(" ", "");
+            var variantNumber = (specsCount + 1).ToString("D3");
+            
+            return $"{brandCode}-{modelCode}-{variantNumber}";
+        }
+        catch (Exception)
+        {
+            // Nếu có lỗi, tạo SKU ngẫu nhiên
+            return $"SKU-{DateTime.UtcNow.Ticks}";
+        }
+    }
 } 

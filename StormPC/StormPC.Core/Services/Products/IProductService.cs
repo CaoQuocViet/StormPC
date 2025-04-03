@@ -18,6 +18,8 @@ public interface IProductService
     Task<bool> CanDeleteLaptopAsync(int laptopId);
     Task<bool> CanEditLaptopAsync(int laptopId);
     Task<bool> EditLaptopAsync(Laptop laptop);
+    Task<bool> AddLaptopSpecAsync(LaptopSpec spec);
+    Task<string> GenerateSkuAsync(int laptopId);
     Task<IEnumerable<Brand>> GetAllBrandsAsync();
     Task<IEnumerable<Category>> GetAllCategoriesAsync();
 } 
