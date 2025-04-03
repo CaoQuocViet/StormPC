@@ -29,6 +29,11 @@
         <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
+
+        <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Background" Value="#E81123"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
     </Page.Resources>
 
     <Grid Margin="20">
@@ -45,7 +50,6 @@
         <Grid Grid.Row="1" Margin="0,0,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -73,12 +77,6 @@
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"/>
-
-            <Button Grid.Column="3"
-                    Content="Xóa"
-                    Style="{StaticResource ActionButtonStyle}"
-                    Background="#E81123"
-                    Foreground="White"/>
         </Grid>
 
         <Grid Grid.Row="2">
@@ -171,6 +169,25 @@
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
                         </controls:DataGridTextColumn.HeaderStyle>
                     </controls:DataGridTextColumn>
+                    <controls:DataGridTemplateColumn Header="Thao tác" Width="120">
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button Content="&#xE70F;"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Click="EditButton_Click"
+                                            Style="{StaticResource AccentButtonStyle}"/>
+                                    <Button Content="&#xE74D;"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            Click="DeleteButton_Click"
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                        <controls:DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                        </controls:DataGridTemplateColumn.HeaderStyle>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
 

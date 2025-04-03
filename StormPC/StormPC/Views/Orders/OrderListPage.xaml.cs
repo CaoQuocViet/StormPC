@@ -22,6 +22,7 @@ public sealed partial class OrderListPage : Page
     private List<OrderDisplayDto> _originalOrders;
     // Keeps track of the currently active DataGrid
     private DataGrid? _activeDataGrid;
+    private bool _isActionButtonClick;
 
     public OrderListPage()
     {
@@ -29,6 +30,7 @@ public sealed partial class OrderListPage : Page
         ViewModel = App.GetService<OrderListViewModel>();
         _navigationService = App.GetService<INavigationService>();
         _originalOrders = new List<OrderDisplayDto>();
+        _isActionButtonClick = false;
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,6 +53,13 @@ public sealed partial class OrderListPage : Page
 
     private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        // Nếu đang click nút trong cột action thì không navigate
+        if (_isActionButtonClick)
+        {
+            _isActionButtonClick = false;
+            return;
+        }
+
         var dataGrid = sender as DataGrid;
         if (dataGrid?.SelectedItem is OrderDisplayDto selectedOrder)
         {
@@ -187,5 +196,62 @@ public sealed partial class OrderListPage : Page
     {
         ViewModel.PageSize = pageSize;
         ViewModel.LoadPage(1); // Reset to first page when changing page size
+    }
+
+    private void EditButton_Click(object sender, RoutedEventArgs e)
+    {
+        _isActionButtonClick = true;
+        if (sender is Button button && button.DataContext is OrderDisplayDto order)
+        {
+            _navigationService.NavigateTo("StormPC.ViewModels.Orders.OrderDetailViewModel", order.OrderID);
+        }
+    }
+
+    private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        _isActionButtonClick = true;
+        if (sender is Button button && button.DataContext is OrderDisplayDto order)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Xác nhận xóa",
+                Content = $"Bạn có chắc chắn muốn xóa đơn hàng #{order.OrderID}?",
+                PrimaryButtonText = "Xóa",
+                CloseButtonText = "Hủy",
+                DefaultButton = ContentDialogButton.Close,
+                XamlRoot = Content.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    var success = await ViewModel.DeleteOrderAsync(order.OrderID);
+                    if (!success)
+                    {
+                        var errorDialog = new ContentDialog
+                        {
+                            Title = "Không thể xóa",
+                            Content = "Chỉ có thể xóa đơn hàng có trạng thái 'Cancelled'.",
+                            CloseButtonText = "Đóng",
+                            XamlRoot = Content.XamlRoot
+                        };
+                        await errorDialog.ShowAsync();
+                    }
+                }
+                catch
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Lỗi",
+                        Content = "Không thể xóa đơn hàng. Vui lòng thử lại sau.",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = Content.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                }
+            }
+        }
     }
 } 
