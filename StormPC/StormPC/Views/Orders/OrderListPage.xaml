@@ -34,6 +34,105 @@
             <Setter Property="Background" Value="#E81123"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+
+        <!-- Dialog Template cho thêm/sửa đơn hàng -->
+        <DataTemplate x:Key="OrderDialogTemplate">
+            <ScrollViewer MaxHeight="600">
+                <StackPanel Spacing="16" Padding="20">
+                    <!-- Thông tin khách hàng -->
+                    <ComboBox Header="Khách hàng" 
+                             ItemsSource="{Binding Customers}"
+                             SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                             DisplayMemberPath="FullName"
+                             PlaceholderText="Chọn khách hàng"
+                             Width="400"
+                             HorizontalAlignment="Stretch"/>
+
+                    <!-- Thông tin sản phẩm -->
+                    <ComboBox Header="Laptop" 
+                             ItemsSource="{Binding Laptops}"
+                             SelectedItem="{Binding SelectedLaptop, Mode=TwoWay}"
+                             DisplayMemberPath="ModelName"
+                             PlaceholderText="Chọn laptop"
+                             Width="400"
+                             HorizontalAlignment="Stretch"/>
+
+                    <ComboBox Header="Cấu hình" 
+                             ItemsSource="{Binding FilteredLaptopSpecs}"
+                             SelectedItem="{Binding SelectedLaptopSpec, Mode=TwoWay}"
+                             PlaceholderText="Chọn cấu hình"
+                             Width="400"
+                             HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding CPU}"/>
+                                    <Run Text=" | "/>
+                                    <Run Text="{Binding RAM}"/>
+                                    <Run Text="GB RAM | "/>
+                                    <Run Text="{Binding Storage}"/>
+                                    <Run Text="GB "/>
+                                    <Run Text="{Binding StorageType}"/>
+                                    <Run Text=" | "/>
+                                    <Run Text="{Binding GPU}"/>
+                                    <Run Text=" | "/>
+                                    <Run Text="{Binding Color}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <NumberBox Header="Số lượng"
+                              Value="{Binding Quantity, Mode=TwoWay}"
+                              SpinButtonPlacementMode="Compact"
+                              Minimum="1"
+                              SmallChange="1"
+                              LargeChange="5"
+                              Width="400"/>
+
+                    <!-- Thông tin thanh toán -->
+                    <ComboBox Header="Phương thức thanh toán" 
+                             ItemsSource="{Binding PaymentMethods}"
+                             SelectedItem="{Binding SelectedPaymentMethod, Mode=TwoWay}"
+                             DisplayMemberPath="MethodName"
+                             PlaceholderText="Chọn phương thức thanh toán"
+                             Width="400"
+                             HorizontalAlignment="Stretch"/>
+
+                    <!-- Thông tin giao hàng -->
+                    <TextBox Header="Địa chỉ giao hàng"
+                            Text="{Binding ShippingAddress, Mode=TwoWay}"
+                            PlaceholderText="Nhập địa chỉ giao hàng"
+                            Width="400"
+                            TextWrapping="Wrap"
+                            AcceptsReturn="True"
+                            Height="80"/>
+
+                    <ComboBox Header="Thành phố" 
+                             ItemsSource="{Binding Cities}"
+                             SelectedItem="{Binding SelectedCity, Mode=TwoWay}"
+                             DisplayMemberPath="CityName"
+                             PlaceholderText="Chọn thành phố"
+                             Width="400"
+                             HorizontalAlignment="Stretch"/>
+
+                    <!-- Trạng thái đơn hàng -->
+                    <ComboBox Header="Trạng thái" 
+                             ItemsSource="{Binding OrderStatuses}"
+                             SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
+                             DisplayMemberPath="StatusName"
+                             PlaceholderText="Chọn trạng thái"
+                             Width="400"
+                             HorizontalAlignment="Stretch"/>
+
+                    <!-- Hiển thị tổng tiền -->
+                    <TextBlock Text="{Binding TotalAmountText}"
+                              Style="{ThemeResource SubtitleTextBlockStyle}"
+                              HorizontalAlignment="Right"
+                              Margin="0,8,0,0"/>
+                </StackPanel>
+            </ScrollViewer>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid Margin="20">
@@ -76,6 +175,7 @@
             <Button Grid.Column="2"
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
+                    Click="AddButton_Click"
                     Margin="0,0,12,0"/>
         </Grid>
 

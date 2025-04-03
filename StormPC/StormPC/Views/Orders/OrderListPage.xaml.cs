@@ -9,6 +9,7 @@ using StormPC.Helpers.UI;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace StormPC.Views.Orders;
 
@@ -198,12 +199,61 @@ public sealed partial class OrderListPage : Page
         ViewModel.LoadPage(1); // Reset to first page when changing page size
     }
 
-    private void EditButton_Click(object sender, RoutedEventArgs e)
+    private async void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "Thêm đơn hàng mới",
+            PrimaryButtonText = "Thêm",
+            CloseButtonText = "Hủy",
+            DefaultButton = ContentDialogButton.Primary,
+            Content = new ContentControl
+            {
+                ContentTemplate = Resources["OrderDialogTemplate"] as DataTemplate,
+                DataContext = await ViewModel.CreateNewOrderDialogViewModel()
+            },
+            XamlRoot = Content.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+        if (result == ContentDialogResult.Primary)
+        {
+            var dialogViewModel = (dialog.Content as ContentControl)?.DataContext as OrderDialogViewModel;
+            if (dialogViewModel != null)
+            {
+                await ViewModel.AddOrderAsync(dialogViewModel);
+            }
+        }
+    }
+
+    private async void EditButton_Click(object sender, RoutedEventArgs e)
     {
         _isActionButtonClick = true;
         if (sender is Button button && button.DataContext is OrderDisplayDto order)
         {
-            _navigationService.NavigateTo("StormPC.ViewModels.Orders.OrderDetailViewModel", order.OrderID);
+            var dialog = new ContentDialog
+            {
+                Title = $"Sửa đơn hàng #{order.OrderID}",
+                PrimaryButtonText = "Lưu",
+                CloseButtonText = "Hủy",
+                DefaultButton = ContentDialogButton.Primary,
+                Content = new ContentControl
+                {
+                    ContentTemplate = Resources["OrderDialogTemplate"] as DataTemplate,
+                    DataContext = await ViewModel.CreateEditOrderDialogViewModel(order.OrderID)
+                },
+                XamlRoot = Content.XamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var dialogViewModel = (dialog.Content as ContentControl)?.DataContext as OrderDialogViewModel;
+                if (dialogViewModel != null)
+                {
+                    await ViewModel.UpdateOrderAsync(order.OrderID, dialogViewModel);
+                }
+            }
         }
     }
 
