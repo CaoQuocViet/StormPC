@@ -83,9 +83,16 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
 
     public async Task<List<LaptopDisplayDto>> GetLaptopsAsync()
     {
+        // Get all laptops with their display information
         var laptops = (await GetAllLaptopsForDisplayAsync()).ToList();
 
-        // Định dạng giá và tính phần trăm giảm giá
+        // Get all options counts in a single query
+        var optionsCounts = await _dbContext.LaptopSpecs
+            .GroupBy(s => s.LaptopID)
+            .Select(g => new { LaptopID = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.LaptopID, x => x.Count);
+
+        // Format prices and calculate discount percentages
         foreach (var laptop in laptops)
         {
             laptop.FormattedPrice = string.Format("{0:N0}", laptop.LowestPrice);
@@ -101,9 +108,8 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
                 laptop.FormattedDiscount = "0";
             }
 
-            // Lấy số lượng phiên bản
-            laptop.OptionsCount = await _dbContext.LaptopSpecs
-                .CountAsync(s => s.LaptopID == laptop.LaptopID);
+            // Get the options count from the dictionary
+            laptop.OptionsCount = optionsCounts.GetValueOrDefault(laptop.LaptopID, 0);
         }
 
         return laptops.OrderByDescending(l => l.ReleaseYear).ToList();
