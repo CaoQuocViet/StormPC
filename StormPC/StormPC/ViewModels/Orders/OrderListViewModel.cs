@@ -2,6 +2,9 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using StormPC.Core.Models.Orders.Dtos;
+using StormPC.Core.Models.Orders;
+using StormPC.Core.Models.Customers;
+using StormPC.Core.Models.Products;
 using StormPC.Core.Infrastructure.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -11,6 +14,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System;
+using Microsoft.UI.Xaml.Controls;
 
 namespace StormPC.ViewModels.Orders;
 
@@ -316,5 +320,298 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         {
             IsLoading = false;
         }
+    }
+
+    public async Task<OrderDialogViewModel> CreateNewOrderDialogViewModel()
+    {
+        var viewModel = new OrderDialogViewModel();
+        await LoadDialogData(viewModel);
+        
+        // Set default status to Pending for new orders
+        viewModel.SelectedStatus = viewModel.OrderStatuses.FirstOrDefault(s => s.StatusName.ToLower() == "pending");
+        
+        return viewModel;
+    }
+
+    public async Task<OrderDialogViewModel> CreateEditOrderDialogViewModel(int orderId)
+    {
+        var viewModel = new OrderDialogViewModel();
+        await LoadDialogData(viewModel);
+
+        // Load existing order data
+        var order = await _dbContext.Orders
+            .Include(o => o.Customer)
+            .Include(o => o.Status)
+            .Include(o => o.PaymentMethod)
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.LaptopSpec)
+                    .ThenInclude(ls => ls.Laptop)
+            .FirstOrDefaultAsync(o => o.OrderID == orderId);
+
+        if (order != null)
+        {
+            viewModel.SelectedCustomer = viewModel.Customers.FirstOrDefault(c => c.CustomerID == order.CustomerID);
+            viewModel.SelectedStatus = viewModel.OrderStatuses.FirstOrDefault(s => s.StatusID == order.StatusID);
+            viewModel.SelectedPaymentMethod = viewModel.PaymentMethods.FirstOrDefault(p => p.PaymentMethodID == order.PaymentMethodID);
+            viewModel.ShippingAddress = order.ShippingAddress;
+            viewModel.SelectedCity = viewModel.Cities.FirstOrDefault(c => c.CityCode == order.ShippingCity);
+
+            var orderItem = order.OrderItems.FirstOrDefault();
+            if (orderItem != null)
+            {
+                viewModel.SelectedLaptop = viewModel.Laptops.FirstOrDefault(l => l.LaptopID == orderItem.LaptopSpec.LaptopID);
+                viewModel.SelectedLaptopSpec = viewModel.LaptopSpecs.FirstOrDefault(l => l.VariantID == orderItem.VariantID);
+                viewModel.Quantity = orderItem.Quantity;
+            }
+        }
+
+        return viewModel;
+    }
+
+    private async Task LoadDialogData(OrderDialogViewModel viewModel)
+    {
+        // Load customers
+        var customers = await _dbContext.Customers
+            .Where(c => !c.IsDeleted)
+            .OrderBy(c => c.FullName)
+            .ToListAsync();
+        viewModel.Customers = new ObservableCollection<Customer>(customers);
+
+        // Load laptops
+        var laptops = await _dbContext.Laptops
+            .Where(l => !l.IsDeleted)
+            .OrderBy(l => l.ModelName)
+            .ToListAsync();
+        viewModel.Laptops = new ObservableCollection<Laptop>(laptops);
+
+        // Load laptop specs
+        var laptopSpecs = await _dbContext.LaptopSpecs
+            .Include(ls => ls.Laptop)
+            .Where(ls => !ls.IsDeleted && ls.StockQuantity > 0)
+            .OrderBy(ls => ls.Laptop.ModelName)
+            .ToListAsync();
+        viewModel.LaptopSpecs = new ObservableCollection<LaptopSpec>(laptopSpecs);
+
+        // Load payment methods
+        var paymentMethods = await _dbContext.PaymentMethods.ToListAsync();
+        viewModel.PaymentMethods = new ObservableCollection<PaymentMethod>(paymentMethods);
+
+        // Load cities
+        var cities = await _dbContext.Cities.OrderBy(c => c.CityName).ToListAsync();
+        viewModel.Cities = new ObservableCollection<City>(cities);
+
+        // Load order statuses
+        var statuses = await _dbContext.OrderStatuses.ToListAsync();
+        viewModel.OrderStatuses = new ObservableCollection<OrderStatus>(statuses);
+    }
+
+    private static async Task ShowErrorDialog(string title, string content)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = content,
+            CloseButtonText = "Đóng",
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+        await dialog.ShowAsync();
+    }
+
+    public async Task AddOrderAsync(OrderDialogViewModel dialogViewModel)
+    {
+        try
+        {
+            if (!ValidateOrderData(dialogViewModel, out string errorMessage))
+            {
+                await ShowErrorDialog("Lỗi", errorMessage);
+                return;
+            }
+
+            // Get the maximum OrderID and increment by 1
+            var maxOrderId = await _dbContext.Orders.MaxAsync(o => (int?)o.OrderID) ?? 0;
+            var newOrderId = maxOrderId + 1;
+
+            var order = new Order
+            {
+                OrderID = newOrderId,
+                CustomerID = dialogViewModel.SelectedCustomer.CustomerID,
+                StatusID = dialogViewModel.SelectedStatus.StatusID,
+                PaymentMethodID = dialogViewModel.SelectedPaymentMethod.PaymentMethodID,
+                OrderDate = DateTime.UtcNow,
+                ShippingAddress = dialogViewModel.ShippingAddress,
+                ShippingCity = dialogViewModel.SelectedCity.CityCode,
+                ShipCityId = dialogViewModel.SelectedCity.Id,
+                TotalAmount = dialogViewModel.SelectedLaptopSpec.Price * dialogViewModel.Quantity,
+                IsDeleted = false
+            };
+
+            var orderItem = new OrderItem
+            {
+                OrderID = newOrderId,  // Set the OrderID for the OrderItem
+                VariantID = dialogViewModel.SelectedLaptopSpec.VariantID,
+                Quantity = dialogViewModel.Quantity,
+                UnitPrice = dialogViewModel.SelectedLaptopSpec.Price
+            };
+
+            order.OrderItems = new List<OrderItem> { orderItem };
+
+            // Disable auto-detection of changes to prevent EF Core from trying to auto-increment
+            _dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+            
+            try
+            {
+                _dbContext.Orders.Add(order);
+
+                // Update stock quantity
+                var laptopSpec = await _dbContext.LaptopSpecs.FindAsync(orderItem.VariantID);
+                if (laptopSpec != null)
+                {
+                    laptopSpec.StockQuantity -= orderItem.Quantity;
+                }
+
+                await _dbContext.SaveChangesAsync();
+            }
+            finally
+            {
+                _dbContext.ChangeTracker.AutoDetectChangesEnabled = true;
+            }
+
+            await LoadOrders();
+        }
+        catch (DbUpdateException ex)
+        {
+            var message = "Không thể thêm đơn hàng. ";
+            if (ex.InnerException != null)
+            {
+                message += "Chi tiết lỗi: " + ex.InnerException.Message;
+            }
+            await ShowErrorDialog("Lỗi", message);
+        }
+        catch (Exception ex)
+        {
+            await ShowErrorDialog("Lỗi", "Đã xảy ra lỗi khi thêm đơn hàng: " + ex.Message);
+        }
+    }
+
+    private bool ValidateOrderData(OrderDialogViewModel dialogViewModel, out string errorMessage)
+    {
+        errorMessage = string.Empty;
+
+        if (dialogViewModel.SelectedCustomer == null)
+        {
+            errorMessage = "Vui lòng chọn khách hàng";
+            return false;
+        }
+        if (dialogViewModel.SelectedLaptop == null)
+        {
+            errorMessage = "Vui lòng chọn laptop";
+            return false;
+        }
+        if (dialogViewModel.SelectedLaptopSpec == null)
+        {
+            errorMessage = "Vui lòng chọn cấu hình laptop";
+            return false;
+        }
+        if (dialogViewModel.SelectedPaymentMethod == null)
+        {
+            errorMessage = "Vui lòng chọn phương thức thanh toán";
+            return false;
+        }
+        if (dialogViewModel.SelectedCity == null)
+        {
+            errorMessage = "Vui lòng chọn thành phố";
+            return false;
+        }
+        if (dialogViewModel.SelectedStatus == null)
+        {
+            errorMessage = "Vui lòng chọn trạng thái";
+            return false;
+        }
+        if (string.IsNullOrWhiteSpace(dialogViewModel.ShippingAddress))
+        {
+            errorMessage = "Vui lòng nhập địa chỉ giao hàng";
+            return false;
+        }
+        if (dialogViewModel.Quantity <= 0)
+        {
+            errorMessage = "Số lượng phải lớn hơn 0";
+            return false;
+        }
+
+        // Check if there's enough stock
+        if (dialogViewModel.SelectedLaptopSpec.StockQuantity < dialogViewModel.Quantity)
+        {
+            errorMessage = $"Số lượng tồn kho không đủ. Chỉ còn {dialogViewModel.SelectedLaptopSpec.StockQuantity} sản phẩm";
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task UpdateOrderAsync(int orderId, OrderDialogViewModel dialogViewModel)
+    {
+        if (!ValidateOrderData(dialogViewModel, out string errorMessage))
+        {
+            await ShowErrorDialog("Lỗi", errorMessage);
+            return;
+        }
+
+        var order = await _dbContext.Orders
+            .Include(o => o.OrderItems)
+            .FirstOrDefaultAsync(o => o.OrderID == orderId);
+
+        if (order == null) return;
+
+        // Store old quantity for stock adjustment
+        var oldOrderItem = order.OrderItems.FirstOrDefault();
+        var oldQuantity = oldOrderItem?.Quantity ?? 0;
+        var oldVariantId = oldOrderItem?.VariantID ?? 0;
+
+        // Update order details
+        order.CustomerID = dialogViewModel.SelectedCustomer.CustomerID;
+        order.StatusID = dialogViewModel.SelectedStatus.StatusID;
+        order.PaymentMethodID = dialogViewModel.SelectedPaymentMethod.PaymentMethodID;
+        order.ShippingAddress = dialogViewModel.ShippingAddress;
+        order.ShippingCity = dialogViewModel.SelectedCity.CityCode;
+        order.ShipCityId = dialogViewModel.SelectedCity.Id;
+        order.TotalAmount = dialogViewModel.SelectedLaptopSpec.Price * dialogViewModel.Quantity;
+
+        // Update or create order item
+        if (oldOrderItem != null)
+        {
+            oldOrderItem.VariantID = dialogViewModel.SelectedLaptopSpec.VariantID;
+            oldOrderItem.Quantity = dialogViewModel.Quantity;
+            oldOrderItem.UnitPrice = dialogViewModel.SelectedLaptopSpec.Price;
+        }
+        else
+        {
+            order.OrderItems.Add(new OrderItem
+            {
+                VariantID = dialogViewModel.SelectedLaptopSpec.VariantID,
+                Quantity = dialogViewModel.Quantity,
+                UnitPrice = dialogViewModel.SelectedLaptopSpec.Price
+            });
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        // Update stock quantities
+        if (oldVariantId > 0)
+        {
+            var oldLaptopSpec = await _dbContext.LaptopSpecs.FindAsync(oldVariantId);
+            if (oldLaptopSpec != null)
+            {
+                oldLaptopSpec.StockQuantity += oldQuantity;
+            }
+        }
+
+        var newLaptopSpec = await _dbContext.LaptopSpecs.FindAsync(dialogViewModel.SelectedLaptopSpec.VariantID);
+        if (newLaptopSpec != null)
+        {
+            newLaptopSpec.StockQuantity -= dialogViewModel.Quantity;
+        }
+
+        await _dbContext.SaveChangesAsync();
+        await LoadOrders();
     }
 } 
