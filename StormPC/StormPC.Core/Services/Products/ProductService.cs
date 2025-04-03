@@ -215,6 +215,60 @@ public class ProductService(StormPCDbContext dbContext) : IProductService
         return !hasOrder;
     }
     
+    public async Task<bool> CanEditLaptopAsync(int laptopId)
+    {
+        // Kiểm tra xem có specs nào của laptop đã từng được đặt hàng chưa
+        var hasOrder = await _dbContext.Set<LaptopSpec>()
+            .Where(s => s.LaptopID == laptopId)
+            .AnyAsync(s => s.OrderItems.Any());
+            
+        return !hasOrder;
+    }
+    
+    public async Task<bool> EditLaptopAsync(Laptop laptop)
+    {
+        try
+        {
+            // Tìm laptop cần sửa
+            var existingLaptop = await _dbContext.Set<Laptop>()
+                .FirstOrDefaultAsync(l => l.LaptopID == laptop.LaptopID);
+                
+            if (existingLaptop == null)
+                return false;
+                
+            // Cập nhật thông tin
+            existingLaptop.ModelName = laptop.ModelName;
+            existingLaptop.BrandID = laptop.BrandID;
+            existingLaptop.CategoryID = laptop.CategoryID;
+            existingLaptop.ScreenSize = laptop.ScreenSize;
+            existingLaptop.OperatingSystem = laptop.OperatingSystem;
+            existingLaptop.ReleaseYear = laptop.ReleaseYear;
+            existingLaptop.Discount = laptop.Discount;
+            existingLaptop.Description = laptop.Description;
+            existingLaptop.Picture = laptop.Picture;
+            existingLaptop.UpdatedAt = laptop.UpdatedAt;
+            
+            // Nếu có giảm giá, cập nhật thời gian giảm giá
+            if (laptop.Discount > 0)
+            {
+                existingLaptop.DiscountStartDate = DateTime.UtcNow;
+                existingLaptop.DiscountEndDate = DateTime.UtcNow.AddMonths(1);
+            }
+            else
+            {
+                existingLaptop.DiscountStartDate = null;
+                existingLaptop.DiscountEndDate = null;
+            }
+            
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    
     public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
     {
         return await _dbContext.Set<Brand>()

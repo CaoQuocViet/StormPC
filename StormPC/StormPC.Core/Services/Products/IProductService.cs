@@ -16,6 +16,8 @@ public interface IProductService
     Task<bool> DeleteLaptopAsync(int laptopId);
     Task<bool> DeleteMultipleLaptopsAsync(List<int> laptopIds);
     Task<bool> CanDeleteLaptopAsync(int laptopId);
+    Task<bool> CanEditLaptopAsync(int laptopId);
+    Task<bool> EditLaptopAsync(Laptop laptop);
     Task<IEnumerable<Brand>> GetAllBrandsAsync();
     Task<IEnumerable<Category>> GetAllCategoriesAsync();
 } 
