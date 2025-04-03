@@ -3,7 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:helpers="using:StormPC.Core.Helpers"
-    xmlns:basedata="using:StormPC.Views.BaseData">
+    xmlns:basedata="using:StormPC.Views.BaseData"
+    xmlns:converters="using:StormPC.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -52,6 +53,8 @@
             </Style>
 
             <basedata:BoolToSelectionModeConverter x:Key="BoolToSelectionModeConverter" />
+
+            <converters:OrderStatusToStyleConverter x:Key="OrderStatusToStyleConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

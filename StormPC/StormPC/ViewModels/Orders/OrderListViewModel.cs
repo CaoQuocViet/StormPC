@@ -85,12 +85,6 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     [RelayCommand]
     private async Task LoadOrders()
     {
-        if (IsLoading)
-        {
-            Debug.WriteLine("LoadOrders skipped - already loading");
-            return;
-        }
-
         try
         {
             IsLoading = true;
@@ -272,6 +266,51 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         {
             IsLoading = true;
             await LoadOrders();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    [RelayCommand]
+    public async Task<bool> DeleteOrderAsync(int orderId)
+    {
+        try
+        {
+            IsLoading = true;
+            Debug.WriteLine($"Attempting to delete order {orderId}");
+
+            // Load order with status
+            var order = await _dbContext.Orders
+                .Include(o => o.Status)
+                .FirstOrDefaultAsync(o => o.OrderID == orderId && !o.IsDeleted);
+
+            if (order == null)
+            {
+                Debug.WriteLine($"Order {orderId} not found");
+                return false;
+            }
+
+            // Kiểm tra trạng thái
+            if (order.Status?.StatusName != "Cancelled")
+            {
+                Debug.WriteLine($"Order {orderId} cannot be deleted - status is not Cancelled");
+                return false;
+            }
+
+            order.IsDeleted = true;
+            await _dbContext.SaveChangesAsync();
+            Debug.WriteLine($"Order {orderId} marked as deleted");
+
+            // Refresh the orders list
+            await LoadOrders();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error deleting order: {ex.Message}");
+            throw;
         }
         finally
         {
