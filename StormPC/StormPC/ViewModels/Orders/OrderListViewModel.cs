@@ -334,36 +334,48 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         return viewModel;
     }
 
-    public async Task<OrderDialogViewModel> CreateEditOrderDialogViewModel(int orderId)
+    public async Task<OrderDialogViewModel> CreateEditOrderDialogViewModel(int? orderId = null)
     {
         var viewModel = new OrderDialogViewModel();
+        
+        // Load data
         await LoadDialogData(viewModel);
 
-        // Load existing order data
-        var order = await _dbContext.Orders
-            .Include(o => o.Customer)
-            .Include(o => o.Status)
-            .Include(o => o.PaymentMethod)
-            .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.LaptopSpec)
-                    .ThenInclude(ls => ls.Laptop)
-            .FirstOrDefaultAsync(o => o.OrderID == orderId);
-
-        if (order != null)
+        if (orderId.HasValue)
         {
-            viewModel.SelectedCustomer = viewModel.Customers.FirstOrDefault(c => c.CustomerID == order.CustomerID);
-            viewModel.SelectedStatus = viewModel.OrderStatuses.FirstOrDefault(s => s.StatusID == order.StatusID);
-            viewModel.SelectedPaymentMethod = viewModel.PaymentMethods.FirstOrDefault(p => p.PaymentMethodID == order.PaymentMethodID);
-            viewModel.ShippingAddress = order.ShippingAddress;
-            viewModel.SelectedCity = viewModel.Cities.FirstOrDefault(c => c.CityCode == order.ShippingCity);
+            // Load the existing order
+            var existingOrder = await _dbContext.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.LaptopSpec)
+                .ThenInclude(ls => ls.Laptop)
+                .FirstOrDefaultAsync(o => o.OrderID == orderId.Value);
 
-            var orderItem = order.OrderItems.FirstOrDefault();
-            if (orderItem != null)
+            if (existingOrder != null)
             {
-                viewModel.SelectedLaptop = viewModel.Laptops.FirstOrDefault(l => l.LaptopID == orderItem.LaptopSpec.LaptopID);
-                viewModel.SelectedLaptopSpec = viewModel.LaptopSpecs.FirstOrDefault(l => l.VariantID == orderItem.VariantID);
-                viewModel.Quantity = orderItem.Quantity;
+                viewModel.IsNewOrder = false;  // Set to false when editing
+                // Set selected values from existing order
+                viewModel.SelectedCustomer = viewModel.Customers.FirstOrDefault(c => c.CustomerID == existingOrder.CustomerID);
+                
+                var orderItem = existingOrder.OrderItems.FirstOrDefault();
+                if (orderItem != null)
+                {
+                    viewModel.SelectedLaptop = viewModel.Laptops.FirstOrDefault(l => l.LaptopID == orderItem.LaptopSpec.LaptopID);
+                    viewModel.SelectedLaptopSpec = viewModel.FilteredLaptopSpecs.FirstOrDefault(ls => ls.VariantID == orderItem.VariantID);
+                    viewModel.Quantity = orderItem.Quantity;
+                }
+
+                viewModel.SelectedPaymentMethod = viewModel.PaymentMethods.FirstOrDefault(pm => pm.PaymentMethodID == existingOrder.PaymentMethodID);
+                viewModel.ShippingAddress = existingOrder.ShippingAddress ?? string.Empty;
+                viewModel.ShippingPostalCode = existingOrder.ShippingPostalCode ?? string.Empty;
+                viewModel.SelectedCity = viewModel.Cities.FirstOrDefault(c => c.Id == existingOrder.ShipCityId);
+                viewModel.SelectedStatus = viewModel.OrderStatuses.FirstOrDefault(s => s.StatusID == existingOrder.StatusID);
             }
+        }
+        else
+        {
+            viewModel.IsNewOrder = true;  // Set to true for new order
+            // Set default status to Pending (StatusID = 1)
+            viewModel.SelectedStatus = viewModel.OrderStatuses.FirstOrDefault(s => s.StatusID == 1);
         }
 
         return viewModel;
@@ -415,7 +427,11 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             CloseButtonText = "Đóng",
             XamlRoot = App.MainWindow.Content.XamlRoot
         };
-        await dialog.ShowAsync();
+        
+        // Ensure the error dialog appears on top of the main dialog
+        dialog.DefaultButton = ContentDialogButton.Close;
+
+        await dialog.ShowAsync(ContentDialogPlacement.InPlace);
     }
 
     public async Task AddOrderAsync(OrderDialogViewModel dialogViewModel)
@@ -487,10 +503,12 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 message += "Chi tiết lỗi: " + ex.InnerException.Message;
             }
             await ShowErrorDialog("Lỗi", message);
+            return;
         }
         catch (Exception ex)
         {
             await ShowErrorDialog("Lỗi", "Đã xảy ra lỗi khi thêm đơn hàng: " + ex.Message);
+            return;
         }
     }
 
@@ -563,63 +581,75 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             return;
         }
 
-        var order = await _dbContext.Orders
-            .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(o => o.OrderID == orderId);
-
-        if (order == null) return;
-
-        // Store old quantity for stock adjustment
-        var oldOrderItem = order.OrderItems.FirstOrDefault();
-        var oldQuantity = oldOrderItem?.Quantity ?? 0;
-        var oldVariantId = oldOrderItem?.VariantID ?? 0;
-
-        // Update order details
-        order.CustomerID = dialogViewModel.SelectedCustomer.CustomerID;
-        order.StatusID = dialogViewModel.SelectedStatus.StatusID;
-        order.PaymentMethodID = dialogViewModel.SelectedPaymentMethod.PaymentMethodID;
-        order.ShippingAddress = dialogViewModel.ShippingAddress;
-        order.ShipCityId = dialogViewModel.SelectedCity.Id;  // Use City.Id
-        order.ShippingCity = dialogViewModel.SelectedCity.CityName;  // Use CityName
-        order.ShippingPostalCode = dialogViewModel.ShippingPostalCode;  // Add postal code
-        order.TotalAmount = dialogViewModel.SelectedLaptopSpec.Price * dialogViewModel.Quantity;
-
-        // Update or create order item
-        if (oldOrderItem != null)
+        try
         {
-            oldOrderItem.VariantID = dialogViewModel.SelectedLaptopSpec.VariantID;
-            oldOrderItem.Quantity = dialogViewModel.Quantity;
-            oldOrderItem.UnitPrice = dialogViewModel.SelectedLaptopSpec.Price;
-        }
-        else
-        {
-            order.OrderItems.Add(new OrderItem
+            var order = await _dbContext.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.OrderID == orderId);
+
+            if (order == null)
             {
-                VariantID = dialogViewModel.SelectedLaptopSpec.VariantID,
-                Quantity = dialogViewModel.Quantity,
-                UnitPrice = dialogViewModel.SelectedLaptopSpec.Price
-            });
-        }
-
-        await _dbContext.SaveChangesAsync();
-
-        // Update stock quantities
-        if (oldVariantId > 0)
-        {
-            var oldLaptopSpec = await _dbContext.LaptopSpecs.FindAsync(oldVariantId);
-            if (oldLaptopSpec != null)
-            {
-                oldLaptopSpec.StockQuantity += oldQuantity;
+                await ShowErrorDialog("Lỗi", "Không tìm thấy đơn hàng");
+                return;
             }
-        }
 
-        var newLaptopSpec = await _dbContext.LaptopSpecs.FindAsync(dialogViewModel.SelectedLaptopSpec.VariantID);
-        if (newLaptopSpec != null)
+            // Store old quantity for stock adjustment
+            var oldOrderItem = order.OrderItems.FirstOrDefault();
+            var oldQuantity = oldOrderItem?.Quantity ?? 0;
+            var oldVariantId = oldOrderItem?.VariantID ?? 0;
+
+            // Update order details
+            order.CustomerID = dialogViewModel.SelectedCustomer.CustomerID;
+            order.StatusID = dialogViewModel.SelectedStatus.StatusID;
+            order.PaymentMethodID = dialogViewModel.SelectedPaymentMethod.PaymentMethodID;
+            order.ShippingAddress = dialogViewModel.ShippingAddress;
+            order.ShipCityId = dialogViewModel.SelectedCity.Id;  // Use City.Id
+            order.ShippingCity = dialogViewModel.SelectedCity.CityName;  // Use CityName
+            order.ShippingPostalCode = dialogViewModel.ShippingPostalCode;  // Add postal code
+            order.TotalAmount = dialogViewModel.SelectedLaptopSpec.Price * dialogViewModel.Quantity;
+
+            // Update or create order item
+            if (oldOrderItem != null)
+            {
+                oldOrderItem.VariantID = dialogViewModel.SelectedLaptopSpec.VariantID;
+                oldOrderItem.Quantity = dialogViewModel.Quantity;
+                oldOrderItem.UnitPrice = dialogViewModel.SelectedLaptopSpec.Price;
+            }
+            else
+            {
+                order.OrderItems.Add(new OrderItem
+                {
+                    VariantID = dialogViewModel.SelectedLaptopSpec.VariantID,
+                    Quantity = dialogViewModel.Quantity,
+                    UnitPrice = dialogViewModel.SelectedLaptopSpec.Price
+                });
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            // Update stock quantities
+            if (oldVariantId > 0)
+            {
+                var oldLaptopSpec = await _dbContext.LaptopSpecs.FindAsync(oldVariantId);
+                if (oldLaptopSpec != null)
+                {
+                    oldLaptopSpec.StockQuantity += oldQuantity;
+                }
+            }
+
+            var newLaptopSpec = await _dbContext.LaptopSpecs.FindAsync(dialogViewModel.SelectedLaptopSpec.VariantID);
+            if (newLaptopSpec != null)
+            {
+                newLaptopSpec.StockQuantity -= dialogViewModel.Quantity;
+            }
+
+            await _dbContext.SaveChangesAsync();
+            await LoadOrders();
+        }
+        catch (Exception ex)
         {
-            newLaptopSpec.StockQuantity -= dialogViewModel.Quantity;
+            await ShowErrorDialog("Lỗi", "Đã xảy ra lỗi khi cập nhật đơn hàng: " + ex.Message);
+            return;
         }
-
-        await _dbContext.SaveChangesAsync();
-        await LoadOrders();
     }
 } 

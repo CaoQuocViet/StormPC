@@ -46,6 +46,7 @@
                              DisplayMemberPath="FullName"
                              PlaceholderText="Chọn khách hàng"
                              Width="400"
+                             IsEnabled="{Binding IsNewOrder}"
                              HorizontalAlignment="Stretch"/>
 
                     <!-- Thông tin sản phẩm -->
@@ -55,6 +56,7 @@
                              DisplayMemberPath="ModelName"
                              PlaceholderText="Chọn laptop"
                              Width="400"
+                             IsEnabled="{Binding IsNewOrder}"
                              HorizontalAlignment="Stretch"/>
 
                     <ComboBox Header="Cấu hình" 
@@ -62,6 +64,7 @@
                              SelectedItem="{Binding SelectedLaptopSpec, Mode=TwoWay}"
                              PlaceholderText="Chọn cấu hình"
                              Width="400"
+                             IsEnabled="{Binding IsNewOrder}"
                              HorizontalAlignment="Stretch">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -88,6 +91,7 @@
                               Minimum="1"
                               SmallChange="1"
                               LargeChange="5"
+                              IsEnabled="{Binding IsNewOrder}"
                               Width="400"/>
 
                     <!-- Thông tin thanh toán -->
@@ -97,6 +101,7 @@
                              DisplayMemberPath="MethodName"
                              PlaceholderText="Chọn phương thức thanh toán"
                              Width="400"
+                             IsEnabled="{Binding IsNewOrder}"
                              HorizontalAlignment="Stretch"/>
 
                     <!-- Thông tin giao hàng -->
@@ -106,11 +111,13 @@
                             Width="400"
                             TextWrapping="Wrap"
                             AcceptsReturn="True"
+                            IsReadOnly="{Binding IsNotNewOrder}"
                             Height="80"/>
 
                     <TextBox Header="Mã bưu điện"
                              Text="{Binding ShippingPostalCode, Mode=TwoWay}"
                              PlaceholderText="Nhập mã bưu điện"
+                             IsReadOnly="{Binding IsNotNewOrder}"
                              Width="400"/>
 
                     <ComboBox Header="Thành phố" 
@@ -119,9 +126,10 @@
                              DisplayMemberPath="CityName"
                              PlaceholderText="Chọn thành phố"
                              Width="400"
+                             IsEnabled="{Binding IsNewOrder}"
                              HorizontalAlignment="Stretch"/>
 
-                    <!-- Trạng thái đơn hàng -->
+                    <!-- Trạng thái đơn hàng - luôn cho phép sửa -->
                     <ComboBox Header="Trạng thái" 
                              ItemsSource="{Binding OrderStatuses}"
                              SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
