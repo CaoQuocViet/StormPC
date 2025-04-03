@@ -21,13 +21,27 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private readonly IProductService _productService;
     private List<LaptopDisplayDto> _allLaptops;
     private ObservableCollection<LaptopDisplayDto> _laptops;
-    private bool _isLoading;
     private int _currentPage = 1;
     private int _pageSize = 10; 
     private int _totalItems;
     private int _selectedSortIndex;
     private LaptopDisplayDto? _selectedLaptop;
     private ObservableCollection<LaptopDisplayDto> _selectedLaptops;
+
+    [ObservableProperty]
+    private bool isLoading;
+
+    [ObservableProperty]
+    private string cpu = string.Empty;
+
+    [ObservableProperty]
+    private string gpu = string.Empty;
+
+    [ObservableProperty]
+    private int ram;
+
+    [ObservableProperty]
+    private int storage;
 
     [ObservableProperty]
     private List<Brand> brands;
@@ -68,6 +82,21 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     [ObservableProperty]
     private bool isMultipleSelectionEnabled;
 
+    [ObservableProperty]
+    private string storageType = string.Empty;
+
+    [ObservableProperty]
+    private string color = string.Empty;
+
+    [ObservableProperty]
+    private decimal importPrice;
+
+    [ObservableProperty]
+    private decimal price;
+
+    [ObservableProperty]
+    private int stockQuantity;
+
     public LaptopDisplayDto? SelectedLaptop
     {
         get => _selectedLaptop;
@@ -103,8 +132,189 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     private async Task AddSpec()
     {
         if (SelectedLaptop == null) return;
-        // TODO: Implement add spec logic
-        await Task.CompletedTask;
+        
+        try
+        {
+            var dialog = new ContentDialog
+            {
+                Title = $"Thêm cấu hình cho {SelectedLaptop.ModelName}",
+                PrimaryButtonText = "Thêm",
+                CloseButtonText = "Hủy",
+                DefaultButton = ContentDialogButton.Primary,
+                XamlRoot = App.MainWindow.Content.XamlRoot,
+                MinWidth = 500
+            };
+
+            var scrollViewer = new ScrollViewer
+            {
+                MaxHeight = 600,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+
+            var stackPanel = new StackPanel
+            {
+                Spacing = 10,
+                Margin = new Thickness(0, 12, 0, 0),
+                Children =
+                {
+                    new TextBox
+                    {
+                        Header = "CPU",
+                        Text = Cpu,
+                        PlaceholderText = "Nhập thông tin CPU"
+                    },
+                    new TextBox
+                    {
+                        Header = "GPU",
+                        Text = Gpu,
+                        PlaceholderText = "Nhập thông tin GPU"
+                    },
+                    new NumberBox
+                    {
+                        Header = "RAM (GB)",
+                        Value = Ram,
+                        SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+                        Minimum = 1
+                    },
+                    new NumberBox
+                    {
+                        Header = "Dung lượng ổ cứng (GB)",
+                        Value = Storage,
+                        SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+                        Minimum = 1
+                    },
+                    new ComboBox
+                    {
+                        Header = "Loại ổ cứng",
+                        PlaceholderText = "Chọn loại ổ cứng",
+                        ItemsSource = new List<string> { "SSD", "HDD", "NVMe" },
+                        SelectedItem = StorageType
+                    },
+                    new TextBox
+                    {
+                        Header = "Màu sắc",
+                        Text = Color,
+                        PlaceholderText = "Nhập màu sắc"
+                    },
+                    new NumberBox
+                    {
+                        Header = "Giá nhập (VNĐ)",
+                        Value = (double)ImportPrice,
+                        SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+                        Minimum = 1
+                    },
+                    new NumberBox
+                    {
+                        Header = "Giá bán (VNĐ)",
+                        Value = (double)Price,
+                        SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+                        Minimum = 1
+                    },
+                    new NumberBox
+                    {
+                        Header = "Số lượng tồn kho",
+                        Value = StockQuantity,
+                        SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Compact,
+                        Minimum = 0
+                    }
+                }
+            };
+
+            scrollViewer.Content = stackPanel;
+            dialog.Content = scrollViewer;
+            
+            var result = await dialog.ShowAsync();
+            
+            if (result == ContentDialogResult.Primary)
+            {
+                var stackPanelContent = (StackPanel)((ScrollViewer)dialog.Content).Content;
+                Cpu = ((TextBox)stackPanelContent.Children[0]).Text;
+                Gpu = ((TextBox)stackPanelContent.Children[1]).Text;
+                Ram = (int)((NumberBox)stackPanelContent.Children[2]).Value;
+                Storage = (int)((NumberBox)stackPanelContent.Children[3]).Value;
+                StorageType = ((ComboBox)stackPanelContent.Children[4]).SelectedItem?.ToString() ?? string.Empty;
+                Color = ((TextBox)stackPanelContent.Children[5]).Text;
+                ImportPrice = (decimal)((NumberBox)stackPanelContent.Children[6]).Value;
+                Price = (decimal)((NumberBox)stackPanelContent.Children[7]).Value;
+                StockQuantity = (int)((NumberBox)stackPanelContent.Children[8]).Value;
+                
+                if (string.IsNullOrWhiteSpace(Cpu) ||
+                    string.IsNullOrWhiteSpace(Gpu) ||
+                    string.IsNullOrWhiteSpace(StorageType) ||
+                    string.IsNullOrWhiteSpace(Color) ||
+                    Ram <= 0 ||
+                    Storage <= 0 ||
+                    ImportPrice <= 0 ||
+                    Price <= 0 ||
+                    StockQuantity < 0)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Lỗi",
+                        Content = "Vui lòng nhập đầy đủ thông tin và đảm bảo giá trị hợp lệ",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = App.MainWindow.Content.XamlRoot
+                    };
+                    await errorDialog.ShowAsync();
+                    return;
+                }
+                
+                var spec = new LaptopSpec
+                {
+                    LaptopID = SelectedLaptop.LaptopID,
+                    CPU = Cpu,
+                    GPU = Gpu,
+                    RAM = Ram,
+                    Storage = Storage,
+                    StorageType = StorageType,
+                    Color = Color,
+                    ImportPrice = ImportPrice,
+                    Price = Price,
+                    StockQuantity = StockQuantity
+                };
+                
+                IsLoading = true;
+                var success = await _productService.AddLaptopSpecAsync(spec);
+                
+                if (success)
+                {
+                    await LoadProductsAsync();
+                    
+                    var successDialog = new ContentDialog
+                    {
+                        Title = "Thành công",
+                        Content = "Đã thêm cấu hình mới",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = App.MainWindow.Content.XamlRoot
+                    };
+                    await successDialog.ShowAsync();
+                }
+                else
+                {
+                    var failureDialog = new ContentDialog
+                    {
+                        Title = "Lỗi",
+                        Content = "Không thể thêm cấu hình. Vui lòng thử lại",
+                        CloseButtonText = "Đóng",
+                        XamlRoot = App.MainWindow.Content.XamlRoot
+                    };
+                    await failureDialog.ShowAsync();
+                }
+                
+                IsLoading = false;
+            }
+        }
+        catch (Exception)
+        {
+            var exceptionDialog = new ContentDialog
+            {
+                Title = "Lỗi",
+                Content = "Đã xảy ra lỗi. Vui lòng thử lại",
+                CloseButtonText = "Đóng",
+                XamlRoot = App.MainWindow.Content.XamlRoot
+            };
+            await exceptionDialog.ShowAsync();
+        }
     }
 
     [RelayCommand]
@@ -691,12 +901,6 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     {
         get => _laptops;
         set => SetProperty(ref _laptops, value);
-    }
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
     }
 
     [ObservableProperty]
