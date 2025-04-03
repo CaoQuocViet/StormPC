@@ -108,6 +108,11 @@
                             AcceptsReturn="True"
                             Height="80"/>
 
+                    <TextBox Header="Mã bưu điện"
+                             Text="{Binding ShippingPostalCode, Mode=TwoWay}"
+                             PlaceholderText="Nhập mã bưu điện"
+                             Width="400"/>
+
                     <ComboBox Header="Thành phố" 
                              ItemsSource="{Binding Cities}"
                              SelectedItem="{Binding SelectedCity, Mode=TwoWay}"

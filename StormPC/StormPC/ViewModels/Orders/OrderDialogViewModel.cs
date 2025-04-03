@@ -44,7 +44,10 @@ public partial class OrderDialogViewModel : ObservableObject
     private PaymentMethod selectedPaymentMethod;
 
     [ObservableProperty]
-    private string shippingAddress;
+    private string shippingAddress = string.Empty;
+
+    [ObservableProperty]
+    private string shippingPostalCode = string.Empty;
 
     [ObservableProperty]
     private City selectedCity;

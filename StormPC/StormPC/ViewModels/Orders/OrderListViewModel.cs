@@ -123,6 +123,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 .Include(o => o.Customer)
                 .Include(o => o.Status)
                 .Include(o => o.PaymentMethod)
+                .Include(o => o.ShipCity)  // Include the City information
                 .Where(o => !o.IsDeleted)
                 .OrderByDescending(o => o.OrderDate)
                 .Select(o => new
@@ -133,7 +134,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     PaymentMethod = o.PaymentMethod != null ? o.PaymentMethod.MethodName : "Unknown",
                     o.TotalAmount,
                     o.ShippingAddress,
-                    o.ShippingCity,
+                    CityName = o.ShipCity != null ? o.ShipCity.CityName : "Unknown",  // Use CityName from Cities table
                     o.OrderDate
                 })
                 .ToListAsync();
@@ -150,7 +151,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 TotalAmount = o.TotalAmount,
                 FormattedTotalAmount = string.Format("{0:N0} VNĐ", o.TotalAmount),
                 ShippingAddress = o.ShippingAddress,
-                ShippingCity = o.ShippingCity,
+                ShippingCity = o.CityName,  // Use CityName instead of ShippingCity
                 OrderDate = o.OrderDate,
                 FormattedOrderDate = o.OrderDate.ToString("dd/MM/yyyy HH:mm")
             }).ToList();
@@ -427,7 +428,6 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 return;
             }
 
-            // Get the maximum OrderID and increment by 1
             var maxOrderId = await _dbContext.Orders.MaxAsync(o => (int?)o.OrderID) ?? 0;
             var newOrderId = maxOrderId + 1;
 
@@ -439,8 +439,9 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 PaymentMethodID = dialogViewModel.SelectedPaymentMethod.PaymentMethodID,
                 OrderDate = DateTime.UtcNow,
                 ShippingAddress = dialogViewModel.ShippingAddress,
-                ShippingCity = dialogViewModel.SelectedCity.CityCode,
-                ShipCityId = dialogViewModel.SelectedCity.Id,
+                ShipCityId = dialogViewModel.SelectedCity.Id,  // Use City.Id
+                ShippingCity = dialogViewModel.SelectedCity.CityName,  // Use CityName
+                ShippingPostalCode = dialogViewModel.ShippingPostalCode,  // Add postal code
                 TotalAmount = dialogViewModel.SelectedLaptopSpec.Price * dialogViewModel.Quantity,
                 IsDeleted = false
             };
@@ -545,6 +546,12 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             return false;
         }
 
+        if (string.IsNullOrWhiteSpace(dialogViewModel.ShippingPostalCode))
+        {
+            errorMessage = "Vui lòng nhập mã bưu điện";
+            return false;
+        }
+
         return true;
     }
 
@@ -572,8 +579,9 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         order.StatusID = dialogViewModel.SelectedStatus.StatusID;
         order.PaymentMethodID = dialogViewModel.SelectedPaymentMethod.PaymentMethodID;
         order.ShippingAddress = dialogViewModel.ShippingAddress;
-        order.ShippingCity = dialogViewModel.SelectedCity.CityCode;
-        order.ShipCityId = dialogViewModel.SelectedCity.Id;
+        order.ShipCityId = dialogViewModel.SelectedCity.Id;  // Use City.Id
+        order.ShippingCity = dialogViewModel.SelectedCity.CityName;  // Use CityName
+        order.ShippingPostalCode = dialogViewModel.ShippingPostalCode;  // Add postal code
         order.TotalAmount = dialogViewModel.SelectedLaptopSpec.Price * dialogViewModel.Quantity;
 
         // Update or create order item
