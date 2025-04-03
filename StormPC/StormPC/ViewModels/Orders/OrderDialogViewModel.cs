@@ -50,6 +50,11 @@ public partial class OrderDialogViewModel : ObservableObject
     private string shippingPostalCode = string.Empty;
 
     [ObservableProperty]
+    private bool isNewOrder = true;
+
+    public bool IsNotNewOrder => !IsNewOrder;
+
+    [ObservableProperty]
     private City selectedCity;
 
     [ObservableProperty]
