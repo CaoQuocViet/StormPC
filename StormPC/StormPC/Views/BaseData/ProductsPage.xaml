@@ -98,22 +98,30 @@
                     <Run Text="{x:Bind ViewModel.FormattedMaxPrice, Mode=OneWay}"/>
                     <Run Text=" VNĐ"/>
                 </TextBlock>
-                <controls:RangeSelector x:Name="PriceRangeSelector"
-                                    Minimum="0"
-                                    Maximum="2000000000"
-                                    StepFrequency="1000"
-                                    Height="32"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Center"
-                                    RangeStart="{x:Bind ViewModel.MinPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
-                                    RangeEnd="{x:Bind ViewModel.MaxPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
-                                    ValueChanged="PriceRangeSelector_ValueChanged"/>
+                <Border Height="40" 
+                       BorderBrush="{ThemeResource TextControlBorderBrush}"
+                       BorderThickness="1"
+                       CornerRadius="4"
+                       Padding="8,4">
+                    <controls:RangeSelector x:Name="PriceRangeSelector"
+                                        Minimum="0"
+                                        Maximum="2000000000"
+                                        StepFrequency="1000"
+                                        Height="32"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        RangeStart="{x:Bind ViewModel.MinPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
+                                        RangeEnd="{x:Bind ViewModel.MaxPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
+                                        ValueChanged="PriceRangeSelector_ValueChanged"/>
+                </Border>
             </StackPanel>
 
             <ComboBox Grid.Column="2"
                   SelectedIndex="{x:Bind ViewModel.SelectedSortIndex, Mode=TwoWay}"
                   SelectionChanged="SortingComboBox_SelectionChanged"
                   Height="40"
+                  MinHeight="40"
+                  VerticalAlignment="Center"
                   HorizontalAlignment="Stretch"
                   Margin="0,0,24,0">
                 <ComboBoxItem Content="Mới nhất"/>
