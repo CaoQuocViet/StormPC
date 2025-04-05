@@ -97,6 +97,18 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
     [ObservableProperty]
     private int stockQuantity;
 
+    [ObservableProperty]
+    private decimal _minPrice = 0;
+
+    [ObservableProperty]
+    private decimal _maxPrice = 2000000000;
+
+    [ObservableProperty]
+    private string _formattedMinPrice = "0 ₫";
+
+    [ObservableProperty]
+    private string _formattedMaxPrice = "2.000.000.000 ₫";
+
     public LaptopDisplayDto? SelectedLaptop
     {
         get => _selectedLaptop;
@@ -946,6 +958,42 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         FilterAndPaginateProducts();
     }
 
+    partial void OnMinPriceChanged(decimal value)
+    {
+        FormattedMinPrice = value.ToString("N0") + " ₫";
+        ApplyFilters();
+    }
+
+    partial void OnMaxPriceChanged(decimal value)
+    {
+        FormattedMaxPrice = value.ToString("N0") + " ₫";
+        ApplyFilters();
+    }
+
+    public void ApplyFilters()
+    {
+        if (_allLaptops == null) return;
+
+        var filteredLaptops = _allLaptops
+            .Where(l => l.LowestPrice >= MinPrice && l.LowestPrice <= MaxPrice);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            filteredLaptops = filteredLaptops.Where(l => 
+                l.ModelName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                l.BrandName.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+        }
+
+        _totalItems = filteredLaptops.Count();
+        var paginatedLaptops = filteredLaptops
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+
+        Laptops = new ObservableCollection<LaptopDisplayDto>(paginatedLaptops);
+        OnPropertyChanged(nameof(TotalPages));
+    }
+
     public async Task LoadProductsAsync()
     {
         try
@@ -962,18 +1010,36 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 
     private void FilterAndPaginateProducts()
     {
-        var filteredProducts = string.IsNullOrWhiteSpace(SearchText)
-            ? _allLaptops
-            : _allLaptops.Where(l =>
-                l.ModelName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase) ||
-                l.BrandName.Contains(SearchText, System.StringComparison.OrdinalIgnoreCase)
-            ).ToList();
+        if (_allLaptops == null) return;
 
-        // Apply sorting based on selected index
+        var filteredProducts = _allLaptops;
+
+        // Lọc theo khoảng giá
+        filteredProducts = filteredProducts.Where(l =>
+            l.LowestPrice >= MinPrice && l.LowestPrice <= MaxPrice
+        ).ToList();
+
+        // Lọc theo text search nếu có
+        if (!string.IsNullOrWhiteSpace(SearchText))
+        {
+            filteredProducts = filteredProducts.Where(l =>
+                l.ModelName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                l.BrandName.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+
+        // Áp dụng sắp xếp
         filteredProducts = SortProducts(filteredProducts);
 
+        // Tính tổng số items và phân trang
         _totalItems = filteredProducts.Count;
-        LoadPage(1); // Reset to first page when filtering
+        var pagedProducts = filteredProducts
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+
+        Laptops = new ObservableCollection<LaptopDisplayDto>(pagedProducts);
+        OnPropertyChanged(nameof(TotalPages));
     }
 
     private List<LaptopDisplayDto> SortProducts(List<LaptopDisplayDto> products)
@@ -1012,6 +1078,17 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
             .ToList();
 
         Laptops = new ObservableCollection<LaptopDisplayDto>(pagedProducts);
+        OnPropertyChanged(nameof(TotalPages));
+    }
+
+    public void UpdatePriceRange(double minValue, double maxValue)
+    {
+        MinPrice = (decimal)minValue;
+        MaxPrice = (decimal)maxValue;
+    }
+
+    private void UpdatePagination()
+    {
         OnPropertyChanged(nameof(TotalPages));
     }
 } 
