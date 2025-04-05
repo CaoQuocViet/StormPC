@@ -10,9 +10,10 @@
     xmlns:vm="using:StormPC.ViewModels.Dashboard"
     xmlns:helpers="using:StormPC.Helpers"
     xmlns:coreHelpers="using:StormPC.Core.Helpers"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:winui="using:Microsoft.UI.Xaml"
     xmlns:dashboard="using:StormPC.Core.Services.Dashboard"
+    xmlns:sharedControls="using:StormPC.Controls"
     mc:Ignorable="d"
     Loaded="CustomerReportPage_Loaded">
 
@@ -28,228 +29,416 @@
             <Setter Property="Padding" Value="16"/>
             <Setter Property="Margin" Value="8"/>
         </Style>
+
+        <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="DataGridCellStyle" TargetType="TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Background" Value="#E81123"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <DataTemplate x:Key="CustomerDialogTemplate">
+            <StackPanel Spacing="12" MinWidth="400">
+                <TextBox Header="Họ tên"
+                         Text="{Binding FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="Nhập họ tên"/>
+                <TextBox Header="Email"
+                         Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="Nhập email"/>
+                <TextBox Header="Số điện thoại"
+                         Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="Nhập số điện thoại"/>
+                <TextBox Header="Địa chỉ"
+                         Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         PlaceholderText="Nhập địa chỉ"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Height="80"/>
+                <ComboBox Header="Thành phố"
+                          ItemsSource="{Binding Cities}"
+                          SelectedItem="{Binding SelectedCity, Mode=TwoWay}"
+                          DisplayMemberPath="CityName"
+                          PlaceholderText="Chọn thành phố"
+                          HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!-- Header -->
-        <Grid Grid.Row="0" Margin="16,16,16,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Báo cáo khách hàng" 
-                     Style="{ThemeResource TitleTextBlockStyle}"/>
-            <StackPanel Grid.Column="1" 
-                      Orientation="Horizontal" 
-                      Spacing="8">
-                <TextBlock Text="Từ" 
-                         VerticalAlignment="Center"/>
-                <CalendarDatePicker Date="{x:Bind ViewModel.StartDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
-                                 MinWidth="100"/>
-                <TextBlock Text="Đến" 
-                         VerticalAlignment="Center"/>
-                <CalendarDatePicker Date="{x:Bind ViewModel.EndDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
-                                 MinWidth="100"/>
-                <Button Command="{x:Bind ViewModel.RefreshCommand}">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon Glyph="&#xE72C;"/>
-                        <TextBlock Text="Làm mới"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Grid>
-
-        <!-- KPI Cards -->
-        <Grid Grid.Row="1" Height="100">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Style="{StaticResource CardStyle}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Tổng số khách hàng"
-                         Style="{ThemeResource CaptionTextBlockStyle}"
-                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.TotalCustomers, Mode=OneWay}"
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         FontSize="20"
-                         VerticalAlignment="Center"/>
-            </Grid>
-
-            <Grid Grid.Column="1" Style="{StaticResource CardStyle}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Khách hàng Platinum"
-                         Style="{ThemeResource CaptionTextBlockStyle}"
-                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.PlatinumCustomers, Mode=OneWay}"
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         FontSize="20"
-                         VerticalAlignment="Center"/>
-            </Grid>
-
-            <Grid Grid.Column="2" Style="{StaticResource CardStyle}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Khách hàng Gold"
-                         Style="{ThemeResource CaptionTextBlockStyle}"
-                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.GoldCustomers, Mode=OneWay}"
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         FontSize="20"
-                         VerticalAlignment="Center"/>
-            </Grid>
-
-            <Grid Grid.Column="3" Style="{StaticResource CardStyle}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Khách hàng Silver"
-                         Style="{ThemeResource CaptionTextBlockStyle}"
-                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.SilverCustomers, Mode=OneWay}"
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         FontSize="20"
-                         VerticalAlignment="Center"/>
-            </Grid>
-
-            <Grid Grid.Column="4" Style="{StaticResource CardStyle}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Khách hàng Bronze"
-                         Style="{ThemeResource CaptionTextBlockStyle}"
-                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                <TextBlock Grid.Row="1"
-                         Text="{x:Bind ViewModel.SegmentationData.BronzeCustomers, Mode=OneWay}"
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         FontSize="20"
-                         VerticalAlignment="Center"/>
-            </Grid>
-        </Grid>
-
-        <!-- Charts -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <ScrollViewer>
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Purchase Trends Chart -->
-            <Grid Style="{StaticResource CardStyle}" Grid.Column="0" Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Xu hướng mua hàng theo thời gian" 
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         Margin="0,0,0,8"/>
-                <lvc:CartesianChart Grid.Row="1"
-                                 Series="{x:Bind ViewModel.PurchaseTrendsSeries, Mode=OneWay}"
-                                 XAxes="{x:Bind ViewModel.XAxes, Mode=OneWay}"
-                                 YAxes="{x:Bind ViewModel.YAxes, Mode=OneWay}"
-                                 TooltipPosition="Top"
-                                 LegendPosition="Top">
-                </lvc:CartesianChart>
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="16,16,16,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Báo cáo khách hàng" 
+                         Style="{ThemeResource TitleTextBlockStyle}"/>
+                <StackPanel Grid.Column="1" 
+                          Orientation="Horizontal" 
+                          Spacing="8">
+                    <TextBlock Text="Từ" 
+                             VerticalAlignment="Center"/>
+                    <CalendarDatePicker Date="{x:Bind ViewModel.StartDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
+                                     MinWidth="100"/>
+                    <TextBlock Text="Đến" 
+                             VerticalAlignment="Center"/>
+                    <CalendarDatePicker Date="{x:Bind ViewModel.EndDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
+                                     MinWidth="100"/>
+                    <Button Command="{x:Bind ViewModel.RefreshCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE72C;"/>
+                            <TextBlock Text="Làm mới"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Grid>
 
-            <!-- Customer Segmentation Chart -->
-            <Grid Style="{StaticResource CardStyle}" Grid.Column="1" Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Phân khúc khách hàng" 
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         Margin="0,0,0,8"/>
-                <lvc:PieChart Grid.Row="1"
-                           Series="{x:Bind ViewModel.CustomerSegmentationSeries, Mode=OneWay}"
-                           LegendPosition="Right">
-                </lvc:PieChart>
+            <!-- KPI Cards -->
+            <Grid Grid.Row="1" Height="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Style="{StaticResource CardStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Tổng số khách hàng"
+                             Style="{ThemeResource CaptionTextBlockStyle}"
+                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.SegmentationData.TotalCustomers, Mode=OneWay}"
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             FontSize="20"
+                             VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Grid.Column="1" Style="{StaticResource CardStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Khách hàng Platinum"
+                             Style="{ThemeResource CaptionTextBlockStyle}"
+                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.SegmentationData.PlatinumCustomers, Mode=OneWay}"
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             FontSize="20"
+                             VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Grid.Column="2" Style="{StaticResource CardStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Khách hàng Gold"
+                             Style="{ThemeResource CaptionTextBlockStyle}"
+                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.SegmentationData.GoldCustomers, Mode=OneWay}"
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             FontSize="20"
+                             VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Grid.Column="3" Style="{StaticResource CardStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Khách hàng Silver"
+                             Style="{ThemeResource CaptionTextBlockStyle}"
+                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.SegmentationData.SilverCustomers, Mode=OneWay}"
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             FontSize="20"
+                             VerticalAlignment="Center"/>
+                </Grid>
+
+                <Grid Grid.Column="4" Style="{StaticResource CardStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Khách hàng Bronze"
+                             Style="{ThemeResource CaptionTextBlockStyle}"
+                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.SegmentationData.BronzeCustomers, Mode=OneWay}"
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             FontSize="20"
+                             VerticalAlignment="Center"/>
+                </Grid>
             </Grid>
 
-            <!-- Customer Brand Preferences Chart -->
-            <Grid Style="{StaticResource CardStyle}" Grid.Column="0" Grid.Row="1">
+            <!-- Charts -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="300"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Thương hiệu ưa thích" 
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         Margin="0,0,0,8"/>
-                <lvc:CartesianChart Grid.Row="1"
-                                 Series="{x:Bind ViewModel.CustomerPreferenceSeries, Mode=OneWay}"
-                                 XAxes="{x:Bind ViewModel.BrandXAxes, Mode=OneWay}"
-                                 YAxes="{x:Bind ViewModel.BrandYAxes, Mode=OneWay}">
-                </lvc:CartesianChart>
-            </Grid>
 
-            <!-- Top Customers -->
-            <Grid Style="{StaticResource CardStyle}" Grid.Column="1" Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Top khách hàng" 
-                         Style="{ThemeResource SubtitleTextBlockStyle}"
-                         Margin="0,0,0,8"/>
-                <ListView Grid.Row="1"
-                        ItemsSource="{x:Bind ViewModel.TopCustomers, Mode=OneWay}"
-                        SelectionMode="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="dashboard:TopCustomerData">
-                            <Grid Margin="0,4">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel>
-                                    <TextBlock Text="{x:Bind CustomerName}"
-                                             Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                                    <TextBlock>
-                                        <Run Text="{x:Bind TotalOrders}"/>
-                                        <Run Text=" đơn hàng - "/>
-                                        <Run Text="{x:Bind TotalSpent, Converter={StaticResource CurrencyConverter}}"/>
-                                        <Run Text=" đ"/>
+                <!-- Purchase Trends Chart -->
+                <Grid Style="{StaticResource CardStyle}" Grid.Column="0" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Xu hướng mua hàng theo thời gian" 
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,8"/>
+                    <lvc:CartesianChart Grid.Row="1"
+                                     Series="{x:Bind ViewModel.PurchaseTrendsSeries, Mode=OneWay}"
+                                     XAxes="{x:Bind ViewModel.XAxes, Mode=OneWay}"
+                                     YAxes="{x:Bind ViewModel.YAxes, Mode=OneWay}"
+                                     TooltipPosition="Top"
+                                     LegendPosition="Top">
+                    </lvc:CartesianChart>
+                </Grid>
+
+                <!-- Customer Segmentation Chart -->
+                <Grid Style="{StaticResource CardStyle}" Grid.Column="1" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Phân khúc khách hàng" 
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,8"/>
+                    <lvc:PieChart Grid.Row="1"
+                               Series="{x:Bind ViewModel.CustomerSegmentationSeries, Mode=OneWay}"
+                               LegendPosition="Right">
+                    </lvc:PieChart>
+                </Grid>
+
+                <!-- Customer Brand Preferences Chart -->
+                <Grid Style="{StaticResource CardStyle}" Grid.Column="0" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Thương hiệu ưa thích" 
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,8"/>
+                    <lvc:CartesianChart Grid.Row="1"
+                                     Series="{x:Bind ViewModel.CustomerPreferenceSeries, Mode=OneWay}"
+                                     XAxes="{x:Bind ViewModel.BrandXAxes, Mode=OneWay}"
+                                     YAxes="{x:Bind ViewModel.BrandYAxes, Mode=OneWay}">
+                    </lvc:CartesianChart>
+                </Grid>
+
+                <!-- Top Customers -->
+                <Grid Style="{StaticResource CardStyle}" Grid.Column="1" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Top khách hàng" 
+                             Style="{ThemeResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,8"/>
+                    <ListView Grid.Row="1"
+                            ItemsSource="{x:Bind ViewModel.TopCustomers, Mode=OneWay}"
+                            SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="dashboard:TopCustomerData">
+                                <Grid Margin="0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Bind CustomerName}"
+                                                 Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                        <TextBlock>
+                                            <Run Text="{x:Bind TotalOrders}"/>
+                                            <Run Text=" đơn hàng - "/>
+                                            <Run Text="{x:Bind TotalSpent, Converter={StaticResource CurrencyConverter}}"/>
+                                            <Run Text=" đ"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1"
+                                             VerticalAlignment="Center">
+                                        <Run Text="{x:Bind AverageOrderValue, Converter={StaticResource CurrencyConverter}}"/>
+                                        <Run Text=" đ/đơn"/>
                                     </TextBlock>
-                                </StackPanel>
-                                <TextBlock Grid.Column="1"
-                                         VerticalAlignment="Center">
-                                    <Run Text="{x:Bind AverageOrderValue, Converter={StaticResource CurrencyConverter}}"/>
-                                    <Run Text=" đ/đơn"/>
-                                </TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
+
+            <!-- Customer List Header -->
+            <Grid Grid.Row="3" Margin="16,16,16,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Danh sách khách hàng" 
+                         Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+                <StackPanel Grid.Column="1" 
+                          Orientation="Horizontal" 
+                          Spacing="8">
+                    <AutoSuggestBox PlaceholderText="Tìm kiếm khách hàng..."
+                                  QueryIcon="Find"
+                                  Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Width="300"
+                                  Height="32"/>
+                    <Button Style="{StaticResource AccentButtonStyle}"
+                            Click="AddCustomerButton_Click">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE710;"/>
+                            <TextBlock Text="Thêm mới"/>
+                        </StackPanel>
+                    </Button>
+                    <ToggleButton x:Name="MultiColumnSortToggle"
+                                 Checked="MultiColumnSortToggle_Checked"
+                                 Unchecked="MultiColumnSortToggle_Checked">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE8CB;"/>
+                            <TextBlock Text="Sắp xếp nhiều cột"/>
+                        </StackPanel>
+                    </ToggleButton>
+                </StackPanel>
+            </Grid>
+
+            <!-- Customer List -->
+            <Grid Grid.Row="4" Margin="16,0,16,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <controls:DataGrid x:Name="CustomersDataGrid"
+                                 ItemsSource="{x:Bind ViewModel.Customers, Mode=OneWay}"
+                                 AutoGenerateColumns="False"
+                                 IsReadOnly="True"
+                                 GridLinesVisibility="Horizontal"
+                                 HorizontalGridLinesBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                 SelectionMode="Single"
+                                 Sorting="DataGrid_Sorting">
+                    <controls:DataGrid.Columns>
+                        <controls:DataGridTextColumn Header="ID" 
+                                                   Binding="{Binding CustomerID}" 
+                                                   Tag="CustomerID"
+                                                   Width="80">
+                            <controls:DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTextColumn.HeaderStyle>
+                        </controls:DataGridTextColumn>
+                        <controls:DataGridTextColumn Header="Họ tên" 
+                                                   Binding="{Binding FullName}" 
+                                                   Tag="FullName"
+                                                   Width="200">
+                            <controls:DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
+                            </controls:DataGridTextColumn.ElementStyle>
+                            <controls:DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTextColumn.HeaderStyle>
+                        </controls:DataGridTextColumn>
+                        <controls:DataGridTextColumn Header="Email" 
+                                                   Binding="{Binding Email}" 
+                                                   Tag="Email"
+                                                   Width="200">
+                            <controls:DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
+                            </controls:DataGridTextColumn.ElementStyle>
+                            <controls:DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTextColumn.HeaderStyle>
+                        </controls:DataGridTextColumn>
+                        <controls:DataGridTextColumn Header="Số điện thoại" 
+                                                   Binding="{Binding Phone}" 
+                                                   Tag="Phone"
+                                                   Width="120">
+                            <controls:DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTextColumn.HeaderStyle>
+                        </controls:DataGridTextColumn>
+                        <controls:DataGridTextColumn Header="Địa chỉ" 
+                                                   Binding="{Binding Address}" 
+                                                   Tag="Address"
+                                                   Width="*">
+                            <controls:DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridCellStyle}"/>
+                            </controls:DataGridTextColumn.ElementStyle>
+                            <controls:DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTextColumn.HeaderStyle>
+                        </controls:DataGridTextColumn>
+                        <controls:DataGridTextColumn Header="Thành phố" 
+                                                   Binding="{Binding CityName}" 
+                                                   Tag="CityName"
+                                                   Width="150">
+                            <controls:DataGridTextColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTextColumn.HeaderStyle>
+                        </controls:DataGridTextColumn>
+                        <controls:DataGridTemplateColumn Header="Thao tác" Width="120">
+                            <controls:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Button Content="&#xE70F;"
+                                                FontFamily="Segoe MDL2 Assets"
+                                                Click="EditButton_Click"
+                                                Style="{StaticResource AccentButtonStyle}"/>
+                                        <Button Content="&#xE74D;"
+                                                FontFamily="Segoe MDL2 Assets"
+                                                Click="DeleteButton_Click"
+                                                Style="{StaticResource DeleteButtonStyle}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </controls:DataGridTemplateColumn.CellTemplate>
+                            <controls:DataGridTemplateColumn.HeaderStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
+                            </controls:DataGridTemplateColumn.HeaderStyle>
+                        </controls:DataGridTemplateColumn>
+                    </controls:DataGrid.Columns>
+                </controls:DataGrid>
+
+                <sharedControls:PaginationControl Grid.Row="1"
+                                                CurrentPage="{x:Bind ViewModel.CurrentPage, Mode=TwoWay}"
+                                                TotalPages="{x:Bind ViewModel.TotalPages, Mode=OneWay}"
+                                                PageSize="{x:Bind ViewModel.PageSize, Mode=TwoWay}"
+                                                PageChanged="PaginationControl_PageChanged"
+                                                PageSizeChanged="PaginationControl_PageSizeChanged"/>
+
+                <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                             Width="50" 
+                             Height="50"/>
             </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page> 
