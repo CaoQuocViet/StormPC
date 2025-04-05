@@ -7,11 +7,16 @@
     xmlns:helpers="using:StormPC.Core.Helpers"
     xmlns:local="using:StormPC.Views.BaseData"
     xmlns:sharedControls="using:StormPC.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
     mc:Ignorable="d"
     x:Name="page"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
+        <local:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter"/>
+        <local:BoolToSelectionModeConverter x:Key="BoolToSelectionModeConverter"/>
+        
         <Style x:Key="PageTitleStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -62,6 +67,10 @@
 
         <!-- Search Bar and Action Buttons -->
         <Grid Grid.Row="1" Margin="20,0,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -96,15 +105,7 @@
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"
                     x:Name="AddButton"
-                    Click="AddButton_Click">
-                <Button.Resources>
-                    <Style TargetType="ContentDialog">
-                        <Setter Property="MinWidth" Value="500"/>
-                        <Setter Property="MaxHeight" Value="600"/>
-                        <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+                    Click="AddButton_Click"/>
 
             <Button Grid.Column="3"
                     Content="Chọn nhiều"
@@ -120,6 +121,36 @@
                     Foreground="White"
                     Command="{x:Bind ViewModel.DeleteMultipleCommand}"
                     Visibility="{x:Bind ViewModel.IsMultipleSelectionEnabled, Mode=OneWay}"/>
+
+            <!-- Price Range Selector -->
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="5" 
+                        Margin="0,12,0,0"
+                        Orientation="Vertical">
+                <TextBlock Text="Lọc theo khoảng giá:" 
+                         Margin="0,0,0,8"
+                         FontWeight="SemiBold"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <controls:RangeSelector x:Name="PriceRangeSelector"
+                                          Minimum="0"
+                                          Maximum="2000000000"
+                                          StepFrequency="1000"
+                                          RangeStart="{x:Bind ViewModel.MinPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
+                                          RangeEnd="{x:Bind ViewModel.MaxPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
+                                          ValueChanged="PriceRangeSelector_ValueChanged"/>
+                    <TextBlock Grid.Column="1" 
+                             Margin="12,0,0,0"
+                             VerticalAlignment="Center">
+                        <Run Text="{x:Bind ViewModel.FormattedMinPrice, Mode=OneWay}"/>
+                        <Run Text=" - "/>
+                        <Run Text="{x:Bind ViewModel.FormattedMaxPrice, Mode=OneWay}"/>
+                        <Run Text=" VNĐ"/>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
         </Grid>
 
         <!-- Products GridView -->

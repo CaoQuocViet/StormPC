@@ -2,6 +2,10 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using CommunityToolkit.WinUI.Controls;
 using StormPC.Core.Models.Products.Dtos;
 using StormPC.ViewModels.BaseData;
 using System;
@@ -15,8 +19,8 @@ public sealed partial class ProductsPage : Page
 
     public ProductsPage()
     {
-        this.InitializeComponent();
         ViewModel = App.GetService<ProductsViewModel>();
+        InitializeComponent();
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -212,6 +216,48 @@ public sealed partial class ProductsPage : Page
         {
             await ViewModel.AddLaptop();
         }
+    }
+
+    private void PriceRangeSelector_ValueChanged(object sender, RangeChangedEventArgs e)
+    {
+        if (sender is RangeSelector rangeSelector)
+        {
+            ViewModel.MinPrice = (decimal)rangeSelector.RangeStart;
+            ViewModel.MaxPrice = (decimal)rangeSelector.RangeEnd;
+            ViewModel.ApplyFilters();
+        }
+    }
+
+    private ScrollViewer FindParentScrollViewer()
+    {
+        DependencyObject element = PriceRangeSelector;
+        while (element != null && !(element is ScrollViewer))
+        {
+            element = VisualTreeHelper.GetParent(element);
+        }
+        return element as ScrollViewer;
+    }
+}
+
+// Chuyển đổi decimal sang double cho RangeSelector
+public class DecimalToDoubleConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value is decimal decimalValue)
+        {
+            return (double)decimalValue;
+        }
+        return 0.0;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        if (value is double doubleValue)
+        {
+            return (decimal)doubleValue;
+        }
+        return 0m;
     }
 }
 
