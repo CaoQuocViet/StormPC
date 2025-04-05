@@ -1,6 +1,7 @@
 using StormPC.Core.Models.Customers;
 using StormPC.Core.Models.Orders;
 using StormPC.Core.Models.Products;
+using StormPC.Core.Models.Customers.Dtos;
 using StormPC.Core.Infrastructure.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -218,5 +219,153 @@ public class CustomerReportService : ICustomerReportService
             Console.WriteLine($"Stack trace: {ex.StackTrace}");
             throw;
         }
+    }
+
+    public async Task<IEnumerable<CustomerDisplayDto>> GetAllCustomersAsync()
+    {
+        return await _context.Customers
+            .Where(c => !c.IsDeleted)
+            .Include(c => c.City)
+            .Select(c => new CustomerDisplayDto
+            {
+                CustomerID = c.CustomerID,
+                FullName = c.FullName,
+                Email = c.Email,
+                Phone = c.Phone,
+                Address = c.Address,
+                CityName = c.City != null ? c.City.CityName : string.Empty
+            })
+            .OrderBy(c => c.FullName)
+            .ToListAsync();
+    }
+
+    public async Task<CustomerDisplayDto?> GetCustomerByIdAsync(int id)
+    {
+        var customer = await _context.Customers
+            .Include(c => c.City)
+            .FirstOrDefaultAsync(c => c.CustomerID == id && !c.IsDeleted);
+
+        if (customer == null)
+            return null;
+
+        return new CustomerDisplayDto
+        {
+            CustomerID = customer.CustomerID,
+            FullName = customer.FullName,
+            Email = customer.Email,
+            Phone = customer.Phone,
+            Address = customer.Address,
+            CityName = customer.City?.CityName ?? string.Empty
+        };
+    }
+
+    public async Task<bool> AddCustomerAsync(Customer customer)
+    {
+        try
+        {
+            customer.IsDeleted = false;
+            
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> UpdateCustomerAsync(Customer customer)
+    {
+        try
+        {
+            var existingCustomer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.CustomerID == customer.CustomerID);
+
+            if (existingCustomer == null)
+                return false;
+
+            existingCustomer.FullName = customer.FullName;
+            existingCustomer.Email = customer.Email;
+            existingCustomer.Phone = customer.Phone;
+            existingCustomer.Address = customer.Address;
+            existingCustomer.City = customer.City;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> DeleteCustomerAsync(int id)
+    {
+        try
+        {
+            if (!await CanDeleteCustomerAsync(id))
+                return false;
+
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.CustomerID == id);
+
+            if (customer == null)
+                return false;
+
+            customer.IsDeleted = true;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> DeleteMultipleCustomersAsync(List<int> ids)
+    {
+        try
+        {
+            var deletableIds = new List<int>();
+            foreach (var id in ids)
+            {
+                if (await CanDeleteCustomerAsync(id))
+                    deletableIds.Add(id);
+            }
+
+            if (deletableIds.Count == 0)
+                return false;
+
+            var customers = await _context.Customers
+                .Where(c => deletableIds.Contains(c.CustomerID))
+                .ToListAsync();
+
+            foreach (var customer in customers)
+            {
+                customer.IsDeleted = true;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> CanDeleteCustomerAsync(int id)
+    {
+        return !await _context.Orders
+            .AnyAsync(o => o.CustomerID == id && !o.IsDeleted);
+    }
+
+    public async Task<IEnumerable<City>> GetAllCitiesAsync()
+    {
+        return await _context.Cities
+            .OrderBy(c => c.CityName)
+            .ToListAsync();
     }
 }

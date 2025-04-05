@@ -1,6 +1,7 @@
 using StormPC.Core.Models.Customers;
 using StormPC.Core.Models.Orders;
 using StormPC.Core.Models.Products;
+using StormPC.Core.Models.Customers.Dtos;
 using StormPC.Core.Infrastructure.Database.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -15,6 +16,14 @@ public interface ICustomerReportService
     Task<IEnumerable<TopCustomerData>> GetTopCustomersAsync(int count = 10);
     Task<IEnumerable<CustomerPurchaseData>> GetPurchaseTrendsAsync(DateTime startDate, DateTime endDate);
     Task<IEnumerable<CustomerPreferenceData>> GetCustomerPreferencesAsync();
+    Task<IEnumerable<CustomerDisplayDto>> GetAllCustomersAsync();
+    Task<CustomerDisplayDto?> GetCustomerByIdAsync(int id);
+    Task<bool> AddCustomerAsync(Customer customer);
+    Task<bool> UpdateCustomerAsync(Customer customer);
+    Task<bool> DeleteCustomerAsync(int id);
+    Task<bool> DeleteMultipleCustomersAsync(List<int> ids);
+    Task<bool> CanDeleteCustomerAsync(int id);
+    Task<IEnumerable<City>> GetAllCitiesAsync();
 }
 
 public class CustomerSegmentationData
