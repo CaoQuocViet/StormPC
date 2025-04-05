@@ -32,8 +32,10 @@
         </Style>
 
         <Style TargetType="ContentDialog">
-            <Setter Property="MinWidth" Value="500"/>
-            <Setter Property="MaxHeight" Value="600"/>
+            <Setter Property="MinWidth" Value="900"/>
+            <Setter Property="MaxWidth" Value="900"/>
+            <Setter Property="MinHeight" Value="600"/>
+            <Setter Property="MaxHeight" Value="800"/>
             <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
             <Setter Property="PrimaryButtonStyle">
                 <Setter.Value>
@@ -67,12 +69,10 @@
 
         <!-- Search Bar and Action Buttons -->
         <Grid Grid.Row="1" Margin="20,0,20,20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="300"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -84,14 +84,36 @@
                 QueryIcon="Find"
                 Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}"
                 Height="40"
-                Margin="0,0,12,0"/>
+                Margin="0,0,24,0"/>
 
-            <ComboBox Grid.Column="1"
-                      SelectedIndex="{x:Bind ViewModel.SelectedSortIndex, Mode=TwoWay}"
-                      SelectionChanged="SortingComboBox_SelectionChanged"
-                      Width="200"
-                      Height="40"
-                      Margin="0,0,12,0">
+            <TextBlock Grid.Column="1" 
+                     VerticalAlignment="Center"
+                     Margin="0,0,12,0"
+                     FontSize="13">
+                <Run Text="{x:Bind ViewModel.FormattedMinPrice, Mode=OneWay}"/>
+                <Run Text=" - "/>
+                <Run Text="{x:Bind ViewModel.FormattedMaxPrice, Mode=OneWay}"/>
+                <Run Text=" VNĐ"/>
+            </TextBlock>
+
+            <controls:RangeSelector Grid.Column="2"
+                                x:Name="PriceRangeSelector"
+                                Minimum="0"
+                                Maximum="2000000000"
+                                StepFrequency="1000"
+                                Height="32"
+                                VerticalAlignment="Center"
+                                Margin="0,0,24,0"
+                                RangeStart="{x:Bind ViewModel.MinPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
+                                RangeEnd="{x:Bind ViewModel.MaxPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
+                                ValueChanged="PriceRangeSelector_ValueChanged"/>
+
+            <ComboBox Grid.Column="3"
+                  SelectedIndex="{x:Bind ViewModel.SelectedSortIndex, Mode=TwoWay}"
+                  SelectionChanged="SortingComboBox_SelectionChanged"
+                  Width="180"
+                  Height="40"
+                  Margin="0,0,24,0">
                 <ComboBoxItem Content="Mới nhất"/>
                 <ComboBoxItem Content="Giá thấp đến cao"/>
                 <ComboBoxItem Content="Giá cao đến thấp"/>
@@ -100,57 +122,27 @@
                 <ComboBoxItem Content="Tên Z-A"/>
             </ComboBox>
 
-            <Button Grid.Column="2"
+            <Button Grid.Column="4"
                     Content="Thêm mới"
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"
                     x:Name="AddButton"
                     Click="AddButton_Click"/>
 
-            <Button Grid.Column="3"
+            <Button Grid.Column="5"
                     Content="Chọn nhiều"
                     Style="{StaticResource ActionButtonStyle}"
                     Margin="0,0,12,0"
                     Background="{ThemeResource SystemAccentColorDark1}"
                     Command="{x:Bind ViewModel.ToggleSelectionModeCommand}"/>
 
-            <Button Grid.Column="4"
+            <Button Grid.Column="6"
                     Content="Xóa đã chọn"
                     Style="{StaticResource ActionButtonStyle}"
                     Background="#E81123"
                     Foreground="White"
                     Command="{x:Bind ViewModel.DeleteMultipleCommand}"
                     Visibility="{x:Bind ViewModel.IsMultipleSelectionEnabled, Mode=OneWay}"/>
-
-            <!-- Price Range Selector -->
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="5" 
-                        Margin="0,12,0,0"
-                        Orientation="Vertical">
-                <TextBlock Text="Lọc theo khoảng giá:" 
-                         Margin="0,0,0,8"
-                         FontWeight="SemiBold"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <controls:RangeSelector x:Name="PriceRangeSelector"
-                                          Minimum="0"
-                                          Maximum="2000000000"
-                                          StepFrequency="1000"
-                                          RangeStart="{x:Bind ViewModel.MinPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
-                                          RangeEnd="{x:Bind ViewModel.MaxPrice, Mode=TwoWay, Converter={StaticResource DecimalToDoubleConverter}}"
-                                          ValueChanged="PriceRangeSelector_ValueChanged"/>
-                    <TextBlock Grid.Column="1" 
-                             Margin="12,0,0,0"
-                             VerticalAlignment="Center">
-                        <Run Text="{x:Bind ViewModel.FormattedMinPrice, Mode=OneWay}"/>
-                        <Run Text=" - "/>
-                        <Run Text="{x:Bind ViewModel.FormattedMaxPrice, Mode=OneWay}"/>
-                        <Run Text=" VNĐ"/>
-                    </TextBlock>
-                </Grid>
-            </StackPanel>
         </Grid>
 
         <!-- Products GridView -->
