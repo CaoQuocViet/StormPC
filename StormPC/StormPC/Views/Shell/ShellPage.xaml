@@ -34,12 +34,18 @@
                         PaneTitle="Storm PC"
                         CompactPaneLength="48"
                         OpenPaneLength="250"
-                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
+                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+                        Background="{ThemeResource LayerFillColorDefaultBrush}"
+                        PaneDisplayMode="LeftCompact">
             
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="NavSearchBox"
-                               QueryIcon="Find"
-                               PlaceholderText="Tìm kiếm nâng cao..."/>
+                <AutoSuggestBox 
+                    x:Name="NavSearchBox"
+                    QueryIcon="Find"
+                    PlaceholderText="Search..."
+                    Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay}"
+                    QuerySubmitted="NavSearchBox_QuerySubmitted"
+                    Width="200"/>
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.MenuItems>

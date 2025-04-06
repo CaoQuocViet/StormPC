@@ -7,6 +7,7 @@ using StormPC.Contracts;
 using StormPC.Helpers;
 using StormPC.ViewModels.Shell;
 using StormPC.ViewModels.BaseData;
+using StormPC.Contracts.Services;
 
 using Windows.System;
 
@@ -14,14 +15,16 @@ namespace StormPC.Views.Shell;
 
 public sealed partial class ShellPage : Page
 {
+    private readonly Windows.UI.Color _defaultForegroundColor = Microsoft.UI.Colors.White;
+    
     public ShellViewModel ViewModel
     {
         get;
     }
 
-    public ShellPage(ShellViewModel viewModel)
+    public ShellPage()
     {
-        ViewModel = viewModel;
+        ViewModel = App.GetService<ShellViewModel>();
         InitializeComponent();
 
         // Initialize navigation
@@ -30,6 +33,10 @@ public sealed partial class ShellPage : Page
 
         navigationService.Frame = NavigationFrame;
         navigationViewService.Initialize(NavigationViewControl);
+
+        // Hide the NavigationViewControl back button.
+        NavigationViewControl.IsBackButtonVisible = NavigationViewBackButtonVisible.Collapsed;
+        NavigationViewControl.IsBackEnabled = false;
 
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
@@ -85,5 +92,10 @@ public sealed partial class ShellPage : Page
         var result = navigationService.GoBack();
 
         args.Handled = result;
+    }
+
+    private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        ViewModel.SearchCommand.Execute(args.QueryText);
     }
 } 
