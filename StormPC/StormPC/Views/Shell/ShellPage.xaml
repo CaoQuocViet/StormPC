@@ -31,12 +31,11 @@
                         IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
                         IsSettingsVisible="True"
-                        PaneTitle="Storm PC"
                         CompactPaneLength="48"
                         OpenPaneLength="250"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                         Background="{ThemeResource LayerFillColorDefaultBrush}"
-                        PaneDisplayMode="LeftCompact">
+                        PaneDisplayMode="Left">
             
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox 
