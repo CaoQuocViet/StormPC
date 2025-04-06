@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
-namespace StormPC.Contracts;
+namespace StormPC.Contracts.Services;
 
 public interface INavigationService
 {
@@ -18,6 +18,8 @@ public interface INavigationService
     }
 
     bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false);
+
+    Task<bool> NavigateToAsync(string pageKey, object? parameter = null, bool clearNavigation = false);
 
     bool GoBack();
 }
