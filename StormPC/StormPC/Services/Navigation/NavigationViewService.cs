@@ -6,6 +6,7 @@ using StormPC.Contracts;
 using StormPC.Helpers;
 using StormPC.ViewModels;
 using StormPC.ViewModels.Settings;
+using StormPC.Contracts.Services;
 
 namespace StormPC.Services;
 

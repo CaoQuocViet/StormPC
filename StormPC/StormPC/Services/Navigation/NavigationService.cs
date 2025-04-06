@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
 using StormPC.Contracts;
+using StormPC.Contracts.Services;
 using StormPC.Helpers;
 
 namespace StormPC.Services;
@@ -67,8 +69,8 @@ public class NavigationService : INavigationService
     {
         if (CanGoBack)
         {
-            var vmBeforeNavigation = _frame.GetPageViewModel();
-            _frame.GoBack();
+            var vmBeforeNavigation = _frame?.GetPageViewModel();
+            _frame?.GoBack();
             if (vmBeforeNavigation is INavigationAware navigationAware)
             {
                 navigationAware.OnNavigatedFrom();
@@ -102,6 +104,11 @@ public class NavigationService : INavigationService
         }
 
         return false;
+    }
+
+    public async Task<bool> NavigateToAsync(string pageKey, object? parameter = null, bool clearNavigation = false)
+    {
+        return await Task.Run(() => NavigateTo(pageKey, parameter, clearNavigation));
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)
