@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using Windows.ApplicationModel;
 using StormPC.Helpers;
+using StormPC.Core.Contracts.Services;
 
 namespace StormPC.ViewModels.Login;
 
@@ -15,6 +16,7 @@ public partial class LoginViewModel : ObservableObject
 {
     private readonly AuthenticationService _authService;
     private readonly SecureStorageService _secureStorage;
+    private readonly IActivityLogService _activityLogService;
     private const string REMEMBERED_LOGIN_KEY = "remembered_login";
 
     public event EventHandler? LoginSuccessful;
@@ -37,10 +39,11 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private string _versionDescription;
 
-    public LoginViewModel(AuthenticationService authService, SecureStorageService secureStorage)
+    public LoginViewModel(AuthenticationService authService, SecureStorageService secureStorage, IActivityLogService activityLogService)
     {
         _authService = authService;
         _secureStorage = secureStorage;
+        _activityLogService = activityLogService;
         _versionDescription = GetVersionDescription();
         LoadRememberedLogin();
     }
@@ -64,12 +67,42 @@ public partial class LoginViewModel : ObservableObject
 
     public async Task<bool> VerifyBackupKeyAsync(string backupKey)
     {
-        return await _authService.VerifyBackupKeyAsync(backupKey);
+        try 
+        {
+            var isValid = await _authService.VerifyBackupKeyAsync(backupKey);
+            if (isValid)
+            {
+                await _activityLogService.LogActivityAsync("Login", "Backup Key", 
+                    "Account recovered using backup key", "Success", Username);
+            }
+            else 
+            {
+                await _activityLogService.LogActivityAsync("Login", "Backup Key", 
+                    "Failed to recover account - Invalid backup key", "Error", Username);
+            }
+            return isValid;
+        }
+        catch (Exception ex)
+        {
+            await _activityLogService.LogActivityAsync("Login", "Backup Key", 
+                $"Failed to verify backup key - {ex.Message}", "Error", Username);
+            return false;
+        }
     }
 
     public void ResetAdminAccount()
     {
-        _authService.ResetAdminAccount();
+        try
+        {
+            _authService.ResetAdminAccount();
+            _activityLogService.LogActivityAsync("Login", "Admin Reset", 
+                "Admin account has been reset", "Success", "System").Wait();
+        }
+        catch (Exception ex)
+        {
+            _activityLogService.LogActivityAsync("Login", "Admin Reset", 
+                $"Failed to reset admin account - {ex.Message}", "Error", "System").Wait();
+        }
     }
 
     private void LoadRememberedLogin()
@@ -97,6 +130,8 @@ public partial class LoginViewModel : ObservableObject
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(password))
         {
             ErrorMessage = "Please enter both username and password";
+            await _activityLogService.LogActivityAsync("Login", "Login Attempt", 
+                "Login failed - Empty username or password", "Error", Username);
             return;
         }
 
@@ -121,17 +156,24 @@ public partial class LoginViewModel : ObservableObject
                     _secureStorage.SaveSecureData<RememberedLogin?>(REMEMBERED_LOGIN_KEY, null);
                 }
 
+                await _activityLogService.LogActivityAsync("Login", "Login Success", 
+                    "User logged in successfully", "Success", Username);
+
                 await App.GetService<IActivationService>().ActivateAsync(null!);
                 LoginSuccessful?.Invoke(this, EventArgs.Empty);
             }
             else
             {
                 ErrorMessage = error ?? "Login failed. Please try again.";
+                await _activityLogService.LogActivityAsync("Login", "Login Failed", 
+                    $"Login failed - {error}", "Error", Username);
             }
         }
         catch (System.Exception ex)
         {
             ErrorMessage = $"An error occurred: {ex.Message}";
+            await _activityLogService.LogActivityAsync("Login", "Login Error", 
+                $"Login error - {ex.Message}", "Error", Username);
         }
     }
 }
