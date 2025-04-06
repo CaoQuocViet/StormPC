@@ -1,0 +1,91 @@
+<UserControl
+    x:Class="StormPC.Views.Shell.SearchDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:StormPC.ViewModels.Shell"
+    mc:Ignorable="d">
+
+    <Grid Margin="0,0,0,0" MinWidth="600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                  Text="Kết quả tìm kiếm" 
+                  Style="{StaticResource TitleTextBlockStyle}"
+                  Margin="0,0,0,16"/>
+
+        <!-- Filter Tabs -->
+        <NavigationView Grid.Row="1" 
+                       Margin="0,0,0,16"
+                       IsBackButtonVisible="Collapsed"
+                       IsSettingsVisible="False"
+                       PaneDisplayMode="Top"
+                       SelectionChanged="OnFilterSelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Tất cả" Tag="All">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE71D;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Thương hiệu" Tag="Brand">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE719;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Danh mục" Tag="Category">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FD;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Sản phẩm" Tag="Laptop">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BF;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Đơn hàng" Tag="Order">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BF;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Khách hàng" Tag="Customer">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE77B;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+        </NavigationView>
+
+        <!-- Results List -->
+        <ListView Grid.Row="2" 
+                  ItemsSource="{x:Bind ViewModel.SearchResults, Mode=OneWay}"
+                  SelectionMode="None"
+                  IsItemClickEnabled="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Padding="12">
+                        <TextBlock Text="{Binding DisplayName}" 
+                                 Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="{Binding Description}" 
+                                 Style="{ThemeResource CaptionTextBlockStyle}"
+                                 Opacity="0.6"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="3"
+              Background="{ThemeResource LayerFillColorDefaultBrush}"
+              Opacity="0.8"
+              Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
+            <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                         Width="32" Height="32"/>
+        </Grid>
+    </Grid>
+</UserControl> 
