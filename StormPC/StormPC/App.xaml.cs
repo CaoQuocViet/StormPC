@@ -14,6 +14,7 @@ using StormPC.Core.Services.Orders;
 using StormPC.Core.Services.Products;
 using StormPC.Core.Services.Dashboard;
 using StormPC.Core.Services.System;
+using StormPC.Core.Services.ActivityLog;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
@@ -81,6 +82,9 @@ public partial class App : Application
 
             // Product Services
             services.AddScoped<IProductService, ProductService>();
+
+            // Activity Log Service
+            services.AddSingleton<IActivityLogService, ActivityLogService>();
 
             // Login Services
             services.AddSingleton<SecureStorageService>();
