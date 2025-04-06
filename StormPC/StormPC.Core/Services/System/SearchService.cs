@@ -112,6 +112,8 @@ public class SearchService : ISearchService
             .Include(l => l.Category)
             .Where(l => !l.IsDeleted && 
                 (l.ModelName.ToLower().Contains(query) || 
+                l.ScreenSize.ToString().Contains(query) ||
+                l.ReleaseYear.ToString().Contains(query) ||
                 (l.Description != null && l.Description.ToLower().Contains(query))))
             .Skip(skip).Take(pageSize)
             .Select(l => new SearchResult
@@ -133,6 +135,8 @@ public class SearchService : ISearchService
         results.TypeCounts["Laptop"] = await _context.Laptops
             .Where(l => !l.IsDeleted && 
                 (l.ModelName.ToLower().Contains(query) || 
+                l.ScreenSize.ToString().Contains(query) ||
+                l.ReleaseYear.ToString().Contains(query) ||
                 (l.Description != null && l.Description.ToLower().Contains(query))))
             .CountAsync();
 
@@ -294,6 +298,8 @@ public class SearchService : ISearchService
                     .Include(l => l.Category)
                     .Where(l => !l.IsDeleted && 
                         (l.ModelName.ToLower().Contains(query) || 
+                        l.ScreenSize.ToString().Contains(query) ||
+                        l.ReleaseYear.ToString().Contains(query) ||
                         (l.Description != null && l.Description.ToLower().Contains(query))))
                     .Skip(skip).Take(pageSize)
                     .Select(l => new SearchResult
@@ -315,6 +321,8 @@ public class SearchService : ISearchService
                 results.TotalCount = await _context.Laptops
                     .Where(l => !l.IsDeleted && 
                         (l.ModelName.ToLower().Contains(query) || 
+                        l.ScreenSize.ToString().Contains(query) ||
+                        l.ReleaseYear.ToString().Contains(query) ||
                         (l.Description != null && l.Description.ToLower().Contains(query))))
                     .CountAsync();
                 break;

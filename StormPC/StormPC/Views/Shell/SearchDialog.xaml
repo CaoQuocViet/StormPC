@@ -5,7 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:StormPC.ViewModels.Shell"
+    xmlns:converters="using:StormPC.Converters"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    </UserControl.Resources>
 
     <Grid Margin="0,0,0,0" Width="1000">
         <Grid.RowDefinitions>
@@ -47,7 +52,7 @@
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FD;"/>
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem Content="Prod" Tag="Product">
+                    <NavigationViewItem Content="Prod" Tag="Laptop">
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BF;"/>
                         </NavigationViewItem.Icon>
@@ -78,7 +83,19 @@
                                  Style="{ThemeResource SubtitleTextBlockStyle}"/>
                         <TextBlock Text="{Binding Description}" 
                                  Style="{ThemeResource CaptionTextBlockStyle}"
-                                 Opacity="0.6"/>
+                                 Opacity="0.6"
+                                 Visibility="{Binding Description, Converter={StaticResource StringToVisibilityConverter}}"/>
+                        <ItemsControl ItemsSource="{Binding AdditionalInfo}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <Run Text="{Binding Key}" FontWeight="SemiBold"/>
+                                        <Run Text=": "/>
+                                        <Run Text="{Binding Value}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

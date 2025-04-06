@@ -48,11 +48,11 @@ public partial class SearchDialogViewModel : ObservableObject
             SearchResults results;
             if (SelectedType == "All")
             {
-                results = await _searchService.SearchAsync(SearchQuery);
+                results = await _searchService.SearchAsync(SearchQuery, CurrentPage);
             }
             else
             {
-                results = await _searchService.SearchByTypeAsync(SearchQuery, SelectedType);
+                results = await _searchService.SearchByTypeAsync(SearchQuery, SelectedType, CurrentPage);
             }
 
             SearchResults.Clear();
