@@ -10,6 +10,9 @@ using StormPC.ViewModels.BaseData;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using StormPC.Contracts.Services;
+using StormPC.Core.Services.System;
+using StormPC.Views.Shell;
 
 namespace StormPC.ViewModels.Shell;
 
@@ -18,6 +21,8 @@ public partial class ShellViewModel : ObservableRecipient
     private readonly INavigationService _navigationService;
     private readonly INavigationViewService _navigationViewService;
     private readonly ILastPageService _lastPageService;
+    private readonly ISearchService _searchService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private bool _isBackEnabled;
@@ -25,15 +30,27 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty]
     private object? _selected;
 
+    [ObservableProperty]
+    private string _searchQuery = string.Empty;
+
     public IList<object>? MenuItems => _navigationViewService.MenuItems;
 
     public object? SettingsItem => _navigationViewService.SettingsItem;
 
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, ILastPageService lastPageService)
+    public INavigationViewService NavigationViewService => _navigationViewService;
+
+    public ShellViewModel(
+        INavigationService navigationService, 
+        INavigationViewService navigationViewService, 
+        ILastPageService lastPageService, 
+        ISearchService searchService,
+        IDialogService dialogService)
     {
         _navigationService = navigationService;
         _navigationViewService = navigationViewService;
         _lastPageService = lastPageService;
+        _searchService = searchService;
+        _dialogService = dialogService;
 
         _navigationService.Navigated += OnNavigated;
     }
@@ -102,5 +119,23 @@ public partial class ShellViewModel : ObservableRecipient
     public void UnregisterEvents()
     {
         _navigationService.Navigated -= OnNavigated;
+    }
+
+    [RelayCommand]
+    private async Task SearchAsync(string? query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return;
+
+        SearchQuery = query;
+        await _dialogService.ShowSearchDialogAsync(query);
+    }
+
+    partial void OnSearchQueryChanged(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            SearchQuery = string.Empty;
+        }
     }
 } 

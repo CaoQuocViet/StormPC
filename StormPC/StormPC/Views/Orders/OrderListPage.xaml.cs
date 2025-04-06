@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using StormPC.Contracts.Services;
 
 namespace StormPC.Views.Orders;
 
