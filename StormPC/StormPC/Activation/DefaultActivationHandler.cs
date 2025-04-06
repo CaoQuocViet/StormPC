@@ -3,6 +3,7 @@
 using StormPC.Contracts;
 using StormPC.ViewModels;
 using StormPC.ViewModels.Shell;
+using StormPC.Contracts.Services;
 
 namespace StormPC.Activation;
 
