@@ -13,6 +13,7 @@ using StormPC.Core.Services.Login;
 using StormPC.Core.Services.Orders;
 using StormPC.Core.Services.Products;
 using StormPC.Core.Services.Dashboard;
+using StormPC.Core.Services.System;
 using StormPC.Helpers;
 using StormPC.Models;
 using StormPC.Services;
@@ -30,6 +31,7 @@ using StormPC.Views.Login;
 using StormPC.Views.Orders;
 using StormPC.Views.Settings;
 using StormPC.Views.Shell;
+using StormPC.Contracts.Services;
 
 namespace StormPC;
 
@@ -93,6 +95,7 @@ public partial class App : Application
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddSingleton<ILastPageService, LastPageService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
@@ -100,11 +103,14 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
+            services.AddScoped<ISearchService, SearchService>();
 
             // Views and ViewModels
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ShellPage>();
             services.AddTransient<MainWindow>();
+            services.AddTransient<SearchDialogViewModel>();
+            services.AddTransient<SearchDialog>();
             
             // Report
             services.AddTransient<InventoryReportViewModel>();
