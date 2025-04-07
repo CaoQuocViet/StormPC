@@ -6,15 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:vm="using:StormPC.ViewModels.ActivityLog"
+    xmlns:converters="using:StormPC.Converters"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=vm:ActivityLogViewModel}">
 
     <Page.Resources>
+        <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+        
         <Style x:Key="PageHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,0,0,24"/>
-            <Setter Property="Foreground" Value="{ThemeResource SystemAccentColor}"/>
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
         
         <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
@@ -45,19 +48,19 @@
                         Margin="0,0,0,10">
                 <Button Content="Làm mới" 
                         Command="{Binding RefreshLogsCommand}"
-                        Style="{StaticResource DefaultButtonStyle}"
+                        Style="{StaticResource AccentButtonStyle}"
                         Margin="0,0,10,0"/>
                 <Button Content="Xóa nhật ký" 
                         Command="{Binding ClearLogsCommand}"
-                        Style="{StaticResource AccentButtonStyle}"/>
+                        Background="#dc3545"
+                        Foreground="White"/>
             </StackPanel>
 
             <controls:DataGrid Grid.Row="1"
                       ItemsSource="{Binding Logs}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
-                      GridLinesVisibility="All"
-                      AlternatingRowBackground="#F0F0F0">
+                      GridLinesVisibility="All">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Thời gian" 
                                       Binding="{Binding FormattedTimestamp}" 
@@ -94,13 +97,23 @@
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
                         </controls:DataGridTextColumn.HeaderStyle>
                     </controls:DataGridTextColumn>
-                    <controls:DataGridTextColumn Header="Trạng thái" 
-                                      Binding="{Binding Status}" 
-                                      Width="100">
-                        <controls:DataGridTextColumn.HeaderStyle>
+                    <controls:DataGridTemplateColumn Header="Trạng thái" Width="100">
+                        <controls:DataGridTemplateColumn.HeaderStyle>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
-                        </controls:DataGridTextColumn.HeaderStyle>
-                    </controls:DataGridTextColumn>
+                        </controls:DataGridTemplateColumn.HeaderStyle>
+                        <controls:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding Status, Converter={StaticResource StatusToColorConverter}}"
+                                        CornerRadius="4"
+                                        Margin="4,2"
+                                        Padding="8,4">
+                                    <TextBlock Text="{Binding Status}"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </controls:DataGridTemplateColumn.CellTemplate>
+                    </controls:DataGridTemplateColumn>
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>
