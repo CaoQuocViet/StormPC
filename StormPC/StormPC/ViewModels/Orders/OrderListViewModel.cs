@@ -15,12 +15,14 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System;
 using Microsoft.UI.Xaml.Controls;
+using StormPC.Core.Contracts.Services;
 
 namespace StormPC.ViewModels.Orders;
 
 public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 {
     private readonly StormPCDbContext _dbContext;
+    private readonly IActivityLogService _activityLogService;
     private List<OrderDisplayDto> _allOrders;
     private ObservableCollection<OrderDisplayDto> _orders;
     private bool _isLoading;
@@ -72,9 +74,10 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 
     public int TotalPages => (_totalItems + PageSize - 1) / PageSize;
 
-    public OrderListViewModel(StormPCDbContext dbContext)
+    public OrderListViewModel(StormPCDbContext dbContext, IActivityLogService activityLogService)
     {
         _dbContext = dbContext;
+        _activityLogService = activityLogService;
         _orders = new ObservableCollection<OrderDisplayDto>();
         _allOrders = new List<OrderDisplayDto>();
         Debug.WriteLine("OrderListViewModel constructed with dbContext");
@@ -91,14 +94,29 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", "Bắt đầu tải danh sách đơn hàng", "Info", "Admin");
             IsLoading = true;
             Debug.WriteLine("LoadOrders started...");
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Load Orders",
+                "Đang tải danh sách đơn hàng",
+                "Info",
+                "Admin"
+            );
 
             // Kiểm tra kết nối database
             Debug.WriteLine("Checking database connection...");
             if (_dbContext.Database == null)
             {
                 Debug.WriteLine("Database context is null!");
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Load Orders",
+                    "Lỗi kết nối database - Database context is null",
+                    "Error",
+                    "Admin"
+                );
                 return;
             }
 
@@ -164,15 +182,25 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 
             _allOrders = orders;
             FilterAndPaginateOrders();
+
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", $"Đã tải thành công {Orders.Count} đơn hàng", "Success", "Admin");
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error loading orders: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", $"Lỗi: {ex.Message}", "Error", "Admin");
             if (ex.InnerException != null)
             {
                 Debug.WriteLine($"Inner exception: {ex.InnerException.Message}");
                 Debug.WriteLine($"Inner stack trace: {ex.InnerException.StackTrace}");
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Load Orders",
+                    $"Inner exception: {ex.InnerException.Message}",
+                    "Error",
+                    "Admin"
+                );
             }
         }
         finally
@@ -269,6 +297,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", "Bắt đầu tải danh sách đơn hàng", "Info", "Admin");
             IsLoading = true;
             await LoadOrders();
         }
@@ -285,6 +314,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         {
             IsLoading = true;
             Debug.WriteLine($"Attempting to delete order {orderId}");
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Delete Order",
+                $"Đang xóa đơn hàng ID: {orderId}",
+                "Info",
+                "Admin"
+            );
 
             // Load order with status
             var order = await _dbContext.Orders
@@ -294,6 +330,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             if (order == null)
             {
                 Debug.WriteLine($"Order {orderId} not found");
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Delete Order",
+                    $"Xóa đơn hàng thất bại - Không tìm thấy đơn hàng ID: {orderId}",
+                    "Error",
+                    "Admin"
+                );
                 return false;
             }
 
@@ -301,12 +344,27 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             if (order.Status?.StatusName != "Cancelled")
             {
                 Debug.WriteLine($"Order {orderId} cannot be deleted - status is not Cancelled");
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Delete Order",
+                    $"Xóa đơn hàng thất bại - Đơn hàng ID: {orderId} chưa bị hủy",
+                    "Error",
+                    "Admin"
+                );
                 return false;
             }
 
             order.IsDeleted = true;
             await _dbContext.SaveChangesAsync();
             Debug.WriteLine($"Order {orderId} marked as deleted");
+
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Delete Order",
+                $"Xóa đơn hàng thành công ID: {orderId}",
+                "Success",
+                "Admin"
+            );
 
             // Refresh the orders list
             await LoadOrders();
@@ -315,6 +373,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
         catch (Exception ex)
         {
             Debug.WriteLine($"Error deleting order: {ex.Message}");
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Delete Order",
+                $"Lỗi khi xóa đơn hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             throw;
         }
         finally
@@ -438,9 +503,25 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Thêm mới", "Bắt đầu thêm đơn hàng mới", "Info", "Admin");
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Add Order",
+                "Đang thêm đơn hàng mới",
+                "Info",
+                "Admin"
+            );
+
             if (!ValidateOrderData(dialogViewModel, out string errorMessage))
             {
                 await ShowErrorDialog("Lỗi", errorMessage);
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Add Order",
+                    $"Thêm đơn hàng thất bại - {errorMessage}",
+                    "Error",
+                    "Admin"
+                );
                 return;
             }
 
@@ -487,6 +568,15 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 }
 
                 await _dbContext.SaveChangesAsync();
+
+                await _activityLogService.LogActivityAsync("Đơn hàng", "Thêm mới", "Đã thêm đơn hàng thành công", "Success", "Admin");
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Add Order",
+                    $"Thêm đơn hàng thành công ID: {newOrderId}",
+                    "Success",
+                    "Admin"
+                );
             }
             finally
             {
@@ -503,11 +593,25 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 message += "Chi tiết lỗi: " + ex.InnerException.Message;
             }
             await ShowErrorDialog("Lỗi", message);
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Add Order",
+                $"Lỗi khi thêm đơn hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             return;
         }
         catch (Exception ex)
         {
             await ShowErrorDialog("Lỗi", "Đã xảy ra lỗi khi thêm đơn hàng: " + ex.Message);
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Add Order",
+                $"Lỗi khi thêm đơn hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             return;
         }
     }
@@ -575,14 +679,30 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 
     public async Task UpdateOrderAsync(int orderId, OrderDialogViewModel dialogViewModel)
     {
-        if (!ValidateOrderData(dialogViewModel, out string errorMessage))
-        {
-            await ShowErrorDialog("Lỗi", errorMessage);
-            return;
-        }
-
         try
         {
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Chỉnh sửa", "Bắt đầu chỉnh sửa đơn hàng", "Info", "Admin");
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Update Order",
+                $"Đang cập nhật đơn hàng ID: {orderId}",
+                "Info",
+                "Admin"
+            );
+
+            if (!ValidateOrderData(dialogViewModel, out string errorMessage))
+            {
+                await ShowErrorDialog("Lỗi", errorMessage);
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Update Order",
+                    $"Cập nhật đơn hàng thất bại - {errorMessage}",
+                    "Error",
+                    "Admin"
+                );
+                return;
+            }
+
             var order = await _dbContext.Orders
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.OrderID == orderId);
@@ -590,6 +710,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             if (order == null)
             {
                 await ShowErrorDialog("Lỗi", "Không tìm thấy đơn hàng");
+                await _activityLogService.LogActivityAsync(
+                    "Orders",
+                    "Update Order",
+                    $"Cập nhật thất bại - Không tìm thấy đơn hàng ID: {orderId}",
+                    "Error",
+                    "Admin"
+                );
                 return;
             }
 
@@ -644,11 +771,28 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             }
 
             await _dbContext.SaveChangesAsync();
+
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Chỉnh sửa", "Đã cập nhật đơn hàng thành công", "Success", "Admin");
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Update Order",
+                $"Cập nhật thành công đơn hàng ID: {orderId}",
+                "Success",
+                "Admin"
+            );
+
             await LoadOrders();
         }
         catch (Exception ex)
         {
             await ShowErrorDialog("Lỗi", "Đã xảy ra lỗi khi cập nhật đơn hàng: " + ex.Message);
+            await _activityLogService.LogActivityAsync(
+                "Orders",
+                "Update Order",
+                $"Lỗi khi cập nhật đơn hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             return;
         }
     }
