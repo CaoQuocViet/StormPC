@@ -13,9 +13,11 @@ namespace StormPC.Converters
             {
                 return status switch
                 {
-                    "Success" => new SolidColorBrush(Color.FromArgb(32, 40, 167, 69)),    // #2028a745
-                    "Info" => new SolidColorBrush(Color.FromArgb(32, 255, 193, 7)),       // #20ffc107
-                    "Error" => new SolidColorBrush(Color.FromArgb(32, 220, 53, 69)),      // #20dc3545
+                    "Success" => new SolidColorBrush(Color.FromArgb(32, 40, 167, 69)),   
+                    "Info" => new SolidColorBrush(Color.FromArgb(32, 255, 193, 7)),      
+                    "Error" => new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)),
+                    "Failed" => new SolidColorBrush(Color.FromArgb(32, 220, 53, 69)),
+                    "Warning" => new SolidColorBrush(Color.FromArgb(255, 255, 165, 0)),
                     _ => new SolidColorBrush(Colors.Transparent)
                 };
             }
