@@ -168,6 +168,61 @@ module.exports = {
         IsDeleted: false,
         createdAt: new Date('2025-01-28T14:40:00Z'),
         updatedAt: new Date('2025-01-28T14:40:00Z')
+      },
+      {
+        CustomerID: 16,
+        FullName: 'Nguyễn Thị Hồng Nhung',
+        Email: 'nhungnh@email.com',
+        Phone: '0967890234',
+        Address: '42 Trương Định, Quận 3',
+        CityCode: 1,  // HCM
+        IsDeleted: false,
+        createdAt: new Date('2025-01-29T09:15:00Z'),
+        updatedAt: new Date('2025-01-29T09:15:00Z')
+      },
+      {
+        CustomerID: 17,
+        FullName: 'Trần Quốc Bảo',
+        Email: 'baotq@email.com',
+        Phone: '0978234567',
+        Address: '15 Lê Thánh Tôn, Quận Hoàn Kiếm',
+        CityCode: 2,  // HAN
+        IsDeleted: false,
+        createdAt: new Date('2025-01-29T14:30:00Z'),
+        updatedAt: new Date('2025-01-29T14:30:00Z')
+      },
+      {
+        CustomerID: 18,
+        FullName: 'Đỗ Thị Kim Chi',
+        Email: 'chidtk@email.com',
+        Phone: '0989876543',
+        Address: '76 Bạch Đằng, Quận Hải Châu',
+        CityCode: 3,  // DAN
+        IsDeleted: false,
+        createdAt: new Date('2025-01-30T10:45:00Z'),
+        updatedAt: new Date('2025-01-30T10:45:00Z')
+      },
+      {
+        CustomerID: 19,
+        FullName: 'Lý Thanh Tùng',
+        Email: 'tunglt@email.com',
+        Phone: '0912876543',
+        Address: '28 Võ Thị Sáu, Quận Ninh Kiều',
+        CityCode: 4,  // CTO
+        IsDeleted: false,
+        createdAt: new Date('2025-01-30T16:20:00Z'),
+        updatedAt: new Date('2025-01-30T16:20:00Z')
+      },
+      {
+        CustomerID: 20,
+        FullName: 'Vũ Hoàng Giang',
+        Email: 'giangvh@email.com',
+        Phone: '0934567123',
+        Address: '55 Trần Phú, Phường Lộc Thọ',
+        CityCode: 6,  // NTH
+        IsDeleted: false,
+        createdAt: new Date('2025-01-31T11:30:00Z'),
+        updatedAt: new Date('2025-01-31T11:30:00Z')
       }
     ], {});
   },
