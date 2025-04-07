@@ -15,6 +15,7 @@ using LiveChartsCore.Measure;
 using LiveChartsCore.Defaults;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using StormPC.Core.Contracts.Services;
 
 namespace StormPC.ViewModels.Dashboard;
 
@@ -37,6 +38,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
 {
     private readonly ICustomerReportService _customerReportService;
     private readonly StormPCDbContext _dbContext;
+    private readonly IActivityLogService _activityLogService;
     private BrandInfo[] _brandData = Array.Empty<BrandInfo>();
     private List<CustomerDisplayDto> _allCustomers;
     private ObservableCollection<CustomerDisplayDto> _customers;
@@ -159,10 +161,11 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
 
     public int TotalPages => (_totalItems + PageSize - 1) / PageSize;
 
-    public CustomerReportViewModel(ICustomerReportService customerReportService, StormPCDbContext dbContext)
+    public CustomerReportViewModel(ICustomerReportService customerReportService, StormPCDbContext dbContext, IActivityLogService activityLogService)
     {
         _customerReportService = customerReportService;
         _dbContext = dbContext;
+        _activityLogService = activityLogService;
         _customers = new ObservableCollection<CustomerDisplayDto>();
         _allCustomers = new List<CustomerDisplayDto>();
     }
@@ -175,6 +178,13 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         try
         {
             IsLoading = true;
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Load Data",
+                "Đang tải dữ liệu báo cáo khách hàng",
+                "Info",
+                "Admin"
+            );
 
             // Load customer list
             await LoadCustomers();
@@ -324,6 +334,26 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
 
                 CustomerPreferenceSeries = new[] { rowSeries };
             }
+
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Load Data",
+                $"Tải thành công dữ liệu báo cáo khách hàng",
+                "Success",
+                "Admin"
+            );
+        }
+        catch (Exception ex)
+        {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Load Data",
+                $"Lỗi khi tải dữ liệu báo cáo: {ex.Message}",
+                "Error",
+                "Admin"
+            );
+            // Handle error
+            System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
         }
         finally
         {
@@ -335,6 +365,14 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Load Customers",
+                "Đang tải danh sách khách hàng",
+                "Info",
+                "Admin"
+            );
+
             var query = await _dbContext.Customers
                 .AsNoTracking()
                 .Include(c => c.City)
@@ -352,10 +390,24 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
 
             _allCustomers = query;
             FilterAndPaginateCustomers();
+
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Load Customers",
+                $"Tải thành công {query.Count} khách hàng",
+                "Success",
+                "Admin"
+            );
         }
         catch (Exception ex)
         {
-            // Handle error
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Load Customers",
+                $"Lỗi khi tải danh sách khách hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
         }
     }
@@ -477,6 +529,14 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Add Customer",
+                $"Đang thêm khách hàng mới: {dialogViewModel.FullName}",
+                "Info",
+                "Admin"
+            );
+
             var customer = new Customer
             {
                 FullName = dialogViewModel.FullName,
@@ -488,13 +548,27 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
 
             _dbContext.Customers.Add(customer);
             await _dbContext.SaveChangesAsync();
-
-            // Refresh customer list
             await LoadCustomers();
+
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Add Customer",
+                $"Thêm thành công khách hàng: {customer.FullName}",
+                "Success",
+                "Admin"
+            );
+
             return true;
         }
         catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Add Customer",
+                $"Lỗi khi thêm khách hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             System.Diagnostics.Debug.WriteLine($"Error adding customer: {ex.Message}");
             return false;
         }
@@ -504,6 +578,14 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Update Customer",
+                $"Đang cập nhật khách hàng ID: {customerId}",
+                "Info",
+                "Admin"
+            );
+
             var customer = await _dbContext.Customers.FindAsync(customerId);
             if (customer != null)
             {
@@ -514,15 +596,36 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 customer.CityId = dialogViewModel.SelectedCity?.Id ?? 0;
 
                 await _dbContext.SaveChangesAsync();
-
-                // Refresh customer list
                 await LoadCustomers();
+
+                await _activityLogService.LogActivityAsync(
+                    "Customer Report",
+                    "Update Customer",
+                    $"Cập nhật thành công khách hàng: {customer.FullName}",
+                    "Success",
+                    "Admin"
+                );
                 return true;
             }
+
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Update Customer",
+                $"Cập nhật thất bại - Không tìm thấy khách hàng ID: {customerId}",
+                "Error",
+                "Admin"
+            );
             return false;
         }
         catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Update Customer",
+                $"Lỗi khi cập nhật khách hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             System.Diagnostics.Debug.WriteLine($"Error updating customer: {ex.Message}");
             return false;
         }
@@ -532,20 +635,49 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Delete Customer",
+                $"Đang xóa khách hàng ID: {customerId}",
+                "Info",
+                "Admin"
+            );
+
             var customer = await _dbContext.Customers.FindAsync(customerId);
             if (customer != null)
             {
                 customer.IsDeleted = true;
                 await _dbContext.SaveChangesAsync();
-
-                // Refresh customer list
                 await LoadCustomers();
+
+                await _activityLogService.LogActivityAsync(
+                    "Customer Report",
+                    "Delete Customer",
+                    $"Xóa thành công khách hàng: {customer.FullName}",
+                    "Success",
+                    "Admin"
+                );
                 return true;
             }
+
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Delete Customer",
+                $"Xóa thất bại - Không tìm thấy khách hàng ID: {customerId}",
+                "Error",
+                "Admin"
+            );
             return false;
         }
         catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Customer Report",
+                "Delete Customer",
+                $"Lỗi khi xóa khách hàng: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             System.Diagnostics.Debug.WriteLine($"Error deleting customer: {ex.Message}");
             return false;
         }
