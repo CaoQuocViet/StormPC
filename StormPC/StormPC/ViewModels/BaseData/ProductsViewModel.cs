@@ -13,12 +13,17 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using Windows.Storage;
 using System;
+using StormPC.Core.Contracts.Services;
+using StormPC.Core.Models.ActivityLog;
+using StormPC.Contracts.Services;
 
 namespace StormPC.ViewModels.BaseData;
 
 public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 {
     private readonly IProductService _productService;
+    private readonly IDialogService _dialogService;
+    private readonly IActivityLogService _activityLogService;
     private List<LaptopDisplayDto> _allLaptops;
     private ObservableCollection<LaptopDisplayDto> _laptops;
     private int _currentPage = 1;
@@ -291,6 +296,13 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 if (success)
                 {
                     await LoadProductsAsync();
+                    await _activityLogService.LogActivityAsync(
+                        "Sản phẩm",
+                        "Thêm cấu hình",
+                        $"Thêm cấu hình mới cho laptop {SelectedLaptop.ModelName}",
+                        "Success",
+                        "Admin"
+                    );
                     
                     var successDialog = new ContentDialog
                     {
@@ -303,6 +315,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 }
                 else
                 {
+                    await _activityLogService.LogActivityAsync(
+                        "Sản phẩm",
+                        "Lỗi thêm cấu hình",
+                        $"Không thể thêm cấu hình cho laptop {SelectedLaptop.ModelName}",
+                        "Error",
+                        "Admin"
+                    );
+                    
                     var failureDialog = new ContentDialog
                     {
                         Title = "Lỗi",
@@ -316,8 +336,16 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 IsLoading = false;
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Sản phẩm",
+                "Lỗi thêm cấu hình",
+                $"Lỗi khi thêm cấu hình: {ex.Message}",
+                "Error",
+                "Admin"
+            );
+            
             var exceptionDialog = new ContentDialog
             {
                 Title = "Lỗi",
@@ -337,6 +365,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         var canEdit = await _productService.CanEditLaptopAsync(SelectedLaptop.LaptopID);
         if (!canEdit)
         {
+            await _activityLogService.LogActivityAsync(
+                "Sản phẩm",
+                "Lỗi chỉnh sửa",
+                $"Không thể sửa laptop {SelectedLaptop.ModelName} vì đã có đơn hàng liên quan",
+                "Error",
+                "Admin"
+            );
+            
             ContentDialog errorDialog = new ContentDialog
             {
                 Title = "Không thể sửa",
@@ -596,7 +632,15 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 
             if (success)
             {
-                // Reset form
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Chỉnh sửa",
+                    $"Chỉnh sửa thông tin laptop {updatedLaptop.ModelName}",
+                    "Success",
+                    "Admin"
+                );
+                
+                // Reset form and reload
                 ModelName = string.Empty;
                 SelectedBrandId = 0;
                 SelectedCategoryId = 0;
@@ -607,18 +651,30 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 Picture = string.Empty;
                 Description = string.Empty;
 
-                // Reload products
                 await LoadProductsAsync();
-
                 ErrorMessage = string.Empty;
             }
             else
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Lỗi chỉnh sửa",
+                    $"Không thể cập nhật laptop {updatedLaptop.ModelName}",
+                    "Error",
+                    "Admin"
+                );
                 ErrorMessage = "Không thể cập nhật laptop. Vui lòng thử lại.";
             }
         }
         catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Sản phẩm",
+                "Lỗi chỉnh sửa",
+                $"Lỗi khi cập nhật laptop: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             ErrorMessage = $"Lỗi: {ex.Message}";
         }
     }
@@ -631,6 +687,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         var canDelete = await _productService.CanDeleteLaptopAsync(SelectedLaptop.LaptopID);
         if (!canDelete)
         {
+            await _activityLogService.LogActivityAsync(
+                "Sản phẩm",
+                "Lỗi xóa",
+                $"Không thể xóa laptop {SelectedLaptop.ModelName} vì đã có đơn hàng liên quan",
+                "Error",
+                "Admin"
+            );
+            
             ContentDialog errorDialog = new ContentDialog
             {
                 Title = "Không thể xóa",
@@ -661,10 +725,25 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 
             if (success)
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Xóa",
+                    $"Xóa laptop {SelectedLaptop.ModelName}",
+                    "Success",
+                    "Admin"
+                );
                 await LoadProductsAsync();
             }
             else
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Lỗi xóa",
+                    $"Không thể xóa laptop {SelectedLaptop.ModelName}",
+                    "Error",
+                    "Admin"
+                );
+                
                 ContentDialog errorDialog = new ContentDialog
                 {
                     Title = "Lỗi",
@@ -749,6 +828,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 
             if (success)
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Xóa nhiều",
+                    $"Xóa {deletableLaptops.Count} laptop",
+                    "Success",
+                    "Admin"
+                );
+                
                 await LoadProductsAsync();
                 IsMultipleSelectionEnabled = false;
 
@@ -767,6 +854,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
             }
             else
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Lỗi xóa nhiều",
+                    $"Lỗi khi xóa {deletableLaptops.Count} laptop",
+                    "Error",
+                    "Admin"
+                );
+                
                 ContentDialog errorDialog = new ContentDialog
                 {
                     Title = "Lỗi",
@@ -869,6 +964,14 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 
             if (success)
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Thêm mới",
+                    $"Thêm laptop mới: {newLaptop.ModelName}",
+                    "Success",
+                    "Admin"
+                );
+                
                 // Reset form
                 ModelName = string.Empty;
                 SelectedBrandId = 0;
@@ -880,19 +983,30 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
                 Picture = string.Empty;
                 Description = string.Empty;
 
-                // Reload products
                 await LoadProductsAsync();
-
-                // Return success = true để dialog gọi phương thức này biết là thành công
                 ErrorMessage = string.Empty;
             }
             else
             {
+                await _activityLogService.LogActivityAsync(
+                    "Sản phẩm",
+                    "Lỗi thêm mới",
+                    $"Không thể thêm laptop {newLaptop.ModelName}",
+                    "Error",
+                    "Admin"
+                );
                 ErrorMessage = "Không thể thêm laptop mới. Vui lòng thử lại.";
             }
         }
         catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Sản phẩm",
+                "Lỗi thêm mới",
+                $"Lỗi khi thêm laptop: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             ErrorMessage = $"Lỗi: {ex.Message}";
         }
     }
@@ -944,9 +1058,11 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
 
     public int TotalPages => (_totalItems + PageSize - 1) / PageSize;
 
-    public ProductsViewModel(IProductService productService)
+    public ProductsViewModel(IProductService productService, IDialogService dialogService, IActivityLogService activityLogService)
     {
         _productService = productService;
+        _dialogService = dialogService;
+        _activityLogService = activityLogService;
         _laptops = new ObservableCollection<LaptopDisplayDto>();
         _allLaptops = new List<LaptopDisplayDto>();
         _selectedLaptops = new ObservableCollection<LaptopDisplayDto>();
