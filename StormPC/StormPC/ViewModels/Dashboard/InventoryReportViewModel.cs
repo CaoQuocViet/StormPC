@@ -7,6 +7,7 @@ using LiveChartsCore.Kernel.Sketches;
 using SkiaSharp;
 using StormPC.Core.Models.Products;
 using StormPC.Core.Services.Dashboard;
+using StormPC.Core.Contracts.Services;
 using System.Collections.ObjectModel;
 using StormPC.Helpers;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ namespace StormPC.ViewModels.Dashboard;
 public partial class InventoryReportViewModel : ObservableObject
 {
     private readonly IInventoryReportService _inventoryReportService;
+    private readonly IActivityLogService _activityLogService;
 
     [ObservableProperty]
     private DateTimeOffset _startDate = DateTimeOffset.Now.AddMonths(-3);
@@ -215,9 +217,10 @@ public partial class InventoryReportViewModel : ObservableObject
     public IRelayCommand PreviousRestockSuggestionsPageCommand { get; }
     public IRelayCommand NextRestockSuggestionsPageCommand { get; }
 
-    public InventoryReportViewModel(IInventoryReportService inventoryReportService)
+    public InventoryReportViewModel(IInventoryReportService inventoryReportService, IActivityLogService activityLogService)
     {
         _inventoryReportService = inventoryReportService;
+        _activityLogService = activityLogService;
         
         // Initialize commands
         PreviousAgedInventoriesPageCommand = new RelayCommand(
@@ -257,21 +260,87 @@ public partial class InventoryReportViewModel : ObservableObject
 
     private async void Initialize()
     {
-        Categories = new ObservableCollection<Category>(await _inventoryReportService.GetCategories());
-        Brands = new ObservableCollection<Brand>(await _inventoryReportService.GetBrands());
-        await LoadData();
+        try
+        {
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Initialize",
+                "Đang khởi tạo báo cáo tồn kho",
+                "Info",
+                "Admin"
+            );
+
+            Categories = new ObservableCollection<Category>(await _inventoryReportService.GetCategories());
+            Brands = new ObservableCollection<Brand>(await _inventoryReportService.GetBrands());
+            await LoadData();
+
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Initialize",
+                "Khởi tạo báo cáo tồn kho thành công",
+                "Success",
+                "Admin"
+            );
+        }
+        catch (Exception ex)
+        {
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Initialize",
+                $"Lỗi khi khởi tạo báo cáo: {ex.Message}",
+                "Error",
+                "Admin"
+            );
+        }
     }
 
     [RelayCommand]
     private async Task Refresh()
     {
-        await LoadData();
+        try
+        {
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Refresh",
+                "Đang làm mới dữ liệu báo cáo tồn kho",
+                "Info",
+                "Admin"
+            );
+
+            await LoadData();
+
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Refresh",
+                "Làm mới dữ liệu báo cáo tồn kho thành công",
+                "Success",
+                "Admin"
+            );
+        }
+        catch (Exception ex)
+        {
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Refresh",
+                $"Lỗi khi làm mới dữ liệu: {ex.Message}",
+                "Error",
+                "Admin"
+            );
+        }
     }
 
     private async Task LoadData()
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Load Data",
+                "Đang tải dữ liệu báo cáo tồn kho",
+                "Info",
+                "Admin"
+            );
+
             // Convert local time to UTC for PostgreSQL
             var startUtc = StartDate.UtcDateTime;
             var endUtc = EndDate.UtcDateTime;
@@ -320,9 +389,25 @@ public partial class InventoryReportViewModel : ObservableObject
             UpdateCategoryDistributionChart(data.CategoryAnalytics ?? Enumerable.Empty<CategoryAnalysis>());
             UpdateBrandDistributionChart(data.BrandAnalytics ?? Enumerable.Empty<BrandAnalysis>());
             UpdateStockAgingChart(data.AgedInventories ?? Enumerable.Empty<AgedInventory>());
+
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Load Data",
+                $"Tải thành công dữ liệu báo cáo tồn kho từ {StartDate:dd/MM/yyyy} đến {EndDate:dd/MM/yyyy}",
+                "Success",
+                "Admin"
+            );
         }
         catch (Exception ex)
         {
+            await _activityLogService.LogActivityAsync(
+                "Inventory Report",
+                "Load Data",
+                $"Lỗi khi tải dữ liệu báo cáo: {ex.Message}",
+                "Error",
+                "Admin"
+            );
+
             // Initialize empty collections in case of error
             AgedInventories = new ObservableCollection<AgedInventory>();
             RestockSuggestions = new ObservableCollection<RestockSuggestion>();
