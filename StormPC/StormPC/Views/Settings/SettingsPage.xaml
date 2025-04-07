@@ -9,6 +9,7 @@
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <helpers:InverseBooleanConverter x:Key="InverseBooleanConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -24,7 +25,7 @@
         <StackPanel
             Grid.Row="1" 
             x:Name="ContentArea"
-            Margin="20,0,20,0"> <!-- Thêm khoảng cách ở đây -->
+            Margin="20,0,20,0">
             
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}"/>
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
@@ -76,6 +77,32 @@
                     Margin="{StaticResource XSmallTopMargin}"
                     Style="{ThemeResource BodyTextBlockStyle}"/>
                 <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink" Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
+            </StackPanel>
+
+            <TextBlock Text="Database Management" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,24,0,0"/>
+            <StackPanel Margin="{StaticResource SmallTopBottomMargin}" Orientation="Horizontal" Spacing="12">
+                <Button Command="{x:Bind ViewModel.BackupDatabaseCommand}"
+                        IsEnabled="{x:Bind ViewModel.IsBackupInProgress, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+                        Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE74E;" FontSize="16"/>
+                        <TextBlock Text="Backup Database"/>
+                        <ProgressRing IsActive="{x:Bind ViewModel.IsBackupInProgress, Mode=OneWay}" 
+                                    Width="16" Height="16" 
+                                    Visibility="{x:Bind ViewModel.IsBackupInProgress, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{x:Bind ViewModel.RestoreDatabaseCommand}"
+                        IsEnabled="{x:Bind ViewModel.IsRestoreInProgress, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE777;" FontSize="16"/>
+                        <TextBlock Text="Restore Database"/>
+                        <ProgressRing IsActive="{x:Bind ViewModel.IsRestoreInProgress, Mode=OneWay}" 
+                                    Width="16" Height="16" 
+                                    Visibility="{x:Bind ViewModel.IsRestoreInProgress, Mode=OneWay}"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </StackPanel>
     </Grid>
