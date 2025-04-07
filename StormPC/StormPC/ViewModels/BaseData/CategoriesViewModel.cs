@@ -12,12 +12,14 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.ComponentModel;
 using StormPC.Core.Services.Products;
+using StormPC.Core.Contracts.Services;
 
 namespace StormPC.ViewModels.BaseData;
 
 public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 {
     private readonly StormPCDbContext _dbContext;
+    private readonly IActivityLogService _activityLogService;
     private List<CategoryDisplayDto> _allCategories;
     private ObservableCollection<CategoryDisplayDto> _categories;
     private bool _isLoading;
@@ -99,9 +101,10 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 
     public int TotalPages => (_totalItems + PageSize - 1) / PageSize;
 
-    public CategoriesViewModel(StormPCDbContext dbContext)
+    public CategoriesViewModel(StormPCDbContext dbContext, IActivityLogService activityLogService)
     {
         _dbContext = dbContext;
+        _activityLogService = activityLogService;
         _categories = new ObservableCollection<CategoryDisplayDto>();
         _allCategories = new List<CategoryDisplayDto>();
     }
@@ -120,6 +123,13 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         {
             IsLoading = true;
             Debug.WriteLine("Loading categories...");
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Load Categories",
+                "Đang tải danh sách danh mục",
+                "Info",
+                "Admin"
+            );
 
             var categories = await _dbContext.Categories
                 .Where(c => !c.IsDeleted)
@@ -149,11 +159,26 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 
             _allCategories = categoryDtos;
             FilterAndPaginateCategories();
+
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Load Categories",
+                $"Tải thành công {categories.Count} danh mục",
+                "Success",
+                "Admin"
+            );
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error loading categories: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Load Categories",
+                $"Lỗi khi tải danh mục: {ex.Message}",
+                "Error",
+                "Admin"
+            );
         }
         finally
         {
@@ -181,8 +206,25 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Add Category",
+                $"Đang thêm danh mục mới: {newCategory.CategoryName}",
+                "Info",
+                "Admin"
+            );
+
             if (string.IsNullOrWhiteSpace(newCategory.CategoryName?.Trim()))
+            {
+                await _activityLogService.LogActivityAsync(
+                    "Categories",
+                    "Add Category",
+                    "Thêm danh mục thất bại - Tên danh mục trống",
+                    "Error",
+                    "Admin"
+                );
                 return false;
+            }
 
             // Check if category name already exists
             var exists = await _dbContext.Categories
@@ -190,7 +232,16 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 .AnyAsync(c => c.CategoryName.ToLower() == newCategory.CategoryName.Trim().ToLower());
 
             if (exists)
+            {
+                await _activityLogService.LogActivityAsync(
+                    "Categories",
+                    "Add Category",
+                    $"Thêm danh mục thất bại - Danh mục {newCategory.CategoryName} đã tồn tại",
+                    "Error",
+                    "Admin"
+                );
                 return false;
+            }
 
             // Get max CategoryID from database
             var maxId = await _dbContext.Categories
@@ -217,11 +268,27 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
             _dbContext.Categories.Add(category);
             await _dbContext.SaveChangesAsync();
             await LoadCategories(); // Reload to get updated list
+
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Add Category",
+                $"Thêm danh mục thành công: {category.CategoryName}",
+                "Success",
+                "Admin"
+            );
+
             return true;
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error adding category: {ex.Message}");
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Add Category",
+                $"Lỗi khi thêm danh mục: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             return false;
         }
     }
@@ -231,10 +298,28 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Update Category",
+                $"Đang cập nhật danh mục ID: {updatedCategory.CategoryID}",
+                "Info",
+                "Admin"
+            );
+
             var category = await _dbContext.Categories
                 .FirstOrDefaultAsync(c => c.CategoryID == updatedCategory.CategoryID);
 
-            if (category == null) return false;
+            if (category == null)
+            {
+                await _activityLogService.LogActivityAsync(
+                    "Categories",
+                    "Update Category",
+                    $"Cập nhật thất bại - Không tìm thấy danh mục ID: {updatedCategory.CategoryID}",
+                    "Error",
+                    "Admin"
+                );
+                return false;
+            }
 
             category.CategoryName = updatedCategory.CategoryName;
             category.Description = updatedCategory.Description;
@@ -242,11 +327,27 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
 
             await _dbContext.SaveChangesAsync();
             await LoadCategories(); // Reload to get updated list
+
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Update Category",
+                $"Cập nhật thành công danh mục: {category.CategoryName}",
+                "Success",
+                "Admin"
+            );
+
             return true;
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error updating category: {ex.Message}");
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Update Category",
+                $"Lỗi khi cập nhật danh mục: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             return false;
         }
     }
@@ -256,26 +357,68 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Delete Category",
+                $"Đang xóa danh mục ID: {categoryId}",
+                "Info",
+                "Admin"
+            );
+
             var category = await _dbContext.Categories
                 .Include(c => c.Laptops.Where(l => !l.IsDeleted))
                 .FirstOrDefaultAsync(c => c.CategoryID == categoryId);
 
             if (category == null)
+            {
+                await _activityLogService.LogActivityAsync(
+                    "Categories",
+                    "Delete Category",
+                    $"Xóa thất bại - Không tìm thấy danh mục ID: {categoryId}",
+                    "Error",
+                    "Admin"
+                );
                 return (false, "Không tìm thấy loại sản phẩm này.");
+            }
 
             if (category.Laptops.Any())
+            {
+                await _activityLogService.LogActivityAsync(
+                    "Categories",
+                    "Delete Category",
+                    $"Xóa thất bại - Danh mục {category.CategoryName} đang có sản phẩm",
+                    "Error",
+                    "Admin"
+                );
                 return (false, "Không thể xóa loại sản phẩm này vì đang có sản phẩm thuộc loại này.");
+            }
 
             category.IsDeleted = true;
             category.UpdatedAt = DateTime.UtcNow;
 
             await _dbContext.SaveChangesAsync();
             await LoadCategories(); // Reload to get updated list
+
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Delete Category",
+                $"Xóa thành công danh mục: {category.CategoryName}",
+                "Success",
+                "Admin"
+            );
+
             return (true, "Xóa loại sản phẩm thành công.");
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error deleting category: {ex.Message}");
+            await _activityLogService.LogActivityAsync(
+                "Categories",
+                "Delete Category",
+                $"Lỗi khi xóa danh mục: {ex.Message}",
+                "Error",
+                "Admin"
+            );
             return (false, "Có lỗi xảy ra khi xóa loại sản phẩm.");
         }
     }
