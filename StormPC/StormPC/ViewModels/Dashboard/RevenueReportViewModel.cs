@@ -7,6 +7,7 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.Kernel.Sketches;
 using SkiaSharp;
 using StormPC.Core.Services.Dashboard;
+using StormPC.Core.Contracts.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace StormPC.ViewModels.Dashboard;
 public partial class RevenueReportViewModel : ObservableObject
 {
     private readonly IRevenueReportService _revenueReportService;
+    private readonly IActivityLogService _activityLogService;
 
     [ObservableProperty]
     private DateTime _startDate = DateTime.Now.AddMonths(-3);
@@ -56,100 +58,159 @@ public partial class RevenueReportViewModel : ObservableObject
         }
     }
 
-    public RevenueReportViewModel(IRevenueReportService revenueReportService)
+    public RevenueReportViewModel(IRevenueReportService revenueReportService, IActivityLogService activityLogService)
     {
         _revenueReportService = revenueReportService;
+        _activityLogService = activityLogService;
         LoadDataAsync().ConfigureAwait(false);
     }
 
     [RelayCommand]
     private async Task RefreshAsync()
     {
-        await LoadDataAsync();
+        try
+        {
+            await _activityLogService.LogActivityAsync(
+                "Revenue Report",
+                "Refresh",
+                "Đang làm mới dữ liệu báo cáo doanh thu",
+                "Info",
+                "Admin"
+            );
+
+            await LoadDataAsync();
+
+            await _activityLogService.LogActivityAsync(
+                "Revenue Report",
+                "Refresh",
+                "Làm mới dữ liệu báo cáo doanh thu thành công",
+                "Success",
+                "Admin"
+            );
+        }
+        catch (Exception ex)
+        {
+            await _activityLogService.LogActivityAsync(
+                "Revenue Report",
+                "Refresh",
+                $"Lỗi khi làm mới dữ liệu: {ex.Message}",
+                "Error",
+                "Admin"
+            );
+        }
     }
 
     private async Task LoadDataAsync()
     {
-        RevenueData = await _revenueReportService.GetRevenueDataAsync(StartDate, EndDate);
-
-        var dailyData = await _revenueReportService.GetDailyRevenueAsync(StartDate, EndDate);
-        var revenueValues = new List<DateTimePoint>();
-        var profitValues = new List<DateTimePoint>();
-
-        foreach (var data in dailyData)
+        try
         {
-            revenueValues.Add(new DateTimePoint(data.Date, (double)data.Revenue));
-            profitValues.Add(new DateTimePoint(data.Date, (double)data.Profit));
+            await _activityLogService.LogActivityAsync(
+                "Revenue Report",
+                "Load Data",
+                "Đang tải dữ liệu báo cáo doanh thu",
+                "Info",
+                "Admin"
+            );
+
+            RevenueData = await _revenueReportService.GetRevenueDataAsync(StartDate, EndDate);
+
+            var dailyData = await _revenueReportService.GetDailyRevenueAsync(StartDate, EndDate);
+            var revenueValues = new List<DateTimePoint>();
+            var profitValues = new List<DateTimePoint>();
+
+            foreach (var data in dailyData)
+            {
+                revenueValues.Add(new DateTimePoint(data.Date, (double)data.Revenue));
+                profitValues.Add(new DateTimePoint(data.Date, (double)data.Profit));
+            }
+
+            RevenueSeries = new ISeries[]
+            {
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Doanh thu",
+                    Values = revenueValues,
+                    Fill = null,
+                    GeometrySize = 0,
+                    LineSmoothness = 0.5
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Name = "Lợi nhuận",
+                    Values = profitValues,
+                    Fill = null,
+                    GeometrySize = 0,
+                    LineSmoothness = 0.5
+                }
+            };
+
+            XAxes = new[]
+            {
+                new Axis
+                {
+                    Labeler = value => new DateTime((long)value).ToString("dd/MM"),
+                    UnitWidth = TimeSpan.FromDays(1).Ticks
+                }
+            };
+
+            YAxes = new[]
+            {
+                new Axis
+                {
+                    Labeler = value => FormatCurrency(value)
+                }
+            };
+
+            var categoryData = await _revenueReportService.GetCategoryRevenueAsync(StartDate, EndDate);
+            var categoryValues = new List<ColumnSeries<decimal>>();
+            foreach (var category in categoryData)
+            {
+                categoryValues.Add(new ColumnSeries<decimal>
+                {
+                    Name = $"{category.CategoryName} ({FormatCurrency((double)category.Revenue)})",
+                    Values = new[] { category.Revenue }
+                });
+            }
+            CategoryRevenueSeries = categoryValues.ToArray();
+
+            CategoryYAxes = new[]
+            {
+                new Axis
+                {
+                    Labeler = value => FormatCurrency((double)value)
+                }
+            };
+
+            var paymentData = await _revenueReportService.GetPaymentMethodDataAsync(StartDate, EndDate);
+            var paymentValues = new List<PieSeries<double>>();
+            foreach (var payment in paymentData)
+            {
+                paymentValues.Add(new PieSeries<double>
+                {
+                    Name = $"{payment.MethodName} ({FormatCurrency((double)payment.Amount)})",
+                    Values = new[] { (double)payment.Amount },
+                    InnerRadius = 100
+                });
+            }
+            PaymentMethodSeries = paymentValues.ToArray();
+
+            await _activityLogService.LogActivityAsync(
+                "Revenue Report",
+                "Load Data",
+                $"Tải thành công dữ liệu báo cáo doanh thu từ {StartDate:dd/MM/yyyy} đến {EndDate:dd/MM/yyyy}",
+                "Success",
+                "Admin"
+            );
         }
-
-        RevenueSeries = new ISeries[]
+        catch (Exception ex)
         {
-            new LineSeries<DateTimePoint>
-            {
-                Name = "Doanh thu",
-                Values = revenueValues,
-                Fill = null,
-                GeometrySize = 0,
-                LineSmoothness = 0.5
-            },
-            new LineSeries<DateTimePoint>
-            {
-                Name = "Lợi nhuận",
-                Values = profitValues,
-                Fill = null,
-                GeometrySize = 0,
-                LineSmoothness = 0.5
-            }
-        };
-
-        XAxes = new[]
-        {
-            new Axis
-            {
-                Labeler = value => new DateTime((long)value).ToString("dd/MM"),
-                UnitWidth = TimeSpan.FromDays(1).Ticks
-            }
-        };
-
-        YAxes = new[]
-        {
-            new Axis
-            {
-                Labeler = value => FormatCurrency(value)
-            }
-        };
-
-        var categoryData = await _revenueReportService.GetCategoryRevenueAsync(StartDate, EndDate);
-        var categoryValues = new List<ColumnSeries<decimal>>();
-        foreach (var category in categoryData)
-        {
-            categoryValues.Add(new ColumnSeries<decimal>
-            {
-                Name = $"{category.CategoryName} ({FormatCurrency((double)category.Revenue)})",
-                Values = new[] { category.Revenue }
-            });
+            await _activityLogService.LogActivityAsync(
+                "Revenue Report",
+                "Load Data",
+                $"Lỗi khi tải dữ liệu báo cáo: {ex.Message}",
+                "Error",
+                "Admin"
+            );
         }
-        CategoryRevenueSeries = categoryValues.ToArray();
-
-        CategoryYAxes = new[]
-        {
-            new Axis
-            {
-                Labeler = value => FormatCurrency((double)value)
-            }
-        };
-
-        var paymentData = await _revenueReportService.GetPaymentMethodDataAsync(StartDate, EndDate);
-        var paymentValues = new List<PieSeries<double>>();
-        foreach (var payment in paymentData)
-        {
-            paymentValues.Add(new PieSeries<double>
-            {
-                Name = $"{payment.MethodName} ({FormatCurrency((double)payment.Amount)})",
-                Values = new[] { (double)payment.Amount },
-                InnerRadius = 100
-            });
-        }
-        PaymentMethodSeries = paymentValues.ToArray();
     }
 } 
