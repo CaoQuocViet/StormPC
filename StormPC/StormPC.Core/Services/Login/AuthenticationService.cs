@@ -190,16 +190,23 @@ public class AuthenticationService
         return adminAccount.BackupKeyHash == providedHash;
     }
 
-    public void ResetAdminAccount()
+    public async Task ResetAdminAccountAsync()
     {
-        // Xóa tệp lưu trữ bảo mật
-        var appDataPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "StormPC");
-        var storageFilePath = Path.Combine(appDataPath, "secure_storage.dat");
-        if (File.Exists(storageFilePath))
+        try 
         {
-            File.Delete(storageFilePath);
+            // Xóa tệp lưu trữ bảo mật
+            var appDataPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "StormPC");
+            var storageFilePath = Path.Combine(appDataPath, "secure_storage.dat");
+            if (File.Exists(storageFilePath))
+            {
+                await Task.Run(() => File.Delete(storageFilePath));
+            }
+        }
+        catch (Exception)
+        {
+            // Ignore deletion errors
         }
     }
 

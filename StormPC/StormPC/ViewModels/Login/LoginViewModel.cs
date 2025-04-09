@@ -90,18 +90,19 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
-    public void ResetAdminAccount()
+    public async Task ResetAdminAccountAsync()
     {
         try
         {
-            _authService.ResetAdminAccount();
-            _activityLogService.LogActivityAsync("Login", "Admin Reset", 
-                "Admin account has been reset", "Success", "System").Wait();
+            await _authService.ResetAdminAccountAsync();
+            await _activityLogService.LogActivityAsync("Login", "Admin Reset", 
+                "Admin account has been reset", "Success", "System");
         }
         catch (Exception ex)
         {
-            _activityLogService.LogActivityAsync("Login", "Admin Reset", 
-                $"Failed to reset admin account - {ex.Message}", "Error", "System").Wait();
+            await _activityLogService.LogActivityAsync("Login", "Admin Reset", 
+                $"Failed to reset admin account - {ex.Message}", "Error", "System");
+            throw; // Re-throw to handle in UI layer
         }
     }
 

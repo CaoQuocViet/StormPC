@@ -5,6 +5,7 @@ using Microsoft.UI.Windowing;
 using StormPC.ViewModels.Login;
 using WinRT.Interop;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace StormPC.Views.Login;
 
@@ -77,17 +78,34 @@ public sealed partial class LoginWindow : Window
 
     private async void OnRecoverAccountConfirm(object sender, ContentDialogButtonClickEventArgs e)
     {
-        var backupKey = BackupKeyTextBox.Text;
-        if (await ViewModel.VerifyBackupKeyAsync(backupKey))
+        try
         {
-            ViewModel.ResetAdminAccount();
-            var firstTimeWindow = App.GetService<FirstTimeWindow>();
-            firstTimeWindow.Activate();
-            Close();
+            var backupKey = BackupKeyTextBox.Text;
+            if (await ViewModel.VerifyBackupKeyAsync(backupKey))
+            {
+                await ViewModel.ResetAdminAccountAsync();
+                
+                // Đóng dialog trước
+                RecoverAccountDialog.Hide();
+                
+                // Tạo và hiển thị FirstTimeWindow
+                var firstTimeWindow = App.GetService<FirstTimeWindow>();
+                firstTimeWindow.Activate();
+                
+                // Đợi một chút để window mới hiển thị
+                await Task.Delay(500);
+                
+                // Đóng window hiện tại
+                Close();
+            }
+            else
+            {
+                ViewModel.ErrorMessage = "Invalid backup key. Please try again.";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            ViewModel.ErrorMessage = "Invalid backup key. Please try again.";
+            ViewModel.ErrorMessage = $"Error resetting account: {ex.Message}";
         }
     }
 
