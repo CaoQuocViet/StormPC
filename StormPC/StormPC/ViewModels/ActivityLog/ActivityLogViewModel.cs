@@ -7,6 +7,7 @@ using StormPC.Core.Contracts.Services;
 using StormPC.Core.Models.ActivityLog;
 using System.Diagnostics;
 using Microsoft.UI.Dispatching;
+using System.Linq;
 
 namespace StormPC.ViewModels.ActivityLog;
 
@@ -38,6 +39,9 @@ public partial class ActivityLogViewModel : ObservableObject
             Debug.WriteLine("Loading logs...");
             var logs = await _activityLogService.GetAllLogsAsync();
             Debug.WriteLine($"Loaded {logs.Count} logs");
+
+            // Sort logs by timestamp in descending order (newest first)
+            logs = logs.OrderByDescending(log => log.Timestamp).ToList();
 
             // Update the ObservableCollection on the UI thread
             var dispatcher = DispatcherQueue.GetForCurrentThread();
