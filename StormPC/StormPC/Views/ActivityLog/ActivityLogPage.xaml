@@ -14,10 +14,10 @@
         <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
         
         <Style x:Key="PageHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,0,0,24"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Foreground" Value="#0168EF"/>
         </Style>
         
         <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
