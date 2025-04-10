@@ -19,9 +19,9 @@
         <Style x:Key="PageTitleStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,24"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{ThemeResource SystemAccentColor}"/>
+            <Setter Property="Foreground" Value="#0168EF"/>
         </Style>
 
         <Style x:Key="ActionButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
@@ -55,7 +55,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -427,7 +427,7 @@
                                         <Run Text="Giá từ: " FontWeight="SemiBold"/>
                                         <Run Text="{Binding FormattedPrice}" 
                                              FontSize="16" 
-                                             Foreground="#0078D7"
+                                             Foreground="#0168EF"
                                              FontWeight="SemiBold"/>
                                         <Run Text=" VNĐ"/>
                                     </TextBlock>
