@@ -78,14 +78,14 @@
                     </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Module" 
                                       Binding="{Binding Module}" 
-                                      Width="120">
+                                      Width="160">
                         <controls:DataGridTextColumn.HeaderStyle>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
                         </controls:DataGridTextColumn.HeaderStyle>
                     </controls:DataGridTextColumn>
                     <controls:DataGridTextColumn Header="Hành động" 
                                       Binding="{Binding Action}" 
-                                      Width="150">
+                                      Width="180">
                         <controls:DataGridTextColumn.HeaderStyle>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridHeaderStyle}"/>
                         </controls:DataGridTextColumn.HeaderStyle>
