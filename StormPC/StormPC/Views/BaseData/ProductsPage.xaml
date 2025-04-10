@@ -10,8 +10,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
     mc:Ignorable="d"
-    x:Name="page"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    x:Name="page">
 
     <Page.Resources>
         <local:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter"/>
