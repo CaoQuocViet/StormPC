@@ -33,9 +33,8 @@
     </Page.Resources>
 
     <ScrollViewer>
-        <Grid Margin="20">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -50,10 +49,15 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Báo cáo tồn kho" 
-                         Style="{ThemeResource TitleTextBlockStyle}"/>
+                         Style="{ThemeResource TitleTextBlockStyle}"
+                         Foreground="#0168EF"
+                         FontSize="32"
+                         FontWeight="SemiBold"
+                         VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" 
                           Orientation="Horizontal" 
-                          Spacing="8">
+                          Spacing="8"
+                          VerticalAlignment="Center">
                     <TextBlock Text="Từ" 
                              VerticalAlignment="Center"/>
                     <CalendarDatePicker Date="{x:Bind ViewModel.StartDate, Mode=TwoWay, Converter={StaticResource DateTimeConverter}}"
@@ -72,7 +76,7 @@
             </Grid>
 
             <!-- KPI Cards -->
-            <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid Grid.Row="1" Height="100" Margin="8,0,8,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>

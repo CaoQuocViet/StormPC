@@ -89,7 +89,10 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Báo cáo khách hàng" 
-                         Style="{ThemeResource TitleTextBlockStyle}"/>
+                         Style="{ThemeResource TitleTextBlockStyle}"
+                         Foreground="#0168EF"
+                         FontSize="32"
+                         FontWeight="SemiBold"/>
                 <StackPanel Grid.Column="1" 
                           Orientation="Horizontal" 
                           Spacing="8">
