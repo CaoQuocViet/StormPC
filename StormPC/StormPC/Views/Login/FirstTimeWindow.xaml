@@ -55,6 +55,7 @@
                         <TextBlock Text="Welcome to StormPC"
                                  FontSize="24"
                                  FontWeight="Bold"
+                                 Foreground="#0168EF"
                                  HorizontalAlignment="Center"/>
                         <TextBlock Text="Create Admin Account"
                                  FontSize="16"

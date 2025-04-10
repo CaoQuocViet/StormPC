@@ -9,6 +9,16 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.Resources>
+            <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="32"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Margin" Value="0,0,0,24"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="#0168EF"/>
+            </Style>
+        </Grid.Resources>
+
         <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center"
                 Width="650"
@@ -68,9 +78,10 @@
                            Margin="0,0,0,10"/>
 
                     <TextBlock Grid.Row="1"
-                             Text="StormPC Login"
+                             Text="Welcome Back"
                              FontSize="24"
                              FontWeight="Bold"
+                             Foreground="#0168EF"
                              HorizontalAlignment="Center"
                              Margin="0,0,0,30"/>
 
