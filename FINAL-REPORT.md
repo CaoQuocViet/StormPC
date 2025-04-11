@@ -265,15 +265,25 @@
 - Hỗ trợ rollback khi lỗi
 - Tự động backup khi cập nhật
 
+### 8. Backup / Restore Database (0.25 điểm)
+- Tích hợp chức năng backup và restore database cho PostgreSQL:
+  - Sử dụng Docker commands để thực hiện pg_dump và psql
+  - Lưu trữ backup files trong thư mục cục bộ với timestamp
+  - Tự động dọn dẹp các file backup cũ
+  - Giao diện người dùng thân thiện trong phần Settings
+  - Log lại các hoạt động backup/restore
+  - Tự động kill các connection hiện tại khi restore
+
 ## B. Chức Năng Tự Chọn Đã Triển Khai
 
 ### 1. Quản Lý Khách Hàng (0.5 điểm)
-- Triển khai đầy đủ trong CustomerReportViewModel với các chức năng:
-  - Thêm, sửa, xóa thông tin khách hàng
-  - Phân loại khách hàng thành Platinum/Gold/Silver/Bronze
-  - Phân tích xu hướng mua hàng và thương hiệu ưa thích
-  - Quản lý thành phố và địa chỉ chi tiết
-  - Hiển thị thống kê khách hàng qua biểu đồ trực quan
+- Triển khai đầy đủ trong CustomerReportViewModel:
+  - Phân loại khách hàng thành Platinum/Gold/Silver/Bronze dựa trên tổng chi tiêu
+  - Biểu đồ tròn trực quan hiển thị tỷ lệ các phân khúc khách hàng
+  - Phân tích xu hướng mua hàng qua biểu đồ doanh số theo thời gian
+  - Hiển thị thông tin thương hiệu ưa thích của khách hàng
+  - Quản lý thành phố và địa chỉ chi tiết với mô hình City
+  - CRUD (Thêm/Sửa/Xóa/Xem) thông tin khách hàng
 
 ### 2. Tạo Ra Các Test Case Kiểm Thử Chức Năng và Giao Diện (0.5 điểm)
 - Thiết lập các test case cho chức năng và giao diện người dùng
@@ -281,8 +291,13 @@
 - Thực hiện kiểm tra tự động hoặc thủ công
 
 ### 3. In Đơn Hàng (0.5 điểm)
-- Thay vì in ra máy in, khi test chọn in ra file PDF/XPS
-- Đảm bảo định dạng đơn hàng chính xác và có thể xuất dưới dạng file PDF/XPS để lưu trữ hoặc chia sẻ
+- Sử dụng thư viện iText để xuất hóa đơn ra file PDF
+- Tùy chỉnh thông tin in:
+  - Thông tin khách hàng và địa chỉ giao hàng
+  - Danh sách sản phẩm đã đặt với thông tin chi tiết
+  - Tổng tiền và thông tin thanh toán
+  - Sử dụng font Unicode để hỗ trợ tiếng Việt
+  - Có định dạng bảng, màu sắc, header, và footer chuyên nghiệp
 
 ### 4. Hỗ Trợ Sắp Xếp Khi Xem Danh Sách Theo Nhiều Tiêu Chí, Tùy Biến Chiều Tăng/Giảm (0.5 điểm)
 - Hỗ trợ đa tiêu chí sắp xếp:
@@ -291,10 +306,13 @@
   - Lưu trữ và áp dụng thứ tự sắp xếp theo yêu cầu của người dùng
 
 ### 5. Hỗ Trợ Tìm Kiếm Nâng Cao (1 điểm)
-- Tìm kiếm đồng thời nhiều tiêu chí
-- Kết hợp điều kiện tìm kiếm khác nhau
-- Gợi ý tìm kiếm với AutoSuggestBox
-- Hỗ trợ filter nâng cao để dễ dàng tìm kiếm thông tin trong ứng dụng
+- Triển khai SearchService với khả năng tìm kiếm đa tiêu chí:
+  - Tìm kiếm theo loại đối tượng (Laptop, Customer, Brand, Category, City, Payment)
+  - Hỗ trợ tìm kiếm đồng thời nhiều trường (tên, mô tả, email, địa chỉ, số điện thoại)
+  - Hiển thị kết quả tìm kiếm được phân nhóm theo loại đối tượng
+  - Phân trang kết quả tìm kiếm cho hiệu suất tốt
+  - Hỗ trợ AutoSuggestBox khi nhập từ khóa tìm kiếm
+  - Tìm kiếm không phân biệt chữ hoa/thường (case-insensitive)
 
 ### 6. Sử Dụng Kiến Trúc MVVM (0.5 điểm)
 - Áp dụng triệt để mô hình MVVM trong toàn bộ ứng dụng:
@@ -304,7 +322,16 @@
   - Command pattern với RelayCommand
   - Dễ dàng unit testing và mở rộng
 
-### 7. Sử Dụng Dependency Injection (0.5 điểm)
+### 7. Báo Cáo và Thống Kê (0.75 điểm)
+- Triển khai đầy đủ các dashboard báo cáo:
+  - Dashboard tổng quan với KPI chính: doanh thu, lợi nhuận, số đơn hàng, giá trị đơn trung bình
+  - Báo cáo doanh thu theo thời gian sử dụng biểu đồ
+  - Báo cáo phân tích sản phẩm tồn kho
+  - Báo cáo khách hàng với phân khúc Platinum/Gold/Silver/Bronze
+  - Tính toán và hiển thị các chỉ số quan trọng
+  - Sử dụng thư viện LiveCharts để tạo biểu đồ trực quan
+
+### 8. Sử Dụng Dependency Injection (0.5 điểm)
 - Sử dụng DI xuyên suốt trong ứng dụng:
   - Constructor injection cho các service
   - Interface-based programming giúp dễ thay thế và mock
@@ -312,30 +339,45 @@
   - Cấu hình DI trong App.xaml.cs
   - Service Locator pattern với App.GetService<T>()
 
-### 8. Backup / Restore Database (0.25 điểm)
-- Tạo chức năng backup và restore cơ sở dữ liệu
-- Lệnh backup và restore database
-- Tạo nút trong phần cài đặt để người dùng dễ dàng xuất nguyên DB thành một file
-
 ### 9. Bổ Sung Khuyến Mãi Giảm Giá (1 điểm)
 - Triển khai trong hệ thống sản phẩm:
-  - Discount: mức giảm giá của sản phẩm
-  - DiscountEndDate: thời hạn khuyến mãi
-  - FormattedDiscount: hiển thị định dạng giảm giá
-  - Tự động tính toán giá sau khuyến mãi
-  - So sánh giá trước và sau giảm giá
+  - Discount: lưu trữ số tiền giảm giá (không phải phần trăm)
+  - DiscountStartDate và DiscountEndDate: thời gian bắt đầu và kết thúc khuyến mãi
+  - FormattedDiscount: hiển thị phần trăm giảm giá được tính dựa trên giá gốc
+  - Tự động tính toán phần trăm giảm giá từ số tiền giảm giá thực tế
+  - Badge hiển thị phần trăm giảm giá ở góc sản phẩm
+  - Làm tròn giá trị tiền tệ theo đơn vị 1000 VNĐ
 
 ### 10. Làm Rối Mã Nguồn (Obfuscator) Chống Dịch Ngược (0.25 điểm)
 - Sử dụng công cụ làm rối mã nguồn để bảo vệ phần mềm khỏi dịch ngược
 - Tăng cường bảo mật mã nguồn và ngăn chặn hành vi phá hoại hoặc sao chép trái phép
+- Sử dụng các kỹ thuật bảo vệ mã nguồn:
+  - Mã hóa các thông tin nhạy cảm như mật khẩu và cấu hình DB
+  - Sử dụng Windows Data Protection API với DataProtectionScope.CurrentUser
+  - Bảo vệ dữ liệu đăng nhập thông qua SecureStorageService
+  - Sử dụng Argon2id cho mã hóa mật khẩu với độ phức tạp cao
+  - Mã hóa thông tin kết nối đến database trong file cấu hình
 
 ### 11. Tự Động Thay Đổi Sắp Xếp Hợp Lí Các Thành Phần Theo Độ Rộng Màn Hình (Responsive Layout) (0.5 điểm)
+- Triển khai thiết kế responsive:
+  - Sử dụng Grid với các định nghĩa ColumnDefinitions và RowDefinitions linh hoạt
+  - Sử dụng ItemsWrapGrid cho hiển thị sản phẩm động theo kích thước màn hình
+  - Áp dụng các Thickness và Margin được định nghĩa trong ResourceDictionary
+  - Các Style ứng dụng trong toàn bộ giao diện để duy trì tính nhất quán
+  - Sử dụng CardStyle với thuộc tính tự thích ứng cho các phần tử Dashboard
 - Giao diện tự điều chỉnh theo kích thước màn hình:
   - Grid layout với Auto và Star sizing
   - StackPanel với Spacing thay đổi theo kích thước
   - Adaptive controls trong ứng dụng
   - Thành phần UI thay đổi vị trí, kích thước tự động
   - Đảm bảo trải nghiệm người dùng trên các kích cỡ màn hình khác nhau
+
+### 12. Hỗ Trợ Đa Ngôn Ngữ (0.25 điểm)
+- Sử dụng ResourceLoader và tệp Resources.resw cho quốc tế hóa:
+  - Hỗ trợ cơ bản cho localization thông qua ResourceExtensions
+  - Tập trung vào giao diện tiếng Việt với các tệp dữ liệu ngôn ngữ
+  - Chuẩn bị cấu trúc để mở rộng hỗ trợ thêm ngôn ngữ khác
+  - Lưu và đọc cài đặt người dùng thông qua LocalSettingsService
 
 ## C. Đề Xuất Cộng Điểm
 
