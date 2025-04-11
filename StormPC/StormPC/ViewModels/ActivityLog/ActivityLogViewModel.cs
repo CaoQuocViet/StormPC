@@ -28,7 +28,7 @@ public partial class ActivityLogViewModel : ObservableObject
         ClearLogsCommand = new AsyncRelayCommand(ClearLogsAsync);
         RefreshLogsCommand = new AsyncRelayCommand(LoadLogsAsync);
         
-        // Load logs immediately when the view model is created
+        // Tải log ngay khi view model được tạo
         _ = LoadLogsAsync();
     }
 
@@ -36,14 +36,14 @@ public partial class ActivityLogViewModel : ObservableObject
     {
         try
         {
-            Debug.WriteLine("Loading logs...");
+            Debug.WriteLine("Đang tải log...");
             var logs = await _activityLogService.GetAllLogsAsync();
-            Debug.WriteLine($"Loaded {logs.Count} logs");
+            Debug.WriteLine($"Đã tải {logs.Count} bản ghi log");
 
-            // Sort logs by timestamp in descending order (newest first)
+            // Sắp xếp log theo thời gian giảm dần (mới nhất trước)
             logs = logs.OrderByDescending(log => log.Timestamp).ToList();
 
-            // Update the ObservableCollection on the UI thread
+            // Cập nhật ObservableCollection trên luồng UI
             var dispatcher = DispatcherQueue.GetForCurrentThread();
             if (dispatcher != null)
             {
@@ -54,18 +54,18 @@ public partial class ActivityLogViewModel : ObservableObject
                     {
                         Logs.Add(log);
                     }
-                    Debug.WriteLine($"Updated UI with {Logs.Count} logs");
+                    Debug.WriteLine($"Đã cập nhật UI với {Logs.Count} bản ghi log");
                 });
             }
             else
             {
-                Debug.WriteLine("Warning: No dispatcher available for UI updates");
+                Debug.WriteLine("Cảnh báo: Không có dispatcher khả dụng cho cập nhật UI");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error loading logs: {ex.Message}");
-            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            Debug.WriteLine($"Lỗi khi tải log: {ex.Message}");
+            Debug.WriteLine($"Chi tiết lỗi: {ex.StackTrace}");
         }
     }
 

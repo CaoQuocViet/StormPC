@@ -126,6 +126,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         set => SetProperty(ref _selectedLaptops, value);
     }
 
+    /// <summary>
+    /// Tải danh sách thương hiệu và danh mục từ cơ sở dữ liệu
+    /// /// </summary>
     [RelayCommand]
     public async Task LoadBrandsAndCategories()
     {
@@ -145,6 +148,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Thêm cấu hình (spec) mới cho laptop được chọn
+    /// </summary>
     [RelayCommand]
     private async Task AddSpec()
     {
@@ -357,6 +363,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Mở dialog chỉnh sửa thông tin laptop
+    /// </summary>
     [RelayCommand]
     private async Task Edit()
     {
@@ -561,6 +570,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Cập nhật thông tin laptop vào cơ sở dữ liệu
+    /// </summary>
     private async Task EditLaptop(int laptopId)
     {
         try
@@ -679,6 +691,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Xóa laptop được chọn sau khi xác nhận
+    /// </summary>
     [RelayCommand]
     private async Task Delete()
     {
@@ -756,6 +771,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Xóa nhiều laptop được chọn cùng lúc
+    /// </summary>
     [RelayCommand]
     private async Task DeleteMultiple()
     {
@@ -874,6 +892,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Bật/tắt chế độ chọn nhiều sản phẩm
+    /// </summary>
     [RelayCommand]
     private void ToggleSelectionMode()
     {
@@ -884,6 +905,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Thêm laptop mới vào cơ sở dữ liệu
+    /// </summary>
     [RelayCommand]
     public async Task AddLaptop()
     {
@@ -1069,23 +1093,35 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         ReleaseYear = DateTime.Now.Year;
     }
 
+    /// <summary>
+    /// Xử lý khi thay đổi search text
+    /// </summary>
     partial void OnSearchTextChanged(string value)
     {
         FilterAndPaginateProducts();
     }
 
+    /// <summary>
+    /// Xử lý khi thay đổi giá tối thiểu
+    /// </summary>
     partial void OnMinPriceChanged(decimal value)
     {
         FormattedMinPrice = value.ToString("N0") + " ₫";
         ApplyFilters();
     }
 
+    /// <summary>
+    /// Xử lý khi thay đổi giá tối đa
+    /// </summary>
     partial void OnMaxPriceChanged(decimal value)
     {
         FormattedMaxPrice = value.ToString("N0") + " ₫";
         ApplyFilters();
     }
 
+    /// <summary>
+    /// Áp dụng các bộ lọc cho danh sách sản phẩm
+    /// </summary>
     public void ApplyFilters()
     {
         if (_allLaptops == null) return;
@@ -1110,6 +1146,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         OnPropertyChanged(nameof(TotalPages));
     }
 
+    /// <summary>
+    /// Tải danh sách sản phẩm từ cơ sở dữ liệu
+    /// </summary>
     public async Task LoadProductsAsync()
     {
         try
@@ -1124,6 +1163,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Lọc và phân trang danh sách sản phẩm
+    /// </summary>
     private void FilterAndPaginateProducts()
     {
         if (_allLaptops == null) return;
@@ -1158,6 +1200,9 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         OnPropertyChanged(nameof(TotalPages));
     }
 
+    /// <summary>
+    /// Sắp xếp danh sách sản phẩm theo tiêu chí đã chọn
+    /// </summary>
     private List<LaptopDisplayDto> SortProducts(List<LaptopDisplayDto> products)
     {
         return SelectedSortIndex switch
@@ -1197,14 +1242,20 @@ public partial class ProductsViewModel : ObservableObject, IPaginatedViewModel
         OnPropertyChanged(nameof(TotalPages));
     }
 
+    /// <summary>
+    /// Cập nhật khoảng giá
+    /// </summary>
     public void UpdatePriceRange(double minValue, double maxValue)
     {
         MinPrice = (decimal)minValue;
         MaxPrice = (decimal)maxValue;
     }
 
+    /// <summary>
+    /// Cập nhật thông tin phân trang
+    /// </summary>
     private void UpdatePagination()
     {
         OnPropertyChanged(nameof(TotalPages));
     }
-} 
+}

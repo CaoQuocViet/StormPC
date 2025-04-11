@@ -186,6 +186,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Xử lý sự kiện khi thuộc tính của category đang chỉnh sửa thay đổi
+    /// </summary>
     private void EditingCategory_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(CategoryDisplayDto.CategoryName))
@@ -194,6 +197,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
+    /// <summary>
+    /// Xác thực dữ liệu nhập vào cho category
+    /// </summary>
     private void ValidateCategoryInput()
     {
         IsValidCategoryInput = EditingCategory != null && 
@@ -201,7 +207,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         OnPropertyChanged(nameof(IsValidCategoryInput));
     }
 
-    // Add new category
+    /// <summary>
+    /// Thêm danh mục mới vào cơ sở dữ liệu
+    /// </summary>
     public async Task<bool> AddCategoryAsync(CategoryDisplayDto newCategory)
     {
         try
@@ -293,7 +301,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
-    // Update existing category
+    /// <summary>
+    /// Cập nhật thông tin danh mục
+    /// </summary>
     public async Task<bool> UpdateCategoryAsync(CategoryDisplayDto updatedCategory)
     {
         try
@@ -352,7 +362,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
-    // Delete category
+    /// <summary>
+    /// Xóa danh mục theo ID
+    /// </summary>
     public async Task<(bool success, string message)> DeleteCategoryAsync(int categoryId)
     {
         try
@@ -423,12 +435,17 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
     }
 
-    // Existing methods...
+    /// <summary>
+    /// Xử lý khi thay đổi SearchText
+    /// </summary>
     partial void OnSearchTextChanged(string value)
     {
         FilterAndPaginateCategories();
     }
 
+    /// <summary>
+    /// Cập nhật thứ tự sắp xếp của danh sách danh mục
+    /// </summary>
     public void UpdateSorting(List<string> properties, List<ListSortDirection> directions)
     {
         _sortProperties = properties;
@@ -436,6 +453,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         FilterAndPaginateCategories();
     }
 
+    /// <summary>
+    /// Lọc và phân trang danh sách danh mục
+    /// </summary>
     private void FilterAndPaginateCategories()
     {
         var filteredCategories = string.IsNullOrWhiteSpace(SearchText)
@@ -452,6 +472,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         LoadPage(1); // Reset to first page when filtering
     }
 
+    /// <summary>
+    /// Tải dữ liệu cho trang chỉ định
+    /// </summary>
     public void LoadPage(int page)
     {
         if (_allCategories == null) return;
@@ -477,6 +500,9 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         OnPropertyChanged(nameof(TotalPages));
     }
 
+    /// <summary>
+    /// Áp dụng các quy tắc sắp xếp cho danh sách danh mục
+    /// </summary>
     private List<CategoryDisplayDto> ApplySorting(List<CategoryDisplayDto> categories)
     {
         if (_sortProperties.Any())
@@ -489,4 +515,4 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
         }
         return categories;
     }
-} 
+}
