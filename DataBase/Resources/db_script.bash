@@ -109,3 +109,8 @@ npx sequelize-cli db:create
 npx sequelize-cli db:migrate:undo:all
 npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all
+
+# Reset các sequence để tránh lỗi duplicate primary key sau khi seed
+# Kết nối vào PostgreSQL và chạy lệnh sau
+# psql postgresql://vietcq:123456789000@localhost:5444/stormpc_db -c "SELECT setval('\"Customers_CustomerID_seq\"', (SELECT MAX(\"CustomerID\") FROM \"Customers\"), true);"
+# psql postgresql://vietcq:123456789000@localhost:5444/stormpc_db -c "SELECT setval('\"Orders_OrderID_seq\"', (SELECT MAX(\"OrderID\") FROM \"Orders\"), true);"
