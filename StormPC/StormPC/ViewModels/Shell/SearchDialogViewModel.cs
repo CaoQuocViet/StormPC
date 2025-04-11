@@ -36,6 +36,7 @@ public partial class SearchDialogViewModel : ObservableObject
         _searchService = searchService;
     }
 
+    // Phương thức tìm kiếm
     [RelayCommand]
     private async Task SearchAsync()
     {
@@ -66,8 +67,8 @@ public partial class SearchDialogViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // Log the error
-            System.Diagnostics.Debug.WriteLine($"Search error: {ex.Message}");
+            // Ghi log lỗi
+            System.Diagnostics.Debug.WriteLine($"Lỗi tìm kiếm: {ex.Message}");
         }
         finally
         {
@@ -75,6 +76,7 @@ public partial class SearchDialogViewModel : ObservableObject
         }
     }
 
+    // Phương thức điều hướng trang
     [RelayCommand]
     private async Task NavigateToPageAsync(int page)
     {
@@ -85,6 +87,7 @@ public partial class SearchDialogViewModel : ObservableObject
         await SearchAsync();
     }
 
+    // Phương thức lọc theo loại
     [RelayCommand]
     public async Task FilterByTypeAsync(string type)
     {
@@ -92,6 +95,7 @@ public partial class SearchDialogViewModel : ObservableObject
         await SearchAsync();
     }
 
+    // Xử lý khi thay đổi từ khóa tìm kiếm
     partial void OnSearchQueryChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -102,4 +106,4 @@ public partial class SearchDialogViewModel : ObservableObject
             CurrentPage = 1;
         }
     }
-} 
+}

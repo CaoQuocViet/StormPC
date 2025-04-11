@@ -104,6 +104,7 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
+    // Phương thức lưu cấu hình cơ sở dữ liệu
     private async Task SaveDatabaseConfigAsync()
     {
         try
@@ -111,7 +112,7 @@ public partial class SettingsViewModel : ObservableRecipient
             IsSavingConfig = true;
             ConfigStatusMessage = "Đang lưu cấu hình...";
 
-            // Parse port number
+            // Phân tích số cổng
             if (!int.TryParse(DbPort, out int port))
             {
                 ConfigStatusMessage = "Cổng phải là một số nguyên";
@@ -131,7 +132,7 @@ public partial class SettingsViewModel : ObservableRecipient
             await _databaseConfigService.SaveDatabaseOptionsAsync(options);
             ConfigStatusMessage = "Lưu cấu hình thành công. Hãy khởi động lại ứng dụng để áp dụng thay đổi.";
 
-            await Task.Delay(3000); // Show success message for 3 seconds
+            await Task.Delay(3000); // Hiển thị thông báo thành công trong 3 giây
             ConfigStatusMessage = "";
         }
         catch (Exception ex)
@@ -144,6 +145,7 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
+    // Phương thức sao lưu cơ sở dữ liệu
     private async Task BackupDatabaseAsync()
     {
         try
@@ -153,8 +155,8 @@ public partial class SettingsViewModel : ObservableRecipient
             
             var dialog = new ContentDialog
             {
-                Title = "Backup Successful",
-                Content = $"Database has been backed up to:\n{backupPath}",
+                Title = "Sao lưu thành công",
+                Content = $"Cơ sở dữ liệu đã được sao lưu tại:\n{backupPath}",
                 CloseButtonText = "OK",
                 XamlRoot = App.MainWindow.Content.XamlRoot
             };
@@ -164,8 +166,8 @@ public partial class SettingsViewModel : ObservableRecipient
         {
             var dialog = new ContentDialog
             {
-                Title = "Backup Failed",
-                Content = $"Failed to backup database: {ex.Message}",
+                Title = "Sao lưu thất bại",
+                Content = $"Không thể sao lưu cơ sở dữ liệu: {ex.Message}",
                 CloseButtonText = "OK",
                 XamlRoot = App.MainWindow.Content.XamlRoot
             };
@@ -177,6 +179,7 @@ public partial class SettingsViewModel : ObservableRecipient
         }
     }
 
+    // Phương thức khôi phục cơ sở dữ liệu
     private async Task RestoreDatabaseAsync()
     {
         try
@@ -185,10 +188,10 @@ public partial class SettingsViewModel : ObservableRecipient
 
             var confirmDialog = new ContentDialog
             {
-                Title = "Confirm Restore",
-                Content = "This will overwrite your current database with the last backup. Are you sure you want to continue?",
-                PrimaryButtonText = "Yes",
-                CloseButtonText = "No",
+                Title = "Xác nhận khôi phục",
+                Content = "Điều này sẽ ghi đè cơ sở dữ liệu hiện tại bằng bản sao lưu gần nhất. Bạn có chắc chắn muốn tiếp tục?",
+                PrimaryButtonText = "Có",
+                CloseButtonText = "Không",
                 DefaultButton = ContentDialogButton.Close,
                 XamlRoot = App.MainWindow.Content.XamlRoot
             };
@@ -199,8 +202,8 @@ public partial class SettingsViewModel : ObservableRecipient
                 await _databaseService.RestoreDatabaseAsync();
                 var successDialog = new ContentDialog
                 {
-                    Title = "Restore Successful",
-                    Content = "Database has been restored successfully. Please restart the application.",
+                    Title = "Khôi phục thành công",
+                    Content = "Cơ sở dữ liệu đã được khôi phục thành công. Vui lòng khởi động lại ứng dụng.",
                     CloseButtonText = "OK",
                     XamlRoot = App.MainWindow.Content.XamlRoot
                 };
@@ -211,8 +214,8 @@ public partial class SettingsViewModel : ObservableRecipient
         {
             var dialog = new ContentDialog
             {
-                Title = "Restore Failed",
-                Content = $"Failed to restore database: {ex.Message}",
+                Title = "Khôi phục thất bại",
+                Content = $"Không thể khôi phục cơ sở dữ liệu: {ex.Message}",
                 CloseButtonText = "OK",
                 XamlRoot = App.MainWindow.Content.XamlRoot
             };
@@ -240,4 +243,4 @@ public partial class SettingsViewModel : ObservableRecipient
 
         return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
-} 
+}

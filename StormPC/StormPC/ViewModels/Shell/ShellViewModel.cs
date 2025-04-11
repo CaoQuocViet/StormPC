@@ -55,6 +55,7 @@ public partial class ShellViewModel : ObservableRecipient
         _navigationService.Navigated += OnNavigated;
     }
 
+    // Xử lý sự kiện điều hướng
     private async void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = _navigationService.CanGoBack;
@@ -63,13 +64,13 @@ public partial class ShellViewModel : ObservableRecipient
         {
             var viewModelTypeName = e.SourcePageType.FullName!.Replace("Views", "ViewModels").Replace("Page", "ViewModel");
             
-            // Find and select the correct navigation item
+            // Tìm và chọn mục điều hướng đúng
             var items = MenuItems?.OfType<NavigationViewItem>();
             if (items != null)
             {
                 foreach (var item in items)
                 {
-                    // Check main menu items
+                    // Kiểm tra mục menu chính
                     if (item.MenuItems.Count > 0)
                     {
                         foreach (var subItem in item.MenuItems.OfType<NavigationViewItem>())
@@ -85,11 +86,12 @@ public partial class ShellViewModel : ObservableRecipient
                 }
             }
 
-            Debug.WriteLine($"Saving last page: {viewModelTypeName}");
+            Debug.WriteLine($"Lưu trang cuối: {viewModelTypeName}");
             await _lastPageService.SaveLastPageAsync(viewModelTypeName);
         }
     }
 
+    // Phương thức quay lại
     [RelayCommand]
     private void GoBack()
     {
@@ -99,19 +101,20 @@ public partial class ShellViewModel : ObservableRecipient
         }
     }
 
+    // Phương thức khởi tạo
     public async Task InitializeAsync()
     {
         var lastPage = await _lastPageService.GetLastPageAsync();
-        Debug.WriteLine($"Retrieved last page: {lastPage}");
+        Debug.WriteLine($"Lấy trang cuối: {lastPage}");
 
         if (!string.IsNullOrEmpty(lastPage))
         {
-            Debug.WriteLine($"Attempting to navigate to: {lastPage}");
+            Debug.WriteLine($"Cố gắng điều hướng đến: {lastPage}");
             _navigationService.NavigateTo(lastPage);
         }
         else
         {
-            Debug.WriteLine("No last page found, navigating to default page");
+            Debug.WriteLine("Không tìm thấy trang cuối, chuyển đến trang mặc định");
             _navigationService.NavigateTo(typeof(InventoryReportViewModel).FullName!);
         }
     }
@@ -121,6 +124,7 @@ public partial class ShellViewModel : ObservableRecipient
         _navigationService.Navigated -= OnNavigated;
     }
 
+    // Phương thức tìm kiếm
     [RelayCommand]
     private async Task SearchAsync(string? query)
     {
@@ -131,6 +135,7 @@ public partial class ShellViewModel : ObservableRecipient
         await _dialogService.ShowSearchDialogAsync(query);
     }
 
+    // Xử lý khi thay đổi từ khóa tìm kiếm
     partial void OnSearchQueryChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -138,4 +143,4 @@ public partial class ShellViewModel : ObservableRecipient
             SearchQuery = string.Empty;
         }
     }
-} 
+}
