@@ -35,16 +35,17 @@ namespace StormPC.Core.Services
         private readonly string _containerName = "stormpc_container";
         private readonly int _maxBackupFiles = 0; // Giữ lại tối đa 0 file backup gần nhất
 
-        public DatabaseService(IActivityLogService activityLogService)
+        public DatabaseService(IActivityLogService activityLogService, IDatabaseConfigService databaseConfigService)
         {
             _activityLogService = activityLogService;
             
-            // Get database connection info from environment variables
-            _host = Environment.GetEnvironmentVariable("DB_HOST") ?? throw new InvalidOperationException("DB_HOST environment variable is not set");
-            _databaseName = Environment.GetEnvironmentVariable("DB_NAME") ?? throw new InvalidOperationException("DB_NAME environment variable is not set");
-            _username = Environment.GetEnvironmentVariable("DB_USER") ?? throw new InvalidOperationException("DB_USER environment variable is not set");
-            _password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? throw new InvalidOperationException("DB_PASSWORD environment variable is not set");
-            _port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5444";
+            // Get database connection info from the DatabaseConfigService
+            var dbOptions = databaseConfigService.GetDatabaseOptions();
+            _host = dbOptions.Host;
+            _databaseName = dbOptions.Database;
+            _username = dbOptions.Username;
+            _password = dbOptions.Password;
+            _port = dbOptions.Port.ToString();
 
             // Build connection string
             _connectionString = $"Host={_host};Port={_port};Database={_databaseName};Username={_username};Password={_password};";
