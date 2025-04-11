@@ -25,12 +25,12 @@ public partial class OrderDetailViewModel : ObservableObject
         _orderDetailService = orderDetailService;
         _orderListViewModel = orderListViewModel;
         _activityLogService = activityLogService;
-        Debug.WriteLine("OrderDetailViewModel constructed");
+        Debug.WriteLine("OrderDetailViewModel đã được khởi tạo");
     }
 
     public async Task InitializeAsync()
     {
-        Debug.WriteLine("InitializeAsync called");
+        Debug.WriteLine("Đã gọi hàm InitializeAsync");
         await LoadLatestOrderAsync();
     }
 
@@ -38,17 +38,17 @@ public partial class OrderDetailViewModel : ObservableObject
     {
         if (IsLoading)
         {
-            Debug.WriteLine("LoadLatestOrderAsync skipped - already loading");
+            Debug.WriteLine("LoadLatestOrderAsync bỏ qua - đang tải");
             return;
         }
 
         try
         {
             IsLoading = true;
-            Debug.WriteLine("LoadLatestOrderAsync started...");
+            Debug.WriteLine("LoadLatestOrderAsync bắt đầu...");
             await _activityLogService.LogActivityAsync(
-                "Orders",
-                "Load Latest Order",
+                "Đơn hàng",
+                "Tải đơn hàng mới nhất",
                 "Đang tải đơn hàng mới nhất",
                 "Info",
                 "Admin"
@@ -58,11 +58,11 @@ public partial class OrderDetailViewModel : ObservableObject
 
             if (OrderDetail != null)
             {
-                Debug.WriteLine($"Order loaded successfully. OrderID: {OrderDetail.OrderID}");
-                Debug.WriteLine($"Items count: {OrderDetail.Items.Count}");
+                Debug.WriteLine($"Tải đơn hàng thành công. OrderID: {OrderDetail.OrderID}");
+                Debug.WriteLine($"Số lượng sản phẩm: {OrderDetail.Items.Count}");
                 await _activityLogService.LogActivityAsync(
-                    "Orders",
-                    "Load Latest Order",
+                    "Đơn hàng",
+                    "Tải đơn hàng mới nhất",
                     $"Tải thành công đơn hàng ID: {OrderDetail.OrderID} với {OrderDetail.Items.Count} sản phẩm",
                     "Success",
                     "Admin"
@@ -70,10 +70,10 @@ public partial class OrderDetailViewModel : ObservableObject
             }
             else
             {
-                Debug.WriteLine("No order found");
+                Debug.WriteLine("Không tìm thấy đơn hàng");
                 await _activityLogService.LogActivityAsync(
-                    "Orders",
-                    "Load Latest Order",
+                    "Đơn hàng",
+                    "Tải đơn hàng mới nhất",
                     "Không tìm thấy đơn hàng nào",
                     "Info",
                     "Admin"
@@ -82,11 +82,11 @@ public partial class OrderDetailViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error loading order: {ex.Message}");
+            Debug.WriteLine($"Lỗi khi tải đơn hàng: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
             await _activityLogService.LogActivityAsync(
-                "Orders",
-                "Load Latest Order",
+                "Đơn hàng",
+                "Tải đơn hàng mới nhất",
                 $"Lỗi khi tải đơn hàng: {ex.Message}",
                 "Error",
                 "Admin"
@@ -95,7 +95,7 @@ public partial class OrderDetailViewModel : ObservableObject
         finally
         {
             IsLoading = false;
-            Debug.WriteLine("LoadLatestOrderAsync completed");
+            Debug.WriteLine("LoadLatestOrderAsync hoàn thành");
         }
     }
 
@@ -103,17 +103,17 @@ public partial class OrderDetailViewModel : ObservableObject
     {
         if (IsLoading)
         {
-            Debug.WriteLine($"LoadOrderByIdAsync skipped - already loading. OrderID: {orderId}");
+            Debug.WriteLine($"LoadOrderByIdAsync bỏ qua - đang tải. OrderID: {orderId}");
             return;
         }
 
         try
         {
             IsLoading = true;
-            Debug.WriteLine($"LoadOrderByIdAsync started for OrderID: {orderId}");
+            Debug.WriteLine($"LoadOrderByIdAsync bắt đầu cho OrderID: {orderId}");
             await _activityLogService.LogActivityAsync(
-                "Orders",
-                "Load Order",
+                "Đơn hàng",
+                "Tải đơn hàng",
                 $"Đang tải đơn hàng ID: {orderId}",
                 "Info",
                 "Admin"
@@ -123,11 +123,11 @@ public partial class OrderDetailViewModel : ObservableObject
 
             if (OrderDetail != null)
             {
-                Debug.WriteLine($"Order loaded successfully. OrderID: {OrderDetail.OrderID}");
-                Debug.WriteLine($"Items count: {OrderDetail.Items.Count}");
+                Debug.WriteLine($"Tải đơn hàng thành công. OrderID: {OrderDetail.OrderID}");
+                Debug.WriteLine($"Số lượng sản phẩm: {OrderDetail.Items.Count}");
                 await _activityLogService.LogActivityAsync(
-                    "Orders",
-                    "Load Order",
+                    "Đơn hàng",
+                    "Tải đơn hàng",
                     $"Tải thành công đơn hàng ID: {orderId} với {OrderDetail.Items.Count} sản phẩm",
                     "Success",
                     "Admin"
@@ -135,10 +135,10 @@ public partial class OrderDetailViewModel : ObservableObject
             }
             else
             {
-                Debug.WriteLine($"No order found with ID: {orderId}");
+                Debug.WriteLine($"Không tìm thấy đơn hàng có ID: {orderId}");
                 await _activityLogService.LogActivityAsync(
-                    "Orders",
-                    "Load Order",
+                    "Đơn hàng",
+                    "Tải đơn hàng",
                     $"Không tìm thấy đơn hàng ID: {orderId}",
                     "Error",
                     "Admin"
@@ -147,11 +147,11 @@ public partial class OrderDetailViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error loading order: {ex.Message}");
+            Debug.WriteLine($"Lỗi khi tải đơn hàng: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
             await _activityLogService.LogActivityAsync(
-                "Orders",
-                "Load Order",
+                "Đơn hàng",
+                "Tải đơn hàng",
                 $"Lỗi khi tải đơn hàng: {ex.Message}",
                 "Error",
                 "Admin"
@@ -160,7 +160,7 @@ public partial class OrderDetailViewModel : ObservableObject
         finally
         {
             IsLoading = false;
-            Debug.WriteLine($"LoadOrderByIdAsync completed for OrderID: {orderId}");
+            Debug.WriteLine($"LoadOrderByIdAsync hoàn thành cho OrderID: {orderId}");
         }
     }
 
@@ -168,4 +168,4 @@ public partial class OrderDetailViewModel : ObservableObject
     {
         return await _orderListViewModel.DeleteOrderAsync(orderId);
     }
-} 
+}

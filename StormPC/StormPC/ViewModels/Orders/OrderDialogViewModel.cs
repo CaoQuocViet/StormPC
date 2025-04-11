@@ -63,33 +63,38 @@ public partial class OrderDialogViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<LaptopSpec> filteredLaptopSpecs;
 
+    // Cập nhật giá trị TotalAmountText
     public string TotalAmountText => $"Tổng tiền: {string.Format("{0:N0} VNĐ", CalculateTotalAmount())}";
 
+    // Phương thức tính tổng tiền đơn hàng
     private decimal CalculateTotalAmount()
     {
         if (SelectedLaptopSpec == null) return 0;
         return SelectedLaptopSpec.Price * Quantity;
     }
 
+    // Xử lý sự kiện khi thay đổi số lượng sản phẩm
     partial void OnQuantityChanged(int value)
     {
         OnPropertyChanged(nameof(TotalAmountText));
     }
 
+    // Xử lý sự kiện khi thay đổi cấu hình laptop
     partial void OnSelectedLaptopSpecChanged(LaptopSpec value)
     {
         OnPropertyChanged(nameof(TotalAmountText));
     }
 
+    // Xử lý sự kiện khi thay đổi laptop - lọc danh sách cấu hình tương ứng
     partial void OnSelectedLaptopChanged(Laptop value)
     {
         if (value != null)
         {
-            // Filter specs for selected laptop
+            // Lọc cấu hình cho laptop đã chọn
             FilteredLaptopSpecs = new ObservableCollection<LaptopSpec>(
                 LaptopSpecs.Where(spec => spec.LaptopID == value.LaptopID)
             );
-            // Clear selected spec when laptop changes
+            // Xóa cấu hình đã chọn khi thay đổi laptop
             SelectedLaptopSpec = null;
         }
         else
@@ -99,14 +104,15 @@ public partial class OrderDialogViewModel : ObservableObject
         }
     }
 
+    // Xử lý sự kiện khi thay đổi khách hàng - tự động điền thông tin địa chỉ
     partial void OnSelectedCustomerChanged(Customer value)
     {
         if (value != null)
         {
-            // Auto-fill shipping address with customer's address
+            // Tự động điền địa chỉ giao hàng từ địa chỉ khách hàng
             ShippingAddress = value.Address;
             
-            // Auto-select customer's city
+            // Tự động chọn thành phố của khách hàng
             SelectedCity = Cities.FirstOrDefault(c => c.Id == value.CityId);
         }
     }
@@ -121,4 +127,4 @@ public partial class OrderDialogViewModel : ObservableObject
         cities = new ObservableCollection<City>();
         orderStatuses = new ObservableCollection<OrderStatus>();
     }
-} 
+}
