@@ -86,13 +86,13 @@
                              Margin="0,0,0,30"/>
 
                     <StackPanel Grid.Row="2" Margin="0,20">
-                        <TextBlock Text="Username" Margin="0,0,0,5"/>
+                        <TextBlock Text="Tên tài khoản" Margin="0,0,0,5"/>
                         <winui:TextBox x:Name="UsernameTextBox" 
                                  Text="{x:Bind ViewModel.Username, Mode=TwoWay}"
                                  Margin="0,0,0,15"
                                  Padding="8"/>
 
-                        <TextBlock Text="Password" Margin="0,0,0,5"/>
+                        <TextBlock Text="Mật khẩu" Margin="0,0,0,5"/>
                         <Grid>
                             <winui:PasswordBox x:Name="PasswordBox"
                                     Password="{x:Bind ViewModel.Password, Mode=TwoWay}"
@@ -110,7 +110,7 @@
                         </Grid>
 
                         <CheckBox x:Name="RememberMeCheckBox"
-                                 Content="Remember me"
+                                 Content="Ghi nhớ tài khoản"
                                  Margin="0,0,0,15"
                                  IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}"/>
 
@@ -126,7 +126,7 @@
                     </StackPanel>
 
                     <Button Grid.Row="3"
-                            Content="Login"
+                            Content="Đăng nhập"
                             Style="{StaticResource AccentButtonStyle}"
                             HorizontalAlignment="Center"
                             Width="250"
@@ -145,20 +145,20 @@
         </Border>
 
         <winui:ContentDialog x:Name="RecoverAccountDialog"
-                          Title="Recover Account"
-                          PrimaryButtonText="Recover"
-                          SecondaryButtonText="Cancel"
+                          Title="Khôi phục tài khoản"
+                          PrimaryButtonText="Khôi phục"
+                          SecondaryButtonText="Hủy bỏ"
                           DefaultButton="Secondary"
                           IsPrimaryButtonEnabled="True"
                           IsSecondaryButtonEnabled="True"
                           PrimaryButtonClick="OnRecoverAccountConfirm"
                           SecondaryButtonClick="OnRecoverAccountCancel">
             <StackPanel>
-                <TextBlock Text="Please enter your backup key to recover your account."
+                <TextBlock Text="Vui lòng nhập backup key để khôi phục tài khoản của bạn."
                          TextWrapping="Wrap"
                          Margin="0,0,0,10"/>
                 <TextBox x:Name="BackupKeyTextBox"
-                         PlaceholderText="Enter backup key"
+                         PlaceholderText="Nhập backup key"
                          TextWrapping="Wrap"
                          Height="100"/>
             </StackPanel>
