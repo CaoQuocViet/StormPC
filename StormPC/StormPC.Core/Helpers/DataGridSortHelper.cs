@@ -8,18 +8,18 @@ using System.Reflection;
 namespace StormPC.Core.Helpers;
 
 /// <summary>
-/// A helper class for sorting DataGrid with multiple columns
+/// Lớp hỗ trợ sắp xếp DataGrid với nhiều cột
 /// </summary>
 public static class DataGridSortHelper
 {
     /// <summary>
-    /// Sorts a collection based on property names and sort directions
+    /// Sắp xếp một tập hợp dựa trên tên thuộc tính và hướng sắp xếp
     /// </summary>
-    /// <typeparam name="T">The type of items in the collection</typeparam>
-    /// <param name="items">The original collection to sort</param>
-    /// <param name="sortProperties">List of property names to sort by</param>
-    /// <param name="sortDirections">List of sort directions corresponding to properties</param>
-    /// <returns>A new sorted ObservableCollection</returns>
+    /// <typeparam name="T">Kiểu dữ liệu của các phần tử trong tập hợp</typeparam>
+    /// <param name="items">Tập hợp gốc cần sắp xếp</param>
+    /// <param name="sortProperties">Danh sách tên thuộc tính để sắp xếp theo</param>
+    /// <param name="sortDirections">Danh sách hướng sắp xếp tương ứng với thuộc tính</param>
+    /// <returns>Một ObservableCollection mới đã được sắp xếp</returns>
     public static ObservableCollection<T> ApplySort<T>(
         IEnumerable<T>? items, 
         IList<string> sortProperties, 
@@ -47,7 +47,7 @@ public static class DataGridSortHelper
 
             if (firstSort)
             {
-                // First sort
+                // Sắp xếp lần đầu
                 sortedItems = direction == ListSortDirection.Ascending
                     ? items.OrderBy(item => GetPropertyValue(item, prop))
                     : items.OrderByDescending(item => GetPropertyValue(item, prop));
@@ -56,7 +56,7 @@ public static class DataGridSortHelper
             }
             else
             {
-                // Subsequent sorts (ThenBy)
+                // Sắp xếp tiếp theo (ThenBy)
                 if (sortedItems != null)
                 {
                     sortedItems = direction == ListSortDirection.Ascending
@@ -70,7 +70,7 @@ public static class DataGridSortHelper
     }
 
     /// <summary>
-    /// Gets a property value safely handling null values
+    /// Lấy giá trị thuộc tính một cách an toàn, xử lý cả giá trị null
     /// </summary>
     private static object GetPropertyValue<T>(T item, PropertyInfo property)
     {

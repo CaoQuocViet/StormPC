@@ -9,9 +9,11 @@ using Windows.UI.ViewManagement;
 
 namespace StormPC.Helpers;
 
-// Helper class to workaround custom title bar bugs.
-// DISCLAIMER: The resource key names and color values used below are subject to change. Do not depend on them.
-// https://github.com/microsoft/TemplateStudio/issues/4516
+/// <summary>
+/// Lớp trợ giúp giải quyết các lỗi của thanh tiêu đề tùy chỉnh.
+/// DISCLAIMER: Tên khóa tài nguyên và giá trị màu sắc dưới đây có thể thay đổi. Không nên phụ thuộc vào chúng.
+/// https://github.com/microsoft/TemplateStudio/issues/4516
+/// </summary>
 internal class TitleBarHelper
 {
     private const int WAINACTIVE = 0x00;
@@ -24,6 +26,9 @@ internal class TitleBarHelper
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     private static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
 
+    /// <summary>
+    /// Cập nhật thanh tiêu đề theo chủ đề
+    /// </summary>
     public static void UpdateTitleBar(ElementTheme theme)
     {
         if (App.MainWindow.ExtendsContentIntoTitleBar)
@@ -85,6 +90,9 @@ internal class TitleBarHelper
         }
     }
 
+    /// <summary>
+    /// Áp dụng chủ đề hệ thống cho các nút thanh tiêu đề
+    /// </summary>
     public static void ApplySystemThemeToCaptionButtons()
     {
         var frame = App.AppTitlebar as FrameworkElement;
