@@ -78,6 +78,9 @@ public class NavigationViewHeaderBehavior : Behavior<NavigationView>
         }
     }
 
+    /// <summary>
+    /// Cập nhật nội dung tiêu đề dựa trên trang hiện tại
+    /// </summary>
     private void UpdateHeader()
     {
         if (_currentPage != null)
@@ -112,6 +115,9 @@ public class NavigationViewHeaderBehavior : Behavior<NavigationView>
         }
     }
 
+    /// <summary>
+    /// Cập nhật template tiêu đề dựa trên trang hiện tại
+    /// </summary>
     private void UpdateHeaderTemplate()
     {
         if (_currentPage != null)
