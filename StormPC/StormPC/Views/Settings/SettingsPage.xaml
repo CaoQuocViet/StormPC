@@ -10,6 +10,7 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         <helpers:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         
         <Style x:Key="PageTitleStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="32"/>
@@ -113,6 +114,56 @@
                                             Visibility="{x:Bind ViewModel.IsRestoreInProgress, Mode=OneWay}"/>
                             </StackPanel>
                         </Button>
+                    </StackPanel>
+                </Grid>
+                
+                <!-- Phần Cấu hình cơ sở dữ liệu -->
+                <TextBlock Text="Cấu hình cơ sở dữ liệu" Style="{StaticResource SectionTitleStyle}" />
+                <Grid Style="{StaticResource CardStyle}">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="Nhập thông tin cấu hình kết nối đến cơ sở dữ liệu PostgreSQL" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        
+                        <TextBox Header="Provider:" Text="{x:Bind ViewModel.DbProvider, Mode=TwoWay}" 
+                                 PlaceholderText="postgresql" Width="250" HorizontalAlignment="Left" IsEnabled="False"/>
+                        
+                        <TextBox Header="Host:" Text="{x:Bind ViewModel.DbHost, Mode=TwoWay}" 
+                                 PlaceholderText="localhost hoặc địa chỉ IP" Width="400" HorizontalAlignment="Left"/>
+                        
+                        <TextBox Header="Port:" Text="{x:Bind ViewModel.DbPort, Mode=TwoWay}" 
+                                 PlaceholderText="5432" Width="250" HorizontalAlignment="Left"/>
+                        
+                        <TextBox Header="Tên database:" Text="{x:Bind ViewModel.DbName, Mode=TwoWay}" 
+                                 PlaceholderText="stormpc_db" Width="400" HorizontalAlignment="Left"/>
+                        
+                        <TextBox Header="Tên đăng nhập:" Text="{x:Bind ViewModel.DbUsername, Mode=TwoWay}" 
+                                 PlaceholderText="postgres" Width="400" HorizontalAlignment="Left"/>
+                        
+                        <PasswordBox Header="Mật khẩu:" Password="{x:Bind ViewModel.DbPassword, Mode=TwoWay}" 
+                                     PlaceholderText="Nhập mật khẩu" Width="400" HorizontalAlignment="Left"/>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,12,0,0">
+                            <Button Command="{x:Bind ViewModel.SaveDatabaseConfigCommand}"
+                                    IsEnabled="{x:Bind ViewModel.IsSavingConfig, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+                                    Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <FontIcon Glyph="&#xE74E;" FontSize="16"/>
+                                    <TextBlock Text="Lưu cấu hình"/>
+                                    <ProgressRing IsActive="{x:Bind ViewModel.IsSavingConfig, Mode=OneWay}" 
+                                                Width="16" Height="16" 
+                                                Visibility="{x:Bind ViewModel.IsSavingConfig, Mode=OneWay}"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        
+                        <TextBlock Text="{x:Bind ViewModel.ConfigStatusMessage, Mode=OneWay}" 
+                                   Visibility="{x:Bind ViewModel.ConfigStatusMessage, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}"
+                                   Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                                   FontWeight="SemiBold"/>
+                        
+                        <InfoBar Title="Lưu ý"
+                                 IsOpen="True"
+                                 Severity="Informational"
+                                 Message="Sau khi lưu cấu hình, bạn cần khởi động lại ứng dụng để áp dụng thay đổi. Nếu thông tin cấu hình không chính xác, ứng dụng có thể không hoạt động bình thường."/>
                     </StackPanel>
                 </Grid>
 

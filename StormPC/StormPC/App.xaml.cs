@@ -77,7 +77,7 @@ public partial class App : Application
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
             // Database Configuration
-            services.AddSingleton<IDatabaseConfigurationService, DatabaseConfigurationService>();
+            // services.AddSingleton<IDatabaseConfigurationService, DatabaseConfigurationService>();
             services.AddDbContext<StormPCDbContext>();
 
             // Product Services
@@ -93,6 +93,10 @@ public partial class App : Application
             services.AddTransient<LoginWindow>();
             services.AddTransient<FirstTimeViewModel>();
             services.AddTransient<LoginViewModel>();
+            
+            // Database Config Service
+            services.AddSingleton<IDatabaseConfigService, DatabaseConfigService>();
+            services.AddSingleton<IDatabaseConfigurationService, DatabaseConfigurationService>();
 
             // Other Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();

@@ -8,6 +8,7 @@ using StormPC.Helpers;
 using Windows.ApplicationModel;
 using StormPC.Core.Services;
 using Microsoft.UI.Xaml.Controls;
+using StormPC.Core.Infrastructure.Database.Configurations;
 
 namespace StormPC.ViewModels.Settings;
 
@@ -15,6 +16,7 @@ public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly IDatabaseService _databaseService;
+    private readonly IDatabaseConfigService _databaseConfigService;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -28,16 +30,42 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private bool _isRestoreInProgress;
 
+    [ObservableProperty]
+    private string _dbProvider = "postgresql";
+
+    [ObservableProperty]
+    private string _dbHost = "localhost";
+
+    [ObservableProperty]
+    private string _dbPort = "5432";
+
+    [ObservableProperty]
+    private string _dbName = "stormpc";
+
+    [ObservableProperty]
+    private string _dbUsername = "postgres";
+
+    [ObservableProperty]
+    private string _dbPassword = "";
+
+    [ObservableProperty]
+    private bool _isSavingConfig;
+
+    [ObservableProperty]
+    private string _configStatusMessage = "";
+
     public ICommand SwitchThemeCommand { get; }
     public IAsyncRelayCommand BackupDatabaseCommand { get; }
     public IAsyncRelayCommand RestoreDatabaseCommand { get; }
+    public IAsyncRelayCommand SaveDatabaseConfigCommand { get; }
 
     public IEnumerable<ElementTheme> Themes => Enum.GetValues<ElementTheme>();
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, IDatabaseService databaseService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, IDatabaseService databaseService, IDatabaseConfigService databaseConfigService)
     {
         _themeSelectorService = themeSelectorService;
         _databaseService = databaseService;
+        _databaseConfigService = databaseConfigService;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
 
@@ -53,6 +81,67 @@ public partial class SettingsViewModel : ObservableRecipient
 
         BackupDatabaseCommand = new AsyncRelayCommand(BackupDatabaseAsync);
         RestoreDatabaseCommand = new AsyncRelayCommand(RestoreDatabaseAsync);
+        SaveDatabaseConfigCommand = new AsyncRelayCommand(SaveDatabaseConfigAsync);
+
+        LoadDatabaseConfiguration();
+    }
+
+    private void LoadDatabaseConfiguration()
+    {
+        try
+        {
+            var options = _databaseConfigService.GetDatabaseOptions();
+            DbProvider = options.Provider;
+            DbHost = options.Host;
+            DbPort = options.Port.ToString();
+            DbName = options.Database;
+            DbUsername = options.Username;
+            DbPassword = options.Password;
+        }
+        catch (Exception ex)
+        {
+            ConfigStatusMessage = $"Lỗi khi tải cấu hình: {ex.Message}";
+        }
+    }
+
+    private async Task SaveDatabaseConfigAsync()
+    {
+        try
+        {
+            IsSavingConfig = true;
+            ConfigStatusMessage = "Đang lưu cấu hình...";
+
+            // Parse port number
+            if (!int.TryParse(DbPort, out int port))
+            {
+                ConfigStatusMessage = "Cổng phải là một số nguyên";
+                return;
+            }
+
+            var options = new DatabaseOptions
+            {
+                Provider = DbProvider,
+                Host = DbHost,
+                Port = port,
+                Database = DbName,
+                Username = DbUsername,
+                Password = DbPassword
+            };
+
+            await _databaseConfigService.SaveDatabaseOptionsAsync(options);
+            ConfigStatusMessage = "Lưu cấu hình thành công. Hãy khởi động lại ứng dụng để áp dụng thay đổi.";
+
+            await Task.Delay(3000); // Show success message for 3 seconds
+            ConfigStatusMessage = "";
+        }
+        catch (Exception ex)
+        {
+            ConfigStatusMessage = $"Lỗi khi lưu cấu hình: {ex.Message}";
+        }
+        finally
+        {
+            IsSavingConfig = false;
+        }
     }
 
     private async Task BackupDatabaseAsync()
