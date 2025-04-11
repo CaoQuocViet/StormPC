@@ -29,7 +29,7 @@ public class RevenueReportService : IRevenueReportService
         var utcStartDate = startDate.ToUniversalTime();
         var utcEndDate = endDate.ToUniversalTime();
 
-        // Get orders within date range
+        // Lấy đơn hàng trong khoảng thời gian
         var ordersData = await (
             from o in _context.Orders
             join oi in _context.OrderItems on o.OrderID equals oi.OrderID
@@ -71,7 +71,7 @@ public class RevenueReportService : IRevenueReportService
         var utcStartDate = startDate.ToUniversalTime();
         var utcEndDate = endDate.ToUniversalTime();
 
-        // Get all categories first
+        // Lấy tất cả danh mục trước
         var categories = await _context.Categories
             .Where(c => !c.IsDeleted)
             .ToListAsync();
@@ -92,7 +92,7 @@ public class RevenueReportService : IRevenueReportService
             })
             .ToListAsync();
 
-        // Combine with all categories to ensure we have data for each category
+        // Kết hợp với tất cả danh mục để đảm bảo có dữ liệu cho từng danh mục
         var result = categories.Select(c => new CategoryRevenueData
         {
             CategoryName = c.CategoryName,
@@ -127,7 +127,7 @@ public class RevenueReportService : IRevenueReportService
             .OrderBy(x => x.Date)
             .ToListAsync();
 
-        // Fill in missing dates with zero values
+        // Điền các ngày thiếu với giá trị 0
         var result = new List<DailyRevenueData>();
         for (var date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
         {
@@ -157,4 +157,4 @@ public class RevenueReportService : IRevenueReportService
             })
             .ToListAsync();
     }
-} 
+}

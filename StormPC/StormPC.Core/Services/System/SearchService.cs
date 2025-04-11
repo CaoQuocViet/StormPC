@@ -19,7 +19,7 @@ public class SearchService : ISearchService
         var skip = (page - 1) * pageSize;
         query = query.ToLower().Trim();
 
-        // Search Brands
+        // Tìm kiếm Thương hiệu
         var brands = await _context.Brands
             .Where(b => !b.IsDeleted && b.BrandName.ToLower().Contains(query))
             .Skip(skip).Take(pageSize)
@@ -35,7 +35,7 @@ public class SearchService : ISearchService
             .Where(b => !b.IsDeleted && b.BrandName.ToLower().Contains(query))
             .CountAsync();
 
-        // Search Categories
+        // Tìm kiếm Danh mục
         var categories = await _context.Categories
             .Where(c => !c.IsDeleted && 
                 (c.CategoryName.ToLower().Contains(query) || 
@@ -56,7 +56,7 @@ public class SearchService : ISearchService
                 (c.Description != null && c.Description.ToLower().Contains(query))))
             .CountAsync();
 
-        // Search Cities
+        // Tìm kiếm Thành phố
         var cities = await _context.Cities
             .Where(c => c.CityName.ToLower().Contains(query))
             .Skip(skip).Take(pageSize)
@@ -76,7 +76,7 @@ public class SearchService : ISearchService
             .Where(c => c.CityName.ToLower().Contains(query))
             .CountAsync();
 
-        // Search Customers
+        // Tìm kiếm Khách hàng
         var customers = await _context.Customers
             .Include(c => c.City)
             .Where(c => !c.IsDeleted && 
@@ -106,7 +106,7 @@ public class SearchService : ISearchService
                 c.Address.ToLower().Contains(query)))
             .CountAsync();
 
-        // Search Laptops
+        // Tìm kiếm Laptop
         var laptops = await _context.Laptops
             .Include(l => l.Brand)
             .Include(l => l.Category)
@@ -140,7 +140,7 @@ public class SearchService : ISearchService
                 (l.Description != null && l.Description.ToLower().Contains(query))))
             .CountAsync();
 
-        // Search Orders
+        // Tìm kiếm Đơn hàng
         var orders = await _context.Orders
             .Include(o => o.Customer)
             .Include(o => o.Status)
@@ -173,7 +173,7 @@ public class SearchService : ISearchService
                 (o.Status != null && o.Status.StatusName.ToLower().Contains(query)))
             .CountAsync();
 
-        // Search PaymentMethods
+        // Tìm kiếm Phương thức thanh toán
         var paymentMethods = await _context.PaymentMethods
             .Where(p => p.MethodName.ToLower().Contains(query))
             .Skip(skip).Take(pageSize)

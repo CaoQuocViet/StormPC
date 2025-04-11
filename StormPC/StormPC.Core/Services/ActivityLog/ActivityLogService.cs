@@ -29,25 +29,25 @@ public class ActivityLogService : IActivityLogService
     {
         try
         {
-            Debug.WriteLine($"Attempting to load logs from: {_logFilePath}");
+            Debug.WriteLine($"Đang nạp nhật ký từ: {_logFilePath}");
             if (File.Exists(_logFilePath))
             {
-                Debug.WriteLine("Log file exists, reading content...");
+                Debug.WriteLine("Tệp nhật ký tồn tại, đang đọc nội dung...");
                 var jsonContent = File.ReadAllText(_logFilePath);
-                Debug.WriteLine($"File content length: {jsonContent?.Length ?? 0}");
+                Debug.WriteLine($"Độ dài nội dung tệp: {jsonContent?.Length ?? 0}");
                 _logs = JsonSerializer.Deserialize<List<ActivityLogEntry>>(jsonContent) ?? new List<ActivityLogEntry>();
-                Debug.WriteLine($"Successfully loaded {_logs.Count} logs");
+                Debug.WriteLine($"Đã nạp thành công {_logs.Count} bản ghi nhật ký");
             }
             else
             {
-                Debug.WriteLine("Log file does not exist, creating new log list");
+                Debug.WriteLine("Tệp nhật ký không tồn tại, tạo danh sách mới");
                 _logs = new List<ActivityLogEntry>();
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Failed to load logs: {ex.Message}");
-            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            Debug.WriteLine($"Không thể nạp nhật ký: {ex.Message}");
+            Debug.WriteLine($"Chi tiết lỗi: {ex.StackTrace}");
             _logs = new List<ActivityLogEntry>();
         }
     }
@@ -56,7 +56,7 @@ public class ActivityLogService : IActivityLogService
     {
         try
         {
-            Debug.WriteLine($"Logging activity: {module} - {action} - {details}");
+            Debug.WriteLine($"Ghi nhật ký hoạt động: {module} - {action} - {details}");
             
             var logEntry = new ActivityLogEntry
             {
@@ -71,16 +71,16 @@ public class ActivityLogService : IActivityLogService
             lock (_lockObject)
             {
                 _logs.Add(logEntry);
-                Debug.WriteLine($"Added log entry. Total logs: {_logs.Count}");
+                Debug.WriteLine($"Đã thêm bản ghi nhật ký. Tổng số nhật ký: {_logs.Count}");
             }
 
             await SaveLogsAsync();
-            Debug.WriteLine($"Saved logs to file: {_logFilePath}");
+            Debug.WriteLine($"Đã lưu nhật ký vào tệp: {_logFilePath}");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Failed to log activity: {ex.Message}");
-            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            Debug.WriteLine($"Không thể ghi nhật ký hoạt động: {ex.Message}");
+            Debug.WriteLine($"Chi tiết lỗi: {ex.StackTrace}");
         }
     }
 
@@ -105,40 +105,40 @@ public class ActivityLogService : IActivityLogService
     {
         try
         {
-            Debug.WriteLine($"Attempting to save {_logs.Count} logs");
+            Debug.WriteLine($"Đang lưu {_logs.Count} bản ghi nhật ký");
             var options = new JsonSerializerOptions { WriteIndented = true };
             var jsonContent = JsonSerializer.Serialize(_logs, options);
-            Debug.WriteLine($"Serialized content length: {jsonContent.Length}");
+            Debug.WriteLine($"Độ dài nội dung đã chuyển đổi: {jsonContent.Length}");
             
-            // Write to a temporary file first
+            // Ghi vào tệp tạm trước
             var tempPath = _logFilePath + ".tmp";
-            Debug.WriteLine($"Writing to temporary file: {tempPath}");
+            Debug.WriteLine($"Đang ghi vào tệp tạm: {tempPath}");
             await File.WriteAllTextAsync(tempPath, jsonContent);
             
-            // Then replace the original file
+            // Sau đó thay thế tệp gốc
             if (File.Exists(_logFilePath))
             {
-                Debug.WriteLine($"Deleting existing log file: {_logFilePath}");
+                Debug.WriteLine($"Đang xóa tệp nhật ký hiện tại: {_logFilePath}");
                 File.Delete(_logFilePath);
             }
-            Debug.WriteLine($"Moving temporary file to final location");
+            Debug.WriteLine($"Đang di chuyển tệp tạm đến vị trí cuối cùng");
             File.Move(tempPath, _logFilePath);
             
-            // Verify the file was written
+            // Xác minh tệp đã được ghi
             if (File.Exists(_logFilePath))
             {
                 var fileInfo = new FileInfo(_logFilePath);
-                Debug.WriteLine($"File saved successfully. Size: {fileInfo.Length} bytes");
+                Debug.WriteLine($"Tệp đã được lưu thành công. Kích thước: {fileInfo.Length} byte");
             }
             else
             {
-                Debug.WriteLine("Warning: File does not exist after save operation!");
+                Debug.WriteLine("Cảnh báo: Tệp không tồn tại sau khi thực hiện lưu!");
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Failed to save logs: {ex.Message}");
-            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+            Debug.WriteLine($"Không thể lưu nhật ký: {ex.Message}");
+            Debug.WriteLine($"Chi tiết lỗi: {ex.StackTrace}");
         }
     }
-} 
+}

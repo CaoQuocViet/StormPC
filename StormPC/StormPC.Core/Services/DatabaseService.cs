@@ -39,7 +39,7 @@ namespace StormPC.Core.Services
         {
             _activityLogService = activityLogService;
             
-            // Get database connection info from the DatabaseConfigService
+            // Lấy thông tin kết nối database từ DatabaseConfigService
             var dbOptions = databaseConfigService.GetDatabaseOptions();
             _host = dbOptions.Host;
             _databaseName = dbOptions.Database;
@@ -47,17 +47,17 @@ namespace StormPC.Core.Services
             _password = dbOptions.Password;
             _port = dbOptions.Port.ToString();
 
-            // Build connection string
+            // Xây dựng chuỗi kết nối
             _connectionString = $"Host={_host};Port={_port};Database={_databaseName};Username={_username};Password={_password};";
 
-            // Setup backup directory and subdirectory
+            // Thiết lập thư mục sao lưu và thư mục con
             _backupDirectory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "StormPC");
             _backupSubdirectory = Path.Combine(_backupDirectory, "backup_db");
             _currentUser = Environment.UserName;
 
-            // Create directories if they don't exist
+            // Tạo thư mục nếu chưa tồn tại
             if (!Directory.Exists(_backupDirectory))
             {
                 Directory.CreateDirectory(_backupDirectory);
@@ -76,10 +76,10 @@ namespace StormPC.Core.Services
                 var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
                 var outputFilePath = Path.Combine(_backupSubdirectory, $"StormPC_Backup_{timestamp}.sql");
                 
-                // Delete old backup files if there are more than _maxBackupFiles
+                // Xóa các file backup cũ nếu vượt quá số lượng cho phép
                 CleanupOldBackups();
 
-                // Execute pg_dump inside the docker container
+                // Thực thi pg_dump trong container docker
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -99,11 +99,11 @@ namespace StormPC.Core.Services
 
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"Failed to backup database: {error}");
+                        throw new Exception($"Sao lưu cơ sở dữ liệu thất bại: {error}");
                     }
                 }
 
-                // Copy from container to host
+                // Sao chép từ container sang máy chủ
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -123,11 +123,11 @@ namespace StormPC.Core.Services
 
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"Failed to copy backup file from container: {error}");
+                        throw new Exception($"Không thể sao chép file backup từ container: {error}");
                     }
                 }
 
-                // Clean up the temporary file in the container
+                // Dọn dẹp file tạm trong container
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -142,14 +142,14 @@ namespace StormPC.Core.Services
                 {
                     process.Start();
                     await process.WaitForExitAsync();
-                    // Error handling is less critical for cleanup
+                    // Xử lý lỗi ít quan trọng hơn cho việc dọn dẹp
                 }
 
                 await _activityLogService.LogActivityAsync(
-                    module: "Database",
-                    action: "Backup",
-                    details: $"Database backup completed successfully: {outputFilePath}",
-                    status: "Success",
+                    module: "Cơ sở dữ liệu",
+                    action: "Sao lưu",
+                    details: $"Sao lưu cơ sở dữ liệu hoàn tất thành công: {outputFilePath}",
+                    status: "Thành công",
                     username: _currentUser);
 
                 return outputFilePath;
@@ -157,10 +157,10 @@ namespace StormPC.Core.Services
             catch (Exception ex)
             {
                 await _activityLogService.LogActivityAsync(
-                    module: "Database",
-                    action: "Backup",
-                    details: $"Error during database backup: {ex.Message}",
-                    status: "Failed",
+                    module: "Cơ sở dữ liệu",
+                    action: "Sao lưu",
+                    details: $"Lỗi trong quá trình sao lưu cơ sở dữ liệu: {ex.Message}",
+                    status: "Thất bại",
                     username: _currentUser);
                 throw;
             }
@@ -170,13 +170,13 @@ namespace StormPC.Core.Services
         {
             try
             {
-                // Get all backup files
+                // Lấy tất cả các file backup
                 var backupFiles = Directory.GetFiles(_backupSubdirectory, "*.sql")
                     .OrderByDescending(f => new FileInfo(f).CreationTime)
                     .Skip(_maxBackupFiles)
                     .ToList();
 
-                // Delete old backup files
+                // Xóa các file backup cũ
                 foreach (var file in backupFiles)
                 {
                     File.Delete(file);
@@ -184,12 +184,12 @@ namespace StormPC.Core.Services
             }
             catch (Exception ex)
             {
-                // Log but continue - failure to delete old backups is not critical
+                // Ghi log nhưng vẫn tiếp tục - lỗi khi xóa backup cũ không quan trọng
                 _activityLogService.LogActivityAsync(
-                    module: "Database",
-                    action: "Backup",
-                    details: $"Warning: Failed to cleanup old backups: {ex.Message}",
-                    status: "Warning",
+                    module: "Cơ sở dữ liệu",
+                    action: "Sao lưu",
+                    details: $"Cảnh báo: Không thể dọn dẹp các bản sao lưu cũ: {ex.Message}",
+                    status: "Cảnh báo",
                     username: _currentUser).Wait();
             }
         }
@@ -198,7 +198,7 @@ namespace StormPC.Core.Services
         {
             try
             {
-                // Find the most recent backup file
+                // Tìm file backup gần nhất
                 var backupFiles = Directory.GetFiles(_backupSubdirectory, "*.sql")
                     .OrderByDescending(f => new FileInfo(f).CreationTime)
                     .ToList();
@@ -206,10 +206,10 @@ namespace StormPC.Core.Services
                 if (backupFiles.Count == 0)
                 {
                     await _activityLogService.LogActivityAsync(
-                        module: "Database",
-                        action: "Restore",
-                        details: "No backup files found",
-                        status: "Failed",
+                        module: "Cơ sở dữ liệu",
+                        action: "Khôi phục",
+                        details: "Không tìm thấy file sao lưu nào",
+                        status: "Thất bại",
                         username: _currentUser);
                     return false;
                 }
@@ -217,7 +217,7 @@ namespace StormPC.Core.Services
                 string mostRecentBackup = backupFiles[0];
                 var tempFilePath = "/tmp/temp_restore.sql";
 
-                // Check if container is running
+                // Kiểm tra xem container có đang chạy không
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -241,15 +241,15 @@ namespace StormPC.Core.Services
                 if (!containerRunning)
                 {
                     await _activityLogService.LogActivityAsync(
-                        module: "Database",
-                        action: "Restore",
-                        details: $"PostgreSQL container '{_containerName}' is not running",
-                        status: "Failed",
+                        module: "Cơ sở dữ liệu",
+                        action: "Khôi phục",
+                        details: $"Container PostgreSQL '{_containerName}' không đang chạy",
+                        status: "Thất bại",
                         username: _currentUser);
                     return false;
                 }
 
-                // Copy backup file to container
+                // Sao chép file backup vào container
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -268,11 +268,11 @@ namespace StormPC.Core.Services
 
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"Failed to copy backup file to container: {error}");
+                        throw new Exception($"Không thể sao chép file backup vào container: {error}");
                     }
                 }
 
-                // Kill existing connections except the PostgreSQL process's own connection
+                // Ngắt kết nối hiện có trừ kết nối của tiến trình PostgreSQL
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -287,10 +287,10 @@ namespace StormPC.Core.Services
                 {
                     process.Start();
                     await process.WaitForExitAsync();
-                    // Continue even if there's an error terminating connections
+                    // Tiếp tục ngay cả khi có lỗi khi ngắt kết nối
                 }
 
-                // Drop and recreate the database
+                // Xóa và tạo lại cơ sở dữ liệu
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -309,7 +309,7 @@ namespace StormPC.Core.Services
 
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"Failed to drop database: {error}");
+                        throw new Exception($"Không thể xóa cơ sở dữ liệu: {error}");
                     }
                 }
 
@@ -331,11 +331,11 @@ namespace StormPC.Core.Services
 
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"Failed to create database: {error}");
+                        throw new Exception($"Không thể tạo cơ sở dữ liệu: {error}");
                     }
                 }
 
-                // Restore from backup
+                // Khôi phục từ bản sao lưu
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -354,11 +354,11 @@ namespace StormPC.Core.Services
 
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception($"Failed to restore database: {error}");
+                        throw new Exception($"Không thể khôi phục cơ sở dữ liệu: {error}");
                     }
                 }
 
-                // Clean up the temporary file in the container
+                // Dọn dẹp file tạm trong container
                 startInfo = new ProcessStartInfo
                 {
                     FileName = "docker",
@@ -373,14 +373,14 @@ namespace StormPC.Core.Services
                 {
                     process.Start();
                     await process.WaitForExitAsync();
-                    // Error handling is less critical for cleanup
+                    // Xử lý lỗi ít quan trọng hơn cho việc dọn dẹp
                 }
 
                 await _activityLogService.LogActivityAsync(
-                    module: "Database",
-                    action: "Restore",
-                    details: $"Database restored successfully from {mostRecentBackup}",
-                    status: "Success",
+                    module: "Cơ sở dữ liệu",
+                    action: "Khôi phục",
+                    details: $"Cơ sở dữ liệu đã được khôi phục thành công từ {mostRecentBackup}",
+                    status: "Thành công",
                     username: _currentUser);
 
                 return true;
@@ -388,13 +388,13 @@ namespace StormPC.Core.Services
             catch (Exception ex)
             {
                 await _activityLogService.LogActivityAsync(
-                    module: "Database",
-                    action: "Restore",
-                    details: $"Error during database restore: {ex.Message}",
-                    status: "Failed",
+                    module: "Cơ sở dữ liệu",
+                    action: "Khôi phục",
+                    details: $"Lỗi trong quá trình khôi phục cơ sở dữ liệu: {ex.Message}",
+                    status: "Thất bại",
                     username: _currentUser);
                 throw;
             }
         }
     }
-} 
+}

@@ -49,7 +49,7 @@ namespace StormPC.Core.Services
             {
                 if (!File.Exists(_configFilePath))
                 {
-                    // Fallback to environment variables if configuration file not found
+                    // Sử dụng biến môi trường nếu không tìm thấy file cấu hình
                     return new DatabaseOptions
                     {
                         Provider = Environment.GetEnvironmentVariable(DatabaseConstants.EnvironmentVariables.Provider) ?? "postgresql",
@@ -110,4 +110,4 @@ namespace StormPC.Core.Services
             };
         }
     }
-} 
+}

@@ -23,21 +23,21 @@ public class CustomerReportService : ICustomerReportService
     {
         try
         {
-            // Debug: Kiểm tra tất cả customers
+            // Debug: Kiểm tra tất cả khách hàng
             var allCustomers = await _context.Customers.ToListAsync();
-            Console.WriteLine($"Debug: Total customers in database: {allCustomers.Count}");
+            Console.WriteLine($"Debug: Tổng số khách hàng trong CSDL: {allCustomers.Count}");
 
-            // Debug: Kiểm tra customers không bị xóa
+            // Debug: Kiểm tra khách hàng không bị xóa
             var activeCustomers = await _context.Customers
                 .Where(c => !c.IsDeleted)
                 .ToListAsync();
-            Console.WriteLine($"Debug: Active customers: {activeCustomers.Count}");
+            Console.WriteLine($"Debug: Khách hàng đang hoạt động: {activeCustomers.Count}");
 
-            // Debug: Kiểm tra orders
+            // Debug: Kiểm tra đơn hàng
             var orders = await _context.Orders
                 .Where(o => !o.IsDeleted)
                 .ToListAsync();
-            Console.WriteLine($"Debug: Total orders: {orders.Count}");
+            Console.WriteLine($"Debug: Tổng số đơn hàng: {orders.Count}");
 
             // Lấy tổng chi tiêu của từng khách hàng
             var customerSpending = await _context.Customers
@@ -52,17 +52,17 @@ public class CustomerReportService : ICustomerReportService
                 })
                 .ToListAsync();
 
-            Console.WriteLine("Debug: Customer spending details:");
+            Console.WriteLine("Debug: Chi tiết chi tiêu của khách hàng:");
             foreach (var customer in customerSpending)
             {
-                Console.WriteLine($"Customer {customer.CustomerName} (ID: {customer.CustomerId}) - Total spent: {customer.TotalSpent}");
+                Console.WriteLine($"Khách hàng {customer.CustomerName} (ID: {customer.CustomerId}) - Tổng chi tiêu: {customer.TotalSpent}");
             }
 
             var totalCustomers = customerSpending.Count;
             
             if (totalCustomers == 0)
             {
-                Console.WriteLine("Debug: No active customers found!");
+                Console.WriteLine("Debug: Không tìm thấy khách hàng đang hoạt động!");
                 return new CustomerSegmentationData
                 {
                     TotalCustomers = 0,
@@ -84,12 +84,12 @@ public class CustomerReportService : ICustomerReportService
             var silverCount = Math.Max(1, (int)(totalCustomers * 0.3));   // Ít nhất 1 khách hàng Silver
             var bronzeCount = Math.Max(1, totalCustomers - (platinumCount + goldCount + silverCount)); // Còn lại
 
-            Console.WriteLine("Debug: Customer segmentation details:");
-            Console.WriteLine($"Total Customers: {totalCustomers}");
-            Console.WriteLine($"Platinum ({platinumCount}): {string.Join(", ", sortedCustomers.Take(platinumCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
-            Console.WriteLine($"Gold ({goldCount}): {string.Join(", ", sortedCustomers.Skip(platinumCount).Take(goldCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
-            Console.WriteLine($"Silver ({silverCount}): {string.Join(", ", sortedCustomers.Skip(platinumCount + goldCount).Take(silverCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
-            Console.WriteLine($"Bronze ({bronzeCount}): {string.Join(", ", sortedCustomers.Skip(platinumCount + goldCount + silverCount).Take(bronzeCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
+            Console.WriteLine("Debug: Chi tiết phân khúc khách hàng:");
+            Console.WriteLine($"Tổng số khách hàng: {totalCustomers}");
+            Console.WriteLine($"Bạch kim ({platinumCount}): {string.Join(", ", sortedCustomers.Take(platinumCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
+            Console.WriteLine($"Vàng ({goldCount}): {string.Join(", ", sortedCustomers.Skip(platinumCount).Take(goldCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
+            Console.WriteLine($"Bạc ({silverCount}): {string.Join(", ", sortedCustomers.Skip(platinumCount + goldCount).Take(silverCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
+            Console.WriteLine($"Đồng ({bronzeCount}): {string.Join(", ", sortedCustomers.Skip(platinumCount + goldCount + silverCount).Take(bronzeCount).Select(c => $"{c.CustomerName} ({c.TotalSpent:C})"))}");
 
             return new CustomerSegmentationData
             {
@@ -102,8 +102,8 @@ public class CustomerReportService : ICustomerReportService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in GetCustomerSegmentationDataAsync: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            Console.WriteLine($"Lỗi trong GetCustomerSegmentationDataAsync: {ex.Message}");
+            Console.WriteLine($"Thông tin lỗi chi tiết: {ex.StackTrace}");
             throw;
         }
     }
@@ -152,18 +152,18 @@ public class CustomerReportService : ICustomerReportService
                 .OrderBy(x => x.Date)
                 .ToListAsync();
 
-            Console.WriteLine($"Debug: Found {trends.Count} monthly trends");
+            Console.WriteLine($"Debug: Tìm thấy {trends.Count} xu hướng theo tháng");
             foreach (var trend in trends)
             {
-                Console.WriteLine($"Debug: {trend.Date:MM/yyyy} - Orders: {trend.OrderCount}, Amount: {trend.TotalAmount}");
+                Console.WriteLine($"Debug: {trend.Date:MM/yyyy} - Đơn hàng: {trend.OrderCount}, Số tiền: {trend.TotalAmount}");
             }
 
             return trends;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in GetPurchaseTrendsAsync: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            Console.WriteLine($"Lỗi trong GetPurchaseTrendsAsync: {ex.Message}");
+            Console.WriteLine($"Thông tin lỗi chi tiết: {ex.StackTrace}");
             throw;
         }
     }
@@ -172,7 +172,7 @@ public class CustomerReportService : ICustomerReportService
     {
         try
         {
-            // Query để lấy thống kê theo thương hiệu
+            // Truy vấn để lấy thống kê theo thương hiệu
             var preferences = await (
                 from oi in _context.OrderItems
                 join o in _context.Orders on oi.OrderID equals o.OrderID
@@ -192,10 +192,10 @@ public class CustomerReportService : ICustomerReportService
                 .OrderByDescending(p => p.TotalRevenue)
                 .ToListAsync();
 
-            Console.WriteLine($"Debug: Found {preferences.Count} brand preferences");
+            Console.WriteLine($"Debug: Tìm thấy {preferences.Count} sở thích thương hiệu");
             foreach (var pref in preferences)
             {
-                Console.WriteLine($"Debug: Brand {pref.BrandName} - Orders: {pref.TotalOrders}, Revenue: {pref.TotalRevenue}");
+                Console.WriteLine($"Debug: Thương hiệu {pref.BrandName} - Đơn hàng: {pref.TotalOrders}, Doanh thu: {pref.TotalRevenue}");
             }
 
             // Tính phần trăm
@@ -215,8 +215,8 @@ public class CustomerReportService : ICustomerReportService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in GetCustomerPreferencesAsync: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            Console.WriteLine($"Lỗi trong GetCustomerPreferencesAsync: {ex.Message}");
+            Console.WriteLine($"Thông tin lỗi chi tiết: {ex.StackTrace}");
             throw;
         }
     }

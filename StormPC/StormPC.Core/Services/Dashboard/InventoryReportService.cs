@@ -28,7 +28,7 @@ public class InventoryReportService : IInventoryReportService
 
     public async Task<InventoryReportData> GetInventoryData(DateTime startDate, DateTime endDate)
     {
-        // Ensure dates are in UTC
+        // Đảm bảo ngày ở định dạng UTC
         startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
         endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
 
@@ -183,7 +183,7 @@ public class InventoryReportService : IInventoryReportService
 
     public async Task<IEnumerable<TopSellingProduct>> GetTopSellingProducts(DateTime startDate, DateTime endDate, int limit = 5)
     {
-        // Ensure dates are in UTC
+        // Đảm bảo ngày ở định dạng UTC
         startDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
         endDate = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
 
@@ -214,7 +214,7 @@ public class InventoryReportService : IInventoryReportService
 
     public async Task<(int OrderCount, decimal TotalRevenue)> GetDailySummary(DateTime date)
     {
-        // Ensure date is in UTC
+        // Đảm bảo ngày ở định dạng UTC
         date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
         var startDate = date.Date;
         var endDate = startDate.AddDays(1);
@@ -230,4 +230,4 @@ public class InventoryReportService : IInventoryReportService
             TotalRevenue: orders.Sum(o => o.TotalAmount)
         );
     }
-} 
+}
