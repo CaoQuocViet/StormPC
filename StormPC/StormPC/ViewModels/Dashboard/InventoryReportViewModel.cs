@@ -14,6 +14,9 @@ using System.Diagnostics;
 
 namespace StormPC.ViewModels.Dashboard;
 
+/// <summary>
+/// ViewModel cho báo cáo tồn kho
+/// </summary>
 public partial class InventoryReportViewModel : ObservableObject
 {
     private readonly IInventoryReportService _inventoryReportService;
@@ -258,6 +261,9 @@ public partial class InventoryReportViewModel : ObservableObject
         Initialize();
     }
 
+    /// <summary>
+    /// Khởi tạo và tải dữ liệu ban đầu
+    /// </summary>
     private async void Initialize()
     {
         try
@@ -294,6 +300,9 @@ public partial class InventoryReportViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Làm mới dữ liệu báo cáo tồn kho
+    /// </summary>
     [RelayCommand]
     private async Task Refresh()
     {
@@ -329,6 +338,9 @@ public partial class InventoryReportViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Tải dữ liệu báo cáo tồn kho
+    /// </summary>
     private async Task LoadData()
     {
         try
@@ -431,6 +443,9 @@ public partial class InventoryReportViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Cập nhật biểu đồ xu hướng tồn kho
+    /// </summary>
     private void UpdateStockTrendChart(IEnumerable<StockTrend> trends)
     {
         StockTrendSeries = new ISeries[]
@@ -485,6 +500,9 @@ public partial class InventoryReportViewModel : ObservableObject
         };
     }
 
+    /// <summary>
+    /// Cập nhật biểu đồ phân bố theo danh mục
+    /// </summary>
     private void UpdateCategoryDistributionChart(IEnumerable<CategoryAnalysis> categories)
     {
         CategoryDistributionSeries = new ISeries[]
@@ -525,6 +543,9 @@ public partial class InventoryReportViewModel : ObservableObject
         };
     }
 
+    /// <summary>
+    /// Cập nhật biểu đồ phân bố theo thương hiệu
+    /// </summary>
     private void UpdateBrandDistributionChart(IEnumerable<BrandAnalysis> brands)
     {
         BrandDistributionSeries = new ISeries[]
@@ -565,6 +586,9 @@ public partial class InventoryReportViewModel : ObservableObject
         };
     }
 
+    /// <summary>
+    /// Cập nhật biểu đồ thời gian tồn kho
+    /// </summary>
     private void UpdateStockAgingChart(IEnumerable<AgedInventory> agedInventories)
     {
         var ageGroups = agedInventories
@@ -609,6 +633,9 @@ public partial class InventoryReportViewModel : ObservableObject
         };
     }
 
+    /// <summary>
+    /// Lấy nhóm thời gian tồn kho dựa trên số ngày
+    /// </summary>
     private string GetAgeGroup(int days)
     {
         if (days <= 30) return "≤ 30 ngày";
@@ -618,6 +645,9 @@ public partial class InventoryReportViewModel : ObservableObject
         return "> 180 ngày";
     }
 
+    /// <summary>
+    /// Cập nhật biểu đồ sản phẩm bán chạy
+    /// </summary>
     private void UpdateTopSellersChart(IEnumerable<TopSellingProduct> products)
     {
         TopSellersSeries = new ISeries[]
@@ -667,4 +697,4 @@ public partial class InventoryReportViewModel : ObservableObject
             }
         };
     }
-} 
+}

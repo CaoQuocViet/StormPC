@@ -19,8 +19,14 @@ using StormPC.Core.Contracts.Services;
 
 namespace StormPC.ViewModels.Dashboard;
 
+/// <summary>
+/// Lớp đại diện cho thông tin thương hiệu trong biểu đồ
+/// </summary>
 public class BrandInfo : ObservableValue
 {
+    /// <summary>
+    /// Khởi tạo thông tin thương hiệu với dữ liệu và màu sắc hiển thị
+    /// </summary>
     public BrandInfo(string name, decimal value, int orders, SolidColorPaint paint)
     {
         Name = name;
@@ -29,11 +35,25 @@ public class BrandInfo : ObservableValue
         Value = orders; // Sử dụng số đơn hàng trực tiếp
     }
 
+    /// <summary>
+    /// Tên thương hiệu
+    /// </summary>
     public string Name { get; set; }
+    
+    /// <summary>
+    /// Màu sắc hiển thị trên biểu đồ
+    /// </summary>
     public SolidColorPaint Paint { get; set; }
+    
+    /// <summary>
+    /// Số lượng đơn hàng
+    /// </summary>
     public int Orders { get; set; }
 }
 
+/// <summary>
+/// ViewModel cho báo cáo khách hàng
+/// </summary>
 public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewModel
 {
     private readonly ICustomerReportService _customerReportService;
@@ -170,6 +190,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         _allCustomers = new List<CustomerDisplayDto>();
     }
 
+    /// <summary>
+    /// Tải dữ liệu báo cáo khách hàng
+    /// </summary>
     [RelayCommand]
     public async Task LoadDataAsync()
     {
@@ -186,18 +209,18 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Admin"
             );
 
-            // Load customer list
+            // Tải danh sách khách hàng
             await LoadCustomers();
 
-            // Load segmentation data
+            // Tải dữ liệu phân khúc khách hàng
             var segData = await _customerReportService.GetCustomerSegmentationDataAsync();
             SegmentationData = segData;
 
-            // Load top customers
+            // Tải danh sách khách hàng hàng đầu
             var topCustomersList = await _customerReportService.GetTopCustomersAsync();
             TopCustomers = new ObservableCollection<TopCustomerData>(topCustomersList);
 
-            // Load purchase trends
+            // Tải xu hướng mua hàng
             var trends = await _customerReportService.GetPurchaseTrendsAsync(StartDate, EndDate);
             if (trends.Any())
             {
@@ -237,7 +260,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 };
             }
 
-            // Load customer segmentation
+            // Tải phân khúc khách hàng
             if (SegmentationData.TotalCustomers > 0)
             {
                 CustomerSegmentationSeries = new ISeries[]
@@ -269,7 +292,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 };
             }
 
-            // Load customer preferences (brand preferences)
+            // Tải sở thích khách hàng (thương hiệu ưa thích)
             var preferences = await _customerReportService.GetCustomerPreferencesAsync();
             if (preferences.Any())
             {
@@ -352,7 +375,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Error",
                 "Admin"
             );
-            // Handle error
+            // Xử lý lỗi
             System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
         }
         finally
@@ -361,6 +384,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         }
     }
 
+    /// <summary>
+    /// Tải danh sách khách hàng từ cơ sở dữ liệu
+    /// </summary>
     private async Task LoadCustomers()
     {
         try
@@ -412,6 +438,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         }
     }
 
+    /// <summary>
+    /// Cập nhật tiêu chí sắp xếp
+    /// </summary>
     public void UpdateSorting(List<string> properties, List<ListSortDirection> directions)
     {
         _sortProperties = properties;
@@ -419,6 +448,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         FilterAndPaginateCustomers();
     }
 
+    /// <summary>
+    /// Lọc và phân trang danh sách khách hàng
+    /// </summary>
     private void FilterAndPaginateCustomers()
     {
         var filteredCustomers = string.IsNullOrWhiteSpace(SearchText)
@@ -430,13 +462,16 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 c.CityName.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
-        // Apply sorting
+        // Áp dụng sắp xếp
         filteredCustomers = ApplySorting(filteredCustomers);
 
         _totalItems = filteredCustomers.Count;
-        LoadPage(1); // Reset to first page when filtering
+        LoadPage(1); // Đặt lại về trang đầu tiên khi lọc
     }
 
+    /// <summary>
+    /// Áp dụng tiêu chí sắp xếp cho danh sách khách hàng
+    /// </summary>
     private List<CustomerDisplayDto> ApplySorting(List<CustomerDisplayDto> customers)
     {
         if (_sortProperties.Any())
@@ -450,6 +485,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         return customers;
     }
 
+    /// <summary>
+    /// Tải dữ liệu cho trang chỉ định
+    /// </summary>
     public void LoadPage(int page)
     {
         if (_allCustomers == null) return;
@@ -463,7 +501,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 c.CityName.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
             ).ToList();
 
-        // Apply sorting
+        // Áp dụng sắp xếp
         filteredCustomers = ApplySorting(filteredCustomers);
 
         _totalItems = filteredCustomers.Count;
@@ -477,37 +515,52 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         OnPropertyChanged(nameof(TotalPages));
     }
 
+    /// <summary>
+    /// Làm mới dữ liệu báo cáo
+    /// </summary>
     [RelayCommand]
     private async Task RefreshAsync()
     {
         await LoadDataAsync();
     }
 
+    /// <summary>
+    /// Xử lý khi thay đổi ngày bắt đầu
+    /// </summary>
     partial void OnStartDateChanged(DateTime value)
     {
         LoadDataCommand.Execute(null);
     }
 
+    /// <summary>
+    /// Xử lý khi thay đổi ngày kết thúc
+    /// </summary>
     partial void OnEndDateChanged(DateTime value)
     {
         LoadDataCommand.Execute(null);
     }
 
+    /// <summary>
+    /// Xử lý khi thay đổi từ khóa tìm kiếm
+    /// </summary>
     partial void OnSearchTextChanged(string value)
     {
         FilterAndPaginateCustomers();
     }
 
+    /// <summary>
+    /// Tạo ViewModel cho dialog thêm/sửa khách hàng
+    /// </summary>
     public async Task<CustomerDialogViewModel> CreateCustomerDialogViewModel(int? customerId = null)
     {
         var viewModel = new CustomerDialogViewModel();
         
-        // Load cities
+        // Tải danh sách thành phố
         viewModel.Cities = new ObservableCollection<City>(await _dbContext.Cities.ToListAsync());
 
         if (customerId.HasValue)
         {
-            // Load existing customer data
+            // Tải dữ liệu khách hàng hiện có
             var customer = await _dbContext.Customers
                 .Include(c => c.City)
                 .FirstOrDefaultAsync(c => c.CustomerID == customerId);
@@ -525,6 +578,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         return viewModel;
     }
 
+    /// <summary>
+    /// Thêm khách hàng mới vào cơ sở dữ liệu
+    /// </summary>
     public async Task<bool> AddCustomerAsync(CustomerDialogViewModel dialogViewModel)
     {
         try
@@ -574,6 +630,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         }
     }
 
+    /// <summary>
+    /// Cập nhật thông tin khách hàng
+    /// </summary>
     public async Task<bool> UpdateCustomerAsync(int customerId, CustomerDialogViewModel dialogViewModel)
     {
         try
@@ -631,6 +690,9 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
         }
     }
 
+    /// <summary>
+    /// Xóa khách hàng theo ID
+    /// </summary>
     public async Task<bool> DeleteCustomerAsync(int customerId)
     {
         try
@@ -682,4 +744,4 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
             return false;
         }
     }
-} 
+}

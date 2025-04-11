@@ -72,20 +72,20 @@ public partial class LoginViewModel : ObservableObject
             var isValid = await _authService.VerifyBackupKeyAsync(backupKey);
             if (isValid)
             {
-                await _activityLogService.LogActivityAsync("Login", "Backup Key", 
-                    "Account recovered using backup key", "Success", Username);
+                await _activityLogService.LogActivityAsync("Đăng nhập", "Khóa sao lưu", 
+                    "Khôi phục tài khoản thành công bằng khóa sao lưu", "Success", Username);
             }
             else 
             {
-                await _activityLogService.LogActivityAsync("Login", "Backup Key", 
-                    "Failed to recover account - Invalid backup key", "Error", Username);
+                await _activityLogService.LogActivityAsync("Đăng nhập", "Khóa sao lưu", 
+                    "Khôi phục tài khoản thất bại - Khóa sao lưu không hợp lệ", "Error", Username);
             }
             return isValid;
         }
         catch (Exception ex)
         {
-            await _activityLogService.LogActivityAsync("Login", "Backup Key", 
-                $"Failed to verify backup key - {ex.Message}", "Error", Username);
+            await _activityLogService.LogActivityAsync("Đăng nhập", "Khóa sao lưu", 
+                $"Không thể xác thực khóa sao lưu - {ex.Message}", "Error", Username);
             return false;
         }
     }
@@ -95,14 +95,14 @@ public partial class LoginViewModel : ObservableObject
         try
         {
             await _authService.ResetAdminAccountAsync();
-            await _activityLogService.LogActivityAsync("Login", "Admin Reset", 
-                "Admin account has been reset", "Success", "System");
+            await _activityLogService.LogActivityAsync("Đăng nhập", "Đặt lại tài khoản quản trị", 
+                "Tài khoản quản trị đã được đặt lại", "Success", "System");
         }
         catch (Exception ex)
         {
-            await _activityLogService.LogActivityAsync("Login", "Admin Reset", 
-                $"Failed to reset admin account - {ex.Message}", "Error", "System");
-            throw; // Re-throw to handle in UI layer
+            await _activityLogService.LogActivityAsync("Đăng nhập", "Đặt lại tài khoản quản trị", 
+                $"Không thể đặt lại tài khoản quản trị - {ex.Message}", "Error", "System");
+            throw; // Ném lại ngoại lệ để xử lý ở tầng UI
         }
     }
 
@@ -130,9 +130,9 @@ public partial class LoginViewModel : ObservableObject
 
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(password))
         {
-            ErrorMessage = "Please enter both username and password";
-            await _activityLogService.LogActivityAsync("Login", "Login Attempt", 
-                "Login failed - Empty username or password", "Error", Username);
+            ErrorMessage = "Vui lòng nhập cả tên đăng nhập và mật khẩu";
+            await _activityLogService.LogActivityAsync("Đăng nhập", "Đăng nhập", 
+                "Đăng nhập thất bại - Tên đăng nhập hoặc mật khẩu trống", "Error", Username);
             return;
         }
 
@@ -148,7 +148,7 @@ public partial class LoginViewModel : ObservableObject
                         Username = Username,
                         Password = password,
                         LastLoginTime = DateTime.UtcNow,
-                        ExpiresAt = DateTime.UtcNow.AddHours(1) // Remember for 1 hour
+                        ExpiresAt = DateTime.UtcNow.AddHours(1) // Ghi nhớ trong 1 giờ
                     };
                     _secureStorage.SaveSecureData<RememberedLogin>(REMEMBERED_LOGIN_KEY, rememberedLogin);
                 }
@@ -157,24 +157,24 @@ public partial class LoginViewModel : ObservableObject
                     _secureStorage.SaveSecureData<RememberedLogin?>(REMEMBERED_LOGIN_KEY, null);
                 }
 
-                await _activityLogService.LogActivityAsync("Login", "Login Success", 
-                    "User logged in successfully", "Success", Username);
+                await _activityLogService.LogActivityAsync("Đăng nhập", "Đăng nhập thành công", 
+                    "Người dùng đăng nhập thành công", "Success", Username);
 
                 await App.GetService<IActivationService>().ActivateAsync(null!);
                 LoginSuccessful?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                ErrorMessage = error ?? "Login failed. Please try again.";
-                await _activityLogService.LogActivityAsync("Login", "Login Failed", 
-                    $"Login failed - {error}", "Error", Username);
+                ErrorMessage = error ?? "Đăng nhập thất bại. Vui lòng thử lại.";
+                await _activityLogService.LogActivityAsync("Đăng nhập", "Đăng nhập thất bại", 
+                    $"Đăng nhập thất bại - {error}", "Error", Username);
             }
         }
         catch (System.Exception ex)
         {
-            ErrorMessage = $"An error occurred: {ex.Message}";
-            await _activityLogService.LogActivityAsync("Login", "Login Error", 
-                $"Login error - {ex.Message}", "Error", Username);
+            ErrorMessage = $"Đã xảy ra lỗi: {ex.Message}";
+            await _activityLogService.LogActivityAsync("Đăng nhập", "Lỗi đăng nhập", 
+                $"Lỗi đăng nhập - {ex.Message}", "Error", Username);
         }
     }
 }

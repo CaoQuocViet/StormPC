@@ -35,6 +35,9 @@ public partial class FirstTimeViewModel : ObservableObject
         _versionDescription = GetVersionDescription();
     }
 
+    /// <summary>
+    /// Lấy mô tả phiên bản ứng dụng
+    /// </summary>
     private static string GetVersionDescription()
     {
         Version version;
@@ -52,41 +55,44 @@ public partial class FirstTimeViewModel : ObservableObject
         return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
     }
 
+    /// <summary>
+    /// Tạo tài khoản quản trị viên
+    /// </summary>
     [RelayCommand]
     private async Task CreateAdminAccountAsync((string password, string confirmPassword) passwords)
     {
         ErrorMessage = string.Empty;
 
-        // Validation
+        // Kiểm tra dữ liệu
         if (string.IsNullOrEmpty(Username))
         {
-            ErrorMessage = "Username is required";
-            await _activityLogService.LogActivityAsync("Registration", "Validation Error", 
-                "Admin account creation failed - Empty username", "Error", Username);
+            ErrorMessage = "Tên đăng nhập không được để trống";
+            await _activityLogService.LogActivityAsync("Đăng ký", "Lỗi xác thực", 
+                "Tạo tài khoản quản trị thất bại - Tên đăng nhập trống", "Error", Username);
             return;
         }
 
         if (string.IsNullOrEmpty(passwords.password))
         {
-            ErrorMessage = "Password is required";
-            await _activityLogService.LogActivityAsync("Registration", "Validation Error", 
-                "Admin account creation failed - Empty password", "Error", Username);
+            ErrorMessage = "Mật khẩu không được để trống";
+            await _activityLogService.LogActivityAsync("Đăng ký", "Lỗi xác thực", 
+                "Tạo tài khoản quản trị thất bại - Mật khẩu trống", "Error", Username);
             return;
         }
 
         if (passwords.password.Length < 8)
         {
-            ErrorMessage = "Password must be at least 8 characters long";
-            await _activityLogService.LogActivityAsync("Registration", "Validation Error", 
-                "Admin account creation failed - Password too short", "Error", Username);
+            ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự";
+            await _activityLogService.LogActivityAsync("Đăng ký", "Lỗi xác thực", 
+                "Tạo tài khoản quản trị thất bại - Mật khẩu quá ngắn", "Error", Username);
             return;
         }
 
         if (passwords.password != passwords.confirmPassword)
         {
-            ErrorMessage = "Passwords do not match";
-            await _activityLogService.LogActivityAsync("Registration", "Validation Error", 
-                "Admin account creation failed - Passwords don't match", "Error", Username);
+            ErrorMessage = "Mật khẩu không khớp";
+            await _activityLogService.LogActivityAsync("Đăng ký", "Lỗi xác thực", 
+                "Tạo tài khoản quản trị thất bại - Mật khẩu không khớp", "Error", Username);
             return;
         }
 
@@ -95,24 +101,24 @@ public partial class FirstTimeViewModel : ObservableObject
             var success = await _authService.CreateAdminAccount(Username, passwords.password);
             if (success)
             {
-                // Generate backup key
+                // Tạo khóa dự phòng
                 BackupKey = await _authService.GenerateBackupKeyAsync();
-                await _activityLogService.LogActivityAsync("Registration", "Admin Account Created", 
-                    $"Admin account created successfully for user: {Username}", "Success", Username);
+                await _activityLogService.LogActivityAsync("Đăng ký", "Tạo tài khoản quản trị", 
+                    $"Tạo tài khoản quản trị thành công cho người dùng: {Username}", "Success", Username);
                 AccountCreated?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                ErrorMessage = "Failed to create admin account. Please try again.";
-                await _activityLogService.LogActivityAsync("Registration", "Creation Error", 
-                    "Admin account creation failed - Unknown error", "Error", Username);
+                ErrorMessage = "Không thể tạo tài khoản quản trị. Vui lòng thử lại.";
+                await _activityLogService.LogActivityAsync("Đăng ký", "Lỗi tạo tài khoản", 
+                    "Tạo tài khoản quản trị thất bại - Lỗi không xác định", "Error", Username);
             }
         }
         catch (System.Exception ex)
         {
-            ErrorMessage = $"An error occurred: {ex.Message}";
-            await _activityLogService.LogActivityAsync("Registration", "System Error", 
-                $"Admin account creation failed - {ex.Message}", "Error", Username);
+            ErrorMessage = $"Đã xảy ra lỗi: {ex.Message}";
+            await _activityLogService.LogActivityAsync("Đăng ký", "Lỗi hệ thống", 
+                $"Tạo tài khoản quản trị thất bại - {ex.Message}", "Error", Username);
         }
     }
 }

@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace StormPC.ViewModels.Dashboard;
 
+/// <summary>
+/// ViewModel cho báo cáo doanh thu
+/// </summary>
 public partial class RevenueReportViewModel : ObservableObject
 {
     private readonly IRevenueReportService _revenueReportService;
@@ -46,6 +49,9 @@ public partial class RevenueReportViewModel : ObservableObject
     [ObservableProperty]
     private IEnumerable<ICartesianAxis>? _categoryYAxes;
 
+    /// <summary>
+    /// Định dạng giá trị tiền tệ để hiển thị trên biểu đồ
+    /// </summary>
     private string FormatCurrency(double value)
     {
         if (value >= 1_000_000_000) // Tỷ
@@ -65,6 +71,9 @@ public partial class RevenueReportViewModel : ObservableObject
         LoadDataAsync().ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Làm mới dữ liệu báo cáo doanh thu
+    /// </summary>
     [RelayCommand]
     private async Task RefreshAsync()
     {
@@ -100,6 +109,9 @@ public partial class RevenueReportViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Tải dữ liệu báo cáo doanh thu
+    /// </summary>
     private async Task LoadDataAsync()
     {
         try
@@ -213,4 +225,4 @@ public partial class RevenueReportViewModel : ObservableObject
             );
         }
     }
-} 
+}
