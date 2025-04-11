@@ -10,24 +10,37 @@ using StormPC.Contracts.Services;
 
 namespace StormPC.Services;
 
+/// <summary>
+/// Dịch vụ quản lý NavigationView và điều hướng qua các mục menu
+/// </summary>
 public class NavigationViewService : INavigationViewService
 {
     private readonly INavigationService _navigationService;
-
     private readonly IPageService _pageService;
-
     private NavigationView? _navigationView;
 
+    /// <summary>
+    /// Các mục menu được cấu hình trong NavigationView
+    /// </summary>
     public IList<object>? MenuItems => _navigationView?.MenuItems;
 
+    /// <summary>
+    /// Mục cài đặt trong NavigationView
+    /// </summary>
     public object? SettingsItem => _navigationView?.SettingsItem;
 
+    /// <summary>
+    /// Khởi tạo dịch vụ NavigationView
+    /// </summary>
     public NavigationViewService(INavigationService navigationService, IPageService pageService)
     {
         _navigationService = navigationService;
         _pageService = pageService;
     }
 
+    /// <summary>
+    /// Khởi tạo NavigationView và đăng ký các sự kiện
+    /// </summary>
     [MemberNotNull(nameof(_navigationView))]
     public void Initialize(NavigationView navigationView)
     {
@@ -36,6 +49,9 @@ public class NavigationViewService : INavigationViewService
         _navigationView.ItemInvoked += OnItemInvoked;
     }
 
+    /// <summary>
+    /// Hủy đăng ký các sự kiện
+    /// </summary>
     public void UnregisterEvents()
     {
         if (_navigationView != null)
@@ -45,6 +61,9 @@ public class NavigationViewService : INavigationViewService
         }
     }
 
+    /// <summary>
+    /// Lấy mục được chọn dựa trên loại trang
+    /// </summary>
     public NavigationViewItem? GetSelectedItem(Type pageType)
     {
         if (_navigationView != null)
@@ -55,8 +74,14 @@ public class NavigationViewService : INavigationViewService
         return null;
     }
 
+    /// <summary>
+    /// Xử lý sự kiện khi nút Back được nhấn
+    /// </summary>
     private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) => _navigationService.GoBack();
 
+    /// <summary>
+    /// Xử lý sự kiện khi một mục menu được chọn
+    /// </summary>
     private void OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
         if (args.IsSettingsInvoked)
@@ -74,6 +99,9 @@ public class NavigationViewService : INavigationViewService
         }
     }
 
+    /// <summary>
+    /// Tìm mục được chọn trong danh sách menu
+    /// </summary>
     private NavigationViewItem? GetSelectedItem(IEnumerable<object> menuItems, Type pageType)
     {
         foreach (var item in menuItems.OfType<NavigationViewItem>())
@@ -93,6 +121,9 @@ public class NavigationViewService : INavigationViewService
         return null;
     }
 
+    /// <summary>
+    /// Kiểm tra xem một mục menu có phù hợp với loại trang không
+    /// </summary>
     private bool IsMenuItemForPageType(NavigationViewItem menuItem, Type sourcePageType)
     {
         if (menuItem.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)

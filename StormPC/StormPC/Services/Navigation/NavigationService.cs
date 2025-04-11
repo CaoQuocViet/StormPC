@@ -10,8 +10,9 @@ using StormPC.Helpers;
 
 namespace StormPC.Services;
 
-// For more information on navigation between pages see
-// https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md
+/// <summary>
+/// Dịch vụ điều hướng giữa các trang trong ứng dụng
+/// </summary>
 public class NavigationService : INavigationService
 {
     private readonly IPageService _pageService;
@@ -20,6 +21,9 @@ public class NavigationService : INavigationService
 
     public event NavigatedEventHandler? Navigated;
 
+    /// <summary>
+    /// Frame điều hướng chính của ứng dụng
+    /// </summary>
     public Frame? Frame
     {
         get
@@ -41,14 +45,23 @@ public class NavigationService : INavigationService
         }
     }
 
+    /// <summary>
+    /// Kiểm tra xem có thể quay lại trang trước đó không
+    /// </summary>
     [MemberNotNullWhen(true, nameof(Frame), nameof(_frame))]
     public bool CanGoBack => Frame != null && Frame.CanGoBack;
 
+    /// <summary>
+    /// Khởi tạo dịch vụ điều hướng
+    /// </summary>
     public NavigationService(IPageService pageService)
     {
         _pageService = pageService;
     }
 
+    /// <summary>
+    /// Đăng ký sự kiện cho frame điều hướng
+    /// </summary>
     private void RegisterFrameEvents()
     {
         if (_frame != null)
@@ -57,6 +70,9 @@ public class NavigationService : INavigationService
         }
     }
 
+    /// <summary>
+    /// Hủy đăng ký sự kiện cho frame điều hướng
+    /// </summary>
     private void UnregisterFrameEvents()
     {
         if (_frame != null)
@@ -65,6 +81,9 @@ public class NavigationService : INavigationService
         }
     }
 
+    /// <summary>
+    /// Quay lại trang trước đó
+    /// </summary>
     public bool GoBack()
     {
         if (CanGoBack)
@@ -82,6 +101,9 @@ public class NavigationService : INavigationService
         return false;
     }
 
+    /// <summary>
+    /// Điều hướng đến trang được chỉ định bằng khóa
+    /// </summary>
     public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);
@@ -106,11 +128,17 @@ public class NavigationService : INavigationService
         return false;
     }
 
+    /// <summary>
+    /// Điều hướng đến trang được chỉ định bằng khóa một cách bất đồng bộ
+    /// </summary>
     public async Task<bool> NavigateToAsync(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         return await Task.Run(() => NavigateTo(pageKey, parameter, clearNavigation));
     }
 
+    /// <summary>
+    /// Xử lý sự kiện khi điều hướng xảy ra
+    /// </summary>
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         if (sender is Frame frame)

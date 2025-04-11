@@ -6,8 +6,14 @@ using StormPC.Views.Shell;
 
 namespace StormPC.Services;
 
+/// <summary>
+/// Dịch vụ quản lý và hiển thị các hộp thoại
+/// </summary>
 public class DialogService : IDialogService
 {
+    /// <summary>
+    /// Hiển thị hộp thoại tìm kiếm với từ khóa đã nhập
+    /// </summary>
     public async Task ShowSearchDialogAsync(string searchQuery)
     {
         var searchDialog = new SearchDialog();
@@ -23,9 +29,9 @@ public class DialogService : IDialogService
 
         };
 
-        // Trigger search with the query
+        // Kích hoạt tìm kiếm với từ khóa đã nhập
         await searchDialog.ViewModel.SearchCommand.ExecuteAsync(null);
 
         await dialog.ShowAsync();
     }
-} 
+}

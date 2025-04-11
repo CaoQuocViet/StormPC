@@ -18,34 +18,43 @@ using StormPC.Views.Shell;
 
 namespace StormPC.Services;
 
+/// <summary>
+/// Dịch vụ quản lý ánh xạ giữa ViewModel và Page
+/// </summary>
 public class PageService : IPageService
 {
     private readonly Dictionary<string, Type> _pages = new();
 
+    /// <summary>
+    /// Khởi tạo dịch vụ và cấu hình ánh xạ giữa các ViewModel và Page
+    /// </summary>
     public PageService()
     {
         Configure<ShellViewModel, ShellPage>();
         
-        // Report pages
+        // Các trang báo cáo
         Configure<InventoryReportViewModel, InventoryReportPage>();
         Configure<RevenueReportViewModel, RevenueReportPage>();
         Configure<CustomerReportViewModel, CustomerReportPage>();
         
-        // Base Data pages
+        // Các trang dữ liệu cơ sở
         Configure<CategoriesViewModel, CategoriesPage>();
         Configure<ProductsViewModel, ProductsPage>();
         
-        // Orders pages
+        // Các trang đơn hàng
         Configure<OrderListViewModel, OrderListPage>();
         Configure<OrderDetailViewModel, OrderDetailPage>();
         
-        // Activity Log page
+        // Trang nhật ký hoạt động
         Configure<ActivityLogViewModel, ActivityLogPage>();
         
-        // Settings page
+        // Trang cài đặt
         Configure<SettingsViewModel, SettingsPage>();
     }
 
+    /// <summary>
+    /// Lấy loại trang dựa trên khóa (tên ViewModel)
+    /// </summary>
     public Type GetPageType(string key)
     {
         Type? pageType;
@@ -53,13 +62,16 @@ public class PageService : IPageService
         {
             if (!_pages.TryGetValue(key, out pageType))
             {
-                throw new ArgumentException($"Page not found: {key}. Did you forget to call PageService.Configure?");
+                throw new ArgumentException($"Không tìm thấy trang: {key}. Bạn có quên gọi PageService.Configure không?");
             }
         }
 
         return pageType;
     }
 
+    /// <summary>
+    /// Cấu hình ánh xạ giữa ViewModel và Page
+    /// </summary>
     private void Configure<VM, V>()
         where VM : ObservableObject
         where V : Page
@@ -69,13 +81,13 @@ public class PageService : IPageService
             var key = typeof(VM).FullName!;
             if (_pages.ContainsKey(key))
             {
-                throw new ArgumentException($"The key {key} is already configured in PageService");
+                throw new ArgumentException($"Khóa {key} đã được cấu hình trong PageService");
             }
 
             var type = typeof(V);
             if (_pages.ContainsValue(type))
             {
-                throw new ArgumentException($"This type is already configured with key {_pages.First(p => p.Value == type).Key}");
+                throw new ArgumentException($"Loại này đã được cấu hình với khóa {_pages.First(p => p.Value == type).Key}");
             }
 
             _pages.Add(key, type);

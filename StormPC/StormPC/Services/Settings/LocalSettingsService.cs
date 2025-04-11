@@ -11,6 +11,9 @@ using Windows.Storage;
 
 namespace StormPC.Services;
 
+/// <summary>
+/// Dịch vụ quản lý cài đặt cục bộ của ứng dụng
+/// </summary>
 public class LocalSettingsService : ILocalSettingsService
 {
     private const string _defaultApplicationDataFolder = "StormPC/ApplicationData";
@@ -27,6 +30,9 @@ public class LocalSettingsService : ILocalSettingsService
 
     private bool _isInitialized;
 
+    /// <summary>
+    /// Khởi tạo dịch vụ quản lý cài đặt cục bộ
+    /// </summary>
     public LocalSettingsService(IFileService fileService, IOptions<LocalSettingsOptions> options)
     {
         _fileService = fileService;
@@ -38,6 +44,9 @@ public class LocalSettingsService : ILocalSettingsService
         _settings = new Dictionary<string, object>();
     }
 
+    /// <summary>
+    /// Khởi tạo và nạp cài đặt từ file
+    /// </summary>
     private async Task InitializeAsync()
     {
         if (!_isInitialized)
@@ -48,6 +57,9 @@ public class LocalSettingsService : ILocalSettingsService
         }
     }
 
+    /// <summary>
+    /// Đọc giá trị cài đặt từ khóa
+    /// </summary>
     public async Task<T?> ReadSettingAsync<T>(string key)
     {
         if (RuntimeHelper.IsMSIX)
@@ -70,6 +82,9 @@ public class LocalSettingsService : ILocalSettingsService
         return default;
     }
 
+    /// <summary>
+    /// Lưu giá trị cài đặt theo khóa
+    /// </summary>
     public async Task SaveSettingAsync<T>(string key, T? value)
     {
         if (RuntimeHelper.IsMSIX)
