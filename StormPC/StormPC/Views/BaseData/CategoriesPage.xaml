@@ -127,7 +127,7 @@
                     
                     <controls:DataGrid.Columns>
                         <controls:DataGridTextColumn Header="ID" 
-                                          Binding="{Binding CategoryID}" 
+                                          Binding="{Binding CategoryID, Mode=OneWay}" 
                                           Tag="CategoryID"
                                           Width="80">
                             <controls:DataGridTextColumn.HeaderStyle>
@@ -135,7 +135,7 @@
                             </controls:DataGridTextColumn.HeaderStyle>
                         </controls:DataGridTextColumn>
                         <controls:DataGridTextColumn Header="Loại sản phẩm" 
-                                          Binding="{Binding CategoryName}" 
+                                          Binding="{Binding CategoryName, Mode=OneWay}" 
                                           Tag="CategoryName"
                                           Width="200">
                             <controls:DataGridTextColumn.ElementStyle>
@@ -146,7 +146,7 @@
                             </controls:DataGridTextColumn.HeaderStyle>
                         </controls:DataGridTextColumn>
                         <controls:DataGridTextColumn Header="Thông tin" 
-                                          Binding="{Binding Description}" 
+                                          Binding="{Binding Description, Mode=OneWay}" 
                                           Tag="Description"
                                           Width="*">
                             <controls:DataGridTextColumn.ElementStyle>
@@ -157,7 +157,7 @@
                             </controls:DataGridTextColumn.HeaderStyle>
                         </controls:DataGridTextColumn>
                         <controls:DataGridTextColumn Header="Số lượng SP" 
-                                          Binding="{Binding ProductCount}" 
+                                          Binding="{Binding ProductCount, Mode=OneWay}" 
                                           Tag="ProductCount"
                                           Width="120">
                             <controls:DataGridTextColumn.HeaderStyle>
@@ -165,7 +165,7 @@
                             </controls:DataGridTextColumn.HeaderStyle>
                         </controls:DataGridTextColumn>
                         <controls:DataGridTextColumn Header="Ngày tạo" 
-                                          Binding="{Binding FormattedCreatedAt}" 
+                                          Binding="{Binding FormattedCreatedAt, Mode=OneWay}" 
                                           Tag="CreatedAt"
                                           Width="150">
                             <controls:DataGridTextColumn.HeaderStyle>
@@ -173,7 +173,7 @@
                             </controls:DataGridTextColumn.HeaderStyle>
                         </controls:DataGridTextColumn>
                         <controls:DataGridTextColumn Header="Cập nhật" 
-                                          Binding="{Binding FormattedUpdatedAt}" 
+                                          Binding="{Binding FormattedUpdatedAt, Mode=OneWay}" 
                                           Tag="UpdatedAt"
                                           Width="150">
                             <controls:DataGridTextColumn.HeaderStyle>
@@ -182,7 +182,7 @@
                         </controls:DataGridTextColumn>
                         <controls:DataGridTemplateColumn Header="Thao tác" Width="120">
                             <controls:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate x:DataType="dtos:CategoryDisplayDto">
+                                <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Spacing="8">
                                         <Button Content="&#xE70F;"
                                                 FontFamily="Segoe MDL2 Assets"
