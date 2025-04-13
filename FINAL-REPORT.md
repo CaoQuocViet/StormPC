@@ -1,3 +1,19 @@
+# TỰ ĐÁNH GIÁ DỰ ÁN STORMPC 2024
+
+## Đánh Giá Tổng Quan
+- Tự đánh giá đã hoàn thành gần như tất cả các chức năng trong Requirements ở phần chức năng cơ sở, chỉ còn xót:
+  + Cho phép import dữ liệu từ tập tin Excel hoặc Access
+  + Tìm kiếm các đơn hàng từ ngày đến ngày
+- Thay vào đó là các chức năng bổ sung phù hợp với yêu cầu của chủ đề Laptop và nhu cầu thực tế của người dùng
+- Các chức năng tự chọn đã hoàn thành được tổng 6 điểm
+- Các chức năng tự tìm hiểu, mong được xem xét cộng thêm 1 điểm (do tính ứng dụng thực tế, công sức tìm hiểu và độ khó cao):
+  + Backup key để khôi phục đăng nhập
+  + Activity log ghi lại toàn bộ hoạt động người dùng
+  + Dark mode (cái này dễ, mặc định template đã có)
+
+* ĐIỂM TỰ CHẤM CHO TOÀN BỘ ĐỒ ÁN: 10đ
+---
+
 # BÁO CÁO CUỐI KỲ - STORMPC 2024
 
 ## A. Chức Năng Cơ Sở
