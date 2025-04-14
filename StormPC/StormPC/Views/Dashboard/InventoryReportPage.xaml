@@ -144,7 +144,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="7" Style="{StaticResource CardStyle}">
+                <Grid Grid.Column="7" Style="{StaticResource CardStyle}" Margin="0,0,10,0">
                     <StackPanel Margin="10">
                         <TextBlock Text="Doanh thu hôm nay" Style="{StaticResource CaptionTextBlockStyle}"/>
                         <TextBlock Text="{x:Bind ViewModel.TodayRevenue, Mode=OneWay, Converter={StaticResource CurrencyConverter}}" 
