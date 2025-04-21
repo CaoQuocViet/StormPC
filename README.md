@@ -1,14 +1,14 @@
-# HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG STORMPC 2024
+# STORMPC 2024
 
 ## Video Demo và Hướng Dẫn
-- Demo chi tiết tính năng: [YouTube - Demo StormPC](https://youtu.be/DgZmjmd82U8)
+- Demo chi tiết tính năng: [YouTube - Demo StormPC](https://youtu.be/dRkxu4bkW9A)
 - Hướng dẫn cài đặt ứng dụng vào máy: Xem video trong thư mục `/output_stormpc/Final_QL2_release.mp4`
 
-## A. Cài Đặt Từ Installer (Khuyến nghị)
+## A. Cài Đặt Từ Installer
 1. Vào thư mục `/output_stormpc/StormPC_1.0.6.2_Debug_Test`
 2. xem hướng dẫn chi tiết từ video đính kèm
 
-## B. Chạy Từ Source Code (Dành Cho Developer)
+## B. Chạy Từ Source Code
 
 ### 1. Yêu Cầu Hệ Thống
 - Windows 10/11
@@ -98,4 +98,4 @@
 - Sao lưu và khôi phục dữ liệu
 - Giao diện responsive với hỗ trợ dark mode
 
-> ⚠️ **Lưu ý:** Chạy ứng dụng ở chế độ Debug sẽ đảm bảo hoạt động đầy đủ các tính năng. Bản release có thể gặp một số hạn chế do môi trường Windows.
+> ⚠️ **Lưu ý:** Chạy ứng dụng ở chế độ Debug sẽ đảm bảo hoạt động đầy đủ các tính năng. Bản release có thể gặp một số hạn chế do môi trường Windows. Chưa fix được các lỗi runtime cho môi trường production.

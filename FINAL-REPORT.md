@@ -1,17 +1,61 @@
-# TỰ ĐÁNH GIÁ DỰ ÁN STORMPC 2024
+# TỰ ĐÁNH GIÁ ĐỒ ÁN STORMPC 2024
+
+> **Ghi chú**:  
+> - Bài nộp báo cáo quá trình và cuối kì là giống nhau vì đồ án được hoàn thành trước deadline báo cáo quá trình. 
+> - Link GitHub được để private, chỉ mở sau khi học kì kết thúc, sau DL cuối kì là 30 ngày.
+> - Link GitHub: [https://github.com/CaoQuocViet/StormPC](https://github.com/CaoQuocViet/StormPC)
+> - Video Demo: [https://youtu.be/dRkxu4bkW9A](https://youtu.be/dRkxu4bkW9A)
 
 ## Đánh Giá Tổng Quan
 - Tự đánh giá đã hoàn thành gần như tất cả các chức năng trong Requirements ở phần chức năng cơ sở, chỉ còn xót:
   + Cho phép import dữ liệu từ tập tin Excel hoặc Access
   + Tìm kiếm các đơn hàng từ ngày đến ngày
 - Thay vào đó là các chức năng bổ sung phù hợp với yêu cầu của chủ đề Laptop và nhu cầu thực tế của người dùng
-- Các chức năng tự chọn đã hoàn thành được tổng 6 điểm
+- Các chức năng tự chọn đã hoàn thành được tổng 5,5 điểm
 - Các chức năng tự tìm hiểu, mong được xem xét cộng thêm 1 điểm (do tính ứng dụng thực tế, công sức tìm hiểu và độ khó cao):
   + Backup key để khôi phục đăng nhập
   + Activity log ghi lại toàn bộ hoạt động người dùng
   + Dark mode (cái này dễ, mặc định template đã có)
 
 * ĐIỂM TỰ CHẤM CHO TOÀN BỘ ĐỒ ÁN: 10đ
+
+## Hình Ảnh Demo Chức Năng
+1. Màn hình cài đặt (Settings):  
+   ![Settings](/Resources/demo_img/1-setting-dark.png)
+
+2. Nhật ký hoạt động (Activity Log):  
+   ![Activity Log](/Resources/demo_img/2-activitylog-dark.png)
+
+3. Quản lý sản phẩm (Products):  
+   ![Products](/Resources/demo_img/3-product-dark.png)
+
+4. Quản lý danh mục (Categories):  
+   ![Categories](/Resources/demo_img/4-category-dark.png)
+
+5. Danh sách đơn hàng (Order List):  
+   ![Order List](/Resources/demo_img/5-orderlist-dark.png)
+
+6. Chi tiết đơn hàng (Order Details):  
+   ![Order Details](/Resources/demo_img/6-orderdetails-dark.png)
+
+7. Báo cáo khách hàng (Customer Report):  
+   ![Customer Report](/Resources/demo_img/7-customerreport-light.png)
+
+8. Bảng báo cáo khách hàng (Customer Report Table):  
+   ![Customer Report Table](/Resources/demo_img/8-customerreporttable-light.png)
+
+9. Báo cáo doanh thu (Revenue Report):  
+   ![Revenue Report](/Resources/demo_img/9-revenuereport-light.png)
+
+10. Báo cáo tồn kho (Inventory Report):  
+    ![Inventory Report](/Resources/demo_img/10-inventoryreport-light.png)
+
+11. Bảng báo cáo tồn kho (Inventory Report Table):  
+    ![Inventory Report Table](/Resources/demo_img/11-inventoryreporttable-light.png)
+
+12. Tìm kiếm nâng cao (Advanced Search):  
+    ![Advanced Search](/Resources/demo_img/12-advancedsearch-light.png)
+
 ---
 
 # BÁO CÁO CUỐI KỲ - STORMPC 2024
@@ -29,30 +73,6 @@
 - Giới hạn 5 lần đăng nhập sai và khóa 15 phút
 - Phiên làm việc có hiệu lực trong 12 giờ
 
-#### Mục Tiêu/Ý Nghĩa
-- Bảo mật thông tin đăng nhập của người dùng
-- Tăng trải nghiệm người dùng với tính năng ghi nhớ đăng nhập
-- Bảo vệ tài khoản khỏi các cuộc tấn công brute force
-
-#### Các Yêu Cầu Đầu Vào
-- Username và password khi đăng nhập lần đầu
-- Thông tin server (nếu cần cấu hình)
-
-#### Quy Trình Thực Hiện
-1. Kiểm tra xem đã setup lần đầu chưa
-2. Nếu chưa setup:
-   - Mở FirstTimeWindow để tạo tài khoản admin
-   - Chuyển sang màn hình đăng nhập
-3. Nếu đã setup:
-   - Kiểm tra thông tin ghi nhớ đăng nhập
-   - Nếu có và còn hạn (1 giờ), tự động đăng nhập
-   - Nếu không, yêu cầu nhập thông tin đăng nhập
-
-#### Lưu ý
-- Thông tin đăng nhập được mã hóa bằng Argon2id với các tham số bảo mật cao
-- Dữ liệu được lưu trữ an toàn trong SecureStorage với mã hóa Windows ProtectedData
-- Tự động đăng xuất sau 12 giờ không hoạt động
-
 ### B2. Dashboard Tổng Quan Hệ Thống
 
 #### Mô tả chi tiết
@@ -64,31 +84,6 @@
   - Tổng doanh thu trong ngày
   - Chi tiết 3 đơn hàng gần nhất
   - Biểu đồ doanh thu theo ngày trong tháng
-
-#### Mục Tiêu/Ý Nghĩa
-- Giúp chủ cửa hàng nắm bắt nhanh tình hình kinh doanh
-- Hỗ trợ ra quyết định về nhập hàng và quản lý kho
-- Theo dõi hiệu quả kinh doanh theo thời gian thực
-
-#### Các Yêu Cầu Đầu Vào
-- Dữ liệu đơn hàng và chi tiết đơn hàng
-- Thông tin sản phẩm và tồn kho
-- Thông tin doanh thu và lợi nhuận
-
-#### Quy Trình Thực Hiện
-1. Thống kê tổng quan:
-   - Tổng số sản phẩm và giá trị tồn kho
-   - Số đơn hàng và doanh thu trong ngày
-   - Danh sách sản phẩm sắp hết hàng
-2. Phân tích doanh số:
-   - Top 5 sản phẩm bán chạy
-   - Biểu đồ doanh thu theo ngày
-   - Chi tiết đơn hàng gần nhất
-
-#### Lưu ý
-- Dữ liệu được cập nhật theo thời gian thực
-- Sử dụng LiveCharts để hiển thị biểu đồ
-- Hỗ trợ xuất báo cáo chi tiết
 
 ### B3. Quản Lý Sản Phẩm
 
@@ -106,36 +101,6 @@
 - Thêm mới, chỉnh sửa và xóa sản phẩm
 - Quản lý danh mục sản phẩm
 
-#### Mục Tiêu/Ý Nghĩa
-- Tổ chức và quản lý sản phẩm hiệu quả
-- Dễ dàng tìm kiếm và lọc sản phẩm
-- Tối ưu hóa quy trình thêm/sửa/xóa
-
-#### Các Yêu Cầu Đầu Vào
-- Thông tin sản phẩm: tên, mô tả, giá, số lượng
-- Danh mục và thương hiệu
-- Thông số kỹ thuật: CPU, GPU, RAM, ổ cứng
-- Hình ảnh sản phẩm
-
-#### Quy Trình Thực Hiện
-1. Quản lý danh mục:
-   - Xem danh sách danh mục
-   - Thêm, sửa, xóa danh mục
-2. Quản lý sản phẩm:
-   - Hiển thị danh sách với phân trang
-   - Sắp xếp và lọc sản phẩm
-   - Tìm kiếm sản phẩm
-3. Thao tác sản phẩm:
-   - Thêm mới sản phẩm
-   - Cập nhật thông tin
-   - Xóa sản phẩm (kiểm tra ràng buộc)
-
-#### Lưu ý
-- Mỗi sản phẩm có SKU duy nhất
-- Không thể xóa sản phẩm đã có trong đơn hàng
-- Tự động cập nhật số lượng tồn kho
-- Cảnh báo khi sản phẩm sắp hết hàng
-
 ### B4. Quản Lý Đơn Hàng
 
 #### Mô tả chi tiết
@@ -147,36 +112,6 @@
   - Đã hủy
 - Tìm kiếm đơn hàng theo ngày
 - Phân trang và sắp xếp linh hoạt
-
-#### Mục Tiêu/Ý Nghĩa
-- Quản lý hiệu quả quy trình bán hàng
-- Theo dõi trạng thái đơn hàng
-- Tối ưu hóa quy trình xử lý đơn hàng
-
-#### Các Yêu Cầu Đầu Vào
-- Thông tin khách hàng
-- Thông tin sản phẩm và số lượng
-- Phương thức thanh toán
-- Trạng thái đơn hàng
-
-#### Quy Trình Thực Hiện
-1. Tạo đơn hàng mới:
-   - Chọn sản phẩm và số lượng
-   - Nhập thông tin khách hàng
-   - Chọn phương thức thanh toán
-2. Quản lý trạng thái:
-   - Cập nhật trạng thái đơn hàng
-   - Ghi nhận thanh toán
-   - Hủy đơn hàng
-3. Xem và tìm kiếm:
-   - Hiển thị danh sách với phân trang
-   - Tìm kiếm theo nhiều tiêu chí
-   - Xem chi tiết từng đơn hàng
-
-#### Lưu ý
-- Chỉ có thể xóa đơn hàng ở trạng thái "Đã hủy"
-- Tự động cập nhật số lượng tồn kho
-- Lưu lại lịch sử thay đổi trạng thái
 
 ### B5. Báo Cáo Thống Kê
 
@@ -192,31 +127,6 @@
    - So sánh với cùng kỳ
    - Biểu đồ cột/bánh thể hiện tỷ lệ
 
-#### Mục Tiêu/Ý Nghĩa
-- Đánh giá hiệu quả kinh doanh
-- Phân tích xu hướng bán hàng
-- Hỗ trợ ra quyết định kinh doanh
-
-#### Các Yêu Cầu Đầu Vào
-- Dữ liệu đơn hàng
-- Thông tin sản phẩm
-- Khoảng thời gian báo cáo
-
-#### Quy Trình Thực Hiện
-1. Báo cáo doanh thu:
-   - Thu thập dữ liệu theo thời gian
-   - Tính toán các chỉ số
-   - Vẽ biểu đồ phân tích
-2. Báo cáo lợi nhuận:
-   - Tính toán lợi nhuận
-   - So sánh và phân tích
-   - Hiển thị biểu đồ
-
-#### Lưu ý
-- Dữ liệu được cập nhật real-time
-- Hỗ trợ xuất báo cáo PDF/Excel
-- Đa dạng loại biểu đồ phân tích
-
 ### B6. Cấu Hình Chương Trình
 
 #### Mô tả chi tiết
@@ -225,61 +135,13 @@
 - Cấu hình thông tin kết nối database
 - Quản lý thông tin doanh nghiệp
 
-#### Mục Tiêu/Ý Nghĩa
-- Tùy biến giao diện theo nhu cầu
-- Tối ưu trải nghiệm người dùng
-- Đảm bảo tính linh hoạt của hệ thống
-
-#### Các Yêu Cầu Đầu Vào
-- Thông số phân trang
-- Thông tin màn hình cuối
-- Thông tin kết nối database
-
-#### Quy Trình Thực Hiện
-1. Cấu hình phân trang:
-   - Chọn số lượng hiển thị
-   - Lưu cấu hình vào settings
-2. Ghi nhớ màn hình:
-   - Lưu màn hình cuối
-   - Khôi phục khi khởi động
-
-#### Lưu ý
-- Cấu hình được lưu trong settings.json
-- Tự động sao lưu trước khi thay đổi
-- Kiểm tra tính hợp lệ của cấu hình
-
 ### B7. Đóng Gói File Cài Đặt
 
 #### Mô tả chi tiết
 - Đóng gói thành file exe để cài đặt
-- Sử dụng BitMono Obfuscator v3.0.1 để bảo vệ mã nguồn
-- Tạo installer chuyên nghiệp
-- Hỗ trợ cài đặt silent
 - Tự động cập nhật phiên bản mới
 
-#### Mục Tiêu/Ý Nghĩa
-- Bảo vệ mã nguồn ứng dụng
-- Đơn giản hóa quá trình cài đặt
-- Tăng tính chuyên nghiệp
 
-#### Các Yêu Cầu Đầu Vào
-- Source code đã build
-- Cấu hình BitMono
-- Tài nguyên cài đặt
-
-#### Quy Trình Thực Hiện
-1. Bảo vệ mã nguồn:
-   - Áp dụng BitMono Obfuscator
-   - Cấu hình rules bảo vệ
-2. Tạo installer:
-   - Đóng gói tài nguyên
-   - Tạo giao diện cài đặt
-   - Test cài đặt
-
-#### Lưu ý
-- Kiểm tra tương thích Windows 10/11
-- Hỗ trợ rollback khi lỗi
-- Tự động backup khi cập nhật
 
 ### 8. Backup / Restore Database (0.25 điểm)
 - Tích hợp chức năng backup và restore database cho PostgreSQL:
@@ -290,7 +152,7 @@
   - Log lại các hoạt động backup/restore
   - Tự động kill các connection hiện tại khi restore
 
-## B. Chức Năng Tự Chọn Đã Triển Khai
+## B. Chức Năng Tự Chọn Đã Triển Khai (5,5đ)
 
 ### 1. Quản Lý Khách Hàng (0.5 điểm)
 - Triển khai đầy đủ trong CustomerReportViewModel:
@@ -364,17 +226,7 @@
   - Badge hiển thị phần trăm giảm giá ở góc sản phẩm
   - Làm tròn giá trị tiền tệ theo đơn vị 1000 VNĐ
 
-### 10. Làm Rối Mã Nguồn (Obfuscator) Chống Dịch Ngược (0.25 điểm)
-- Sử dụng công cụ làm rối mã nguồn để bảo vệ phần mềm khỏi dịch ngược
-- Tăng cường bảo mật mã nguồn và ngăn chặn hành vi phá hoại hoặc sao chép trái phép
-- Sử dụng các kỹ thuật bảo vệ mã nguồn:
-  - Mã hóa các thông tin nhạy cảm như mật khẩu và cấu hình DB
-  - Sử dụng Windows Data Protection API với DataProtectionScope.CurrentUser
-  - Bảo vệ dữ liệu đăng nhập thông qua SecureStorageService
-  - Sử dụng Argon2id cho mã hóa mật khẩu với độ phức tạp cao
-  - Mã hóa thông tin kết nối đến database trong file cấu hình
-
-### 11. Tự Động Thay Đổi Sắp Xếp Hợp Lí Các Thành Phần Theo Độ Rộng Màn Hình (Responsive Layout) (0.5 điểm)
+### 10. Tự Động Thay Đổi Sắp Xếp Hợp Lí Các Thành Phần Theo Độ Rộng Màn Hình (Responsive Layout) (0.5 điểm)
 - Triển khai thiết kế responsive:
   - Sử dụng Grid với các định nghĩa ColumnDefinitions và RowDefinitions linh hoạt
   - Sử dụng ItemsWrapGrid cho hiển thị sản phẩm động theo kích thước màn hình
@@ -388,7 +240,7 @@
   - Thành phần UI thay đổi vị trí, kích thước tự động
   - Đảm bảo trải nghiệm người dùng trên các kích cỡ màn hình khác nhau
 
-### 12. Hỗ Trợ Đa Ngôn Ngữ (0.25 điểm)
+### 11. Hỗ Trợ Đa Ngôn Ngữ (0.25 điểm)
 - Sử dụng ResourceLoader và tệp Resources.resw cho quốc tế hóa:
   - Hỗ trợ cơ bản cho localization thông qua ResourceExtensions
   - Tập trung vào giao diện tiếng Việt với các tệp dữ liệu ngôn ngữ
