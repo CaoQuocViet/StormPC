@@ -176,6 +176,7 @@ public partial class App : Application
         base.OnLaunched(args);
 
         var authService = Host.Services.GetRequiredService<AuthenticationService>();
+        StormPC.Core.Helpers.GetUserName.Initialize(authService);
 
         if (authService.IsFirstTimeSetup())
         {

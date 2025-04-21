@@ -5,6 +5,7 @@ using System.Diagnostics;
 using StormPC.Core.Contracts.Services;
 using System;
 using System.Threading.Tasks;
+using StormPC.Core.Helpers;
 
 namespace StormPC.ViewModels.Orders;
 
@@ -51,7 +52,7 @@ public partial class OrderDetailViewModel : ObservableObject
                 "Tải đơn hàng mới nhất",
                 "Đang tải đơn hàng mới nhất",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             OrderDetail = await _orderDetailService.GetLatestOrderDetailAsync();
@@ -65,7 +66,7 @@ public partial class OrderDetailViewModel : ObservableObject
                     "Tải đơn hàng mới nhất",
                     $"Tải thành công đơn hàng ID: {OrderDetail.OrderID} với {OrderDetail.Items.Count} sản phẩm",
                     "Success",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
             }
             else
@@ -76,7 +77,7 @@ public partial class OrderDetailViewModel : ObservableObject
                     "Tải đơn hàng mới nhất",
                     "Không tìm thấy đơn hàng nào",
                     "Info",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
             }
         }
@@ -89,7 +90,7 @@ public partial class OrderDetailViewModel : ObservableObject
                 "Tải đơn hàng mới nhất",
                 $"Lỗi khi tải đơn hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         finally
@@ -116,7 +117,7 @@ public partial class OrderDetailViewModel : ObservableObject
                 "Tải đơn hàng",
                 $"Đang tải đơn hàng ID: {orderId}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             OrderDetail = await _orderDetailService.GetOrderDetailByIdAsync(orderId);
@@ -130,7 +131,7 @@ public partial class OrderDetailViewModel : ObservableObject
                     "Tải đơn hàng",
                     $"Tải thành công đơn hàng ID: {orderId} với {OrderDetail.Items.Count} sản phẩm",
                     "Success",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
             }
             else
@@ -141,7 +142,7 @@ public partial class OrderDetailViewModel : ObservableObject
                     "Tải đơn hàng",
                     $"Không tìm thấy đơn hàng ID: {orderId}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
             }
         }
@@ -154,7 +155,7 @@ public partial class OrderDetailViewModel : ObservableObject
                 "Tải đơn hàng",
                 $"Lỗi khi tải đơn hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         finally

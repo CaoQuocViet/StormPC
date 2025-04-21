@@ -16,6 +16,7 @@ using LiveChartsCore.Defaults;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using StormPC.Core.Contracts.Services;
+using StormPC.Core.Helpers;
 
 namespace StormPC.ViewModels.Dashboard;
 
@@ -206,7 +207,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Load Data",
                 "Đang tải dữ liệu báo cáo khách hàng",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             // Tải danh sách khách hàng
@@ -363,7 +364,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Load Data",
                 $"Tải thành công dữ liệu báo cáo khách hàng",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -373,7 +374,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Load Data",
                 $"Lỗi khi tải dữ liệu báo cáo: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             // Xử lý lỗi
             System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
@@ -396,7 +397,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Load Customers",
                 "Đang tải danh sách khách hàng",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var query = await _dbContext.Customers
@@ -422,7 +423,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Load Customers",
                 $"Tải thành công {query.Count} khách hàng",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -432,7 +433,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Load Customers",
                 $"Lỗi khi tải danh sách khách hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             System.Diagnostics.Debug.WriteLine($"Error loading customers: {ex.Message}");
         }
@@ -590,7 +591,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Add Customer",
                 $"Đang thêm khách hàng mới: {dialogViewModel.FullName}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var customer = new Customer
@@ -611,7 +612,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Add Customer",
                 $"Thêm thành công khách hàng: {customer.FullName}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             return true;
@@ -623,7 +624,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Add Customer",
                 $"Lỗi khi thêm khách hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             System.Diagnostics.Debug.WriteLine($"Error adding customer: {ex.Message}");
             return false;
@@ -642,7 +643,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Update Customer",
                 $"Đang cập nhật khách hàng ID: {customerId}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var customer = await _dbContext.Customers.FindAsync(customerId);
@@ -662,7 +663,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                     "Update Customer",
                     $"Cập nhật thành công khách hàng: {customer.FullName}",
                     "Success",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return true;
             }
@@ -672,7 +673,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Update Customer",
                 $"Cập nhật thất bại - Không tìm thấy khách hàng ID: {customerId}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return false;
         }
@@ -683,7 +684,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Update Customer",
                 $"Lỗi khi cập nhật khách hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             System.Diagnostics.Debug.WriteLine($"Error updating customer: {ex.Message}");
             return false;
@@ -702,7 +703,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Delete Customer",
                 $"Đang xóa khách hàng ID: {customerId}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var customer = await _dbContext.Customers.FindAsync(customerId);
@@ -717,7 +718,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                     "Delete Customer",
                     $"Xóa thành công khách hàng: {customer.FullName}",
                     "Success",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return true;
             }
@@ -727,7 +728,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Delete Customer",
                 $"Xóa thất bại - Không tìm thấy khách hàng ID: {customerId}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return false;
         }
@@ -738,7 +739,7 @@ public partial class CustomerReportViewModel : ObservableObject, IPaginatedViewM
                 "Delete Customer",
                 $"Lỗi khi xóa khách hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             System.Diagnostics.Debug.WriteLine($"Error deleting customer: {ex.Message}");
             return false;

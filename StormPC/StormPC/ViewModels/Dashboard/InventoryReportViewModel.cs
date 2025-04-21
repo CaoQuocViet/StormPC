@@ -11,6 +11,7 @@ using StormPC.Core.Contracts.Services;
 using System.Collections.ObjectModel;
 using StormPC.Helpers;
 using System.Diagnostics;
+using StormPC.Core.Helpers;
 
 namespace StormPC.ViewModels.Dashboard;
 
@@ -273,7 +274,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Initialize",
                 "Đang khởi tạo báo cáo tồn kho",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             Categories = new ObservableCollection<Category>(await _inventoryReportService.GetCategories());
@@ -285,7 +286,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Initialize",
                 "Khởi tạo báo cáo tồn kho thành công",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -295,7 +296,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Initialize",
                 $"Lỗi khi khởi tạo báo cáo: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
     }
@@ -313,7 +314,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Refresh",
                 "Đang làm mới dữ liệu báo cáo tồn kho",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             await LoadData();
@@ -323,7 +324,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Refresh",
                 "Làm mới dữ liệu báo cáo tồn kho thành công",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -333,7 +334,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Refresh",
                 $"Lỗi khi làm mới dữ liệu: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
     }
@@ -350,7 +351,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Load Data",
                 "Đang tải dữ liệu báo cáo tồn kho",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             // Convert local time to UTC for PostgreSQL
@@ -407,7 +408,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Load Data",
                 $"Tải thành công dữ liệu báo cáo tồn kho từ {StartDate:dd/MM/yyyy} đến {EndDate:dd/MM/yyyy}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -417,7 +418,7 @@ public partial class InventoryReportViewModel : ObservableObject
                 "Load Data",
                 $"Lỗi khi tải dữ liệu báo cáo: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             // Initialize empty collections in case of error

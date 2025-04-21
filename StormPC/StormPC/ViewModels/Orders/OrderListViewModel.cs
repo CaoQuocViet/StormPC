@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System;
 using Microsoft.UI.Xaml.Controls;
 using StormPC.Core.Contracts.Services;
+using StormPC.Core.Helpers;
 
 namespace StormPC.ViewModels.Orders;
 
@@ -94,7 +95,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", "Bắt đầu tải danh sách đơn hàng", "Info", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", "Bắt đầu tải danh sách đơn hàng", "Info", GetUserName.GetCurrentUsername());
             IsLoading = true;
             Debug.WriteLine("Bắt đầu LoadOrders...");
             await _activityLogService.LogActivityAsync(
@@ -102,7 +103,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Tải đơn hàng",
                 "Đang tải danh sách đơn hàng",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             // Kiểm tra kết nối database
@@ -115,7 +116,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Tải đơn hàng",
                     "Lỗi kết nối database - Database context is null",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return;
             }
@@ -183,13 +184,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
             _allOrders = orders;
             FilterAndPaginateOrders();
 
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", $"Đã tải thành công {Orders.Count} đơn hàng", "Success", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", $"Đã tải thành công {Orders.Count} đơn hàng", "Success", GetUserName.GetCurrentUsername());
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Lỗi khi tải đơn hàng: {ex.Message}");
             Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", $"Lỗi: {ex.Message}", "Error", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", $"Lỗi: {ex.Message}", "Error", GetUserName.GetCurrentUsername());
             if (ex.InnerException != null)
             {
                 Debug.WriteLine($"Lỗi bên trong: {ex.InnerException.Message}");
@@ -199,7 +200,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Tải đơn hàng",
                     $"Lỗi bên trong: {ex.InnerException.Message}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
             }
         }
@@ -297,7 +298,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", "Bắt đầu tải danh sách đơn hàng", "Info", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Tải danh sách", "Bắt đầu tải danh sách đơn hàng", "Info", GetUserName.GetCurrentUsername());
             IsLoading = true;
             await LoadOrders();
         }
@@ -319,7 +320,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Xóa đơn hàng",
                 $"Đang xóa đơn hàng ID: {orderId}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             // Tải đơn hàng với trạng thái
@@ -335,7 +336,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Xóa đơn hàng",
                     $"Xóa đơn hàng thất bại - Không tìm thấy đơn hàng ID: {orderId}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return false;
             }
@@ -349,7 +350,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Xóa đơn hàng",
                     $"Xóa đơn hàng thất bại - Đơn hàng ID: {orderId} chưa bị hủy",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return false;
             }
@@ -363,7 +364,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Xóa đơn hàng",
                 $"Xóa đơn hàng thành công ID: {orderId}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             // Làm mới danh sách đơn hàng
@@ -378,7 +379,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Xóa đơn hàng",
                 $"Lỗi khi xóa đơn hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             throw;
         }
@@ -503,13 +504,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Thêm mới", "Bắt đầu thêm đơn hàng mới", "Info", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Thêm mới", "Bắt đầu thêm đơn hàng mới", "Info", GetUserName.GetCurrentUsername());
             await _activityLogService.LogActivityAsync(
                 "Đơn hàng",
                 "Thêm đơn hàng",
                 "Đang thêm đơn hàng mới",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             if (!ValidateOrderData(dialogViewModel, out string errorMessage))
@@ -520,7 +521,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Thêm đơn hàng",
                     $"Thêm đơn hàng thất bại - {errorMessage}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return;
             }
@@ -569,13 +570,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 
                 await _dbContext.SaveChangesAsync();
 
-                await _activityLogService.LogActivityAsync("Đơn hàng", "Thêm mới", "Đã thêm đơn hàng thành công", "Success", "Admin");
+                await _activityLogService.LogActivityAsync("Đơn hàng", "Thêm mới", "Đã thêm đơn hàng thành công", "Success", GetUserName.GetCurrentUsername());
                 await _activityLogService.LogActivityAsync(
                     "Đơn hàng",
                     "Thêm đơn hàng",
                     $"Thêm đơn hàng thành công ID: {newOrderId}",
                     "Success",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
             }
             finally
@@ -598,7 +599,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Thêm đơn hàng",
                 $"Lỗi khi thêm đơn hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return;
         }
@@ -610,7 +611,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Thêm đơn hàng",
                 $"Lỗi khi thêm đơn hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return;
         }
@@ -681,13 +682,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
     {
         try
         {
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Chỉnh sửa", "Bắt đầu chỉnh sửa đơn hàng", "Info", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Chỉnh sửa", "Bắt đầu chỉnh sửa đơn hàng", "Info", GetUserName.GetCurrentUsername());
             await _activityLogService.LogActivityAsync(
                 "Đơn hàng",
                 "Cập nhật đơn hàng",
                 $"Đang cập nhật đơn hàng ID: {orderId}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             if (!ValidateOrderData(dialogViewModel, out string errorMessage))
@@ -698,7 +699,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Cập nhật đơn hàng",
                     $"Cập nhật đơn hàng thất bại - {errorMessage}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return;
             }
@@ -715,7 +716,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                     "Cập nhật đơn hàng",
                     $"Cập nhật thất bại - Không tìm thấy đơn hàng ID: {orderId}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return;
             }
@@ -772,13 +773,13 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
 
             await _dbContext.SaveChangesAsync();
 
-            await _activityLogService.LogActivityAsync("Đơn hàng", "Chỉnh sửa", "Đã cập nhật đơn hàng thành công", "Success", "Admin");
+            await _activityLogService.LogActivityAsync("Đơn hàng", "Chỉnh sửa", "Đã cập nhật đơn hàng thành công", "Success", GetUserName.GetCurrentUsername());
             await _activityLogService.LogActivityAsync(
                 "Đơn hàng",
                 "Cập nhật đơn hàng",
                 $"Cập nhật thành công đơn hàng ID: {orderId}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             await LoadOrders();
@@ -791,7 +792,7 @@ public partial class OrderListViewModel : ObservableObject, IPaginatedViewModel
                 "Cập nhật đơn hàng",
                 $"Lỗi khi cập nhật đơn hàng: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return;
         }

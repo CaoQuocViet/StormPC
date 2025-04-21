@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using StormPC.Core.Services.Products;
 using StormPC.Core.Contracts.Services;
+using StormPC.Core.Helpers;
 
 namespace StormPC.ViewModels.BaseData;
 
@@ -128,7 +129,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Load Categories",
                 "Đang tải danh sách danh mục",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var categories = await _dbContext.Categories
@@ -165,7 +166,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Load Categories",
                 $"Tải thành công {categories.Count} danh mục",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -177,7 +178,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Load Categories",
                 $"Lỗi khi tải danh mục: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         finally
@@ -219,7 +220,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Add Category",
                 $"Đang thêm danh mục mới: {newCategory.CategoryName}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             if (string.IsNullOrWhiteSpace(newCategory.CategoryName?.Trim()))
@@ -229,7 +230,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                     "Add Category",
                     "Thêm danh mục thất bại - Tên danh mục trống",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return false;
             }
@@ -246,7 +247,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                     "Add Category",
                     $"Thêm danh mục thất bại - Danh mục {newCategory.CategoryName} đã tồn tại",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return false;
             }
@@ -282,7 +283,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Add Category",
                 $"Thêm danh mục thành công: {category.CategoryName}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             return true;
@@ -295,7 +296,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Add Category",
                 $"Lỗi khi thêm danh mục: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return false;
         }
@@ -313,7 +314,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Update Category",
                 $"Đang cập nhật danh mục ID: {updatedCategory.CategoryID}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var category = await _dbContext.Categories
@@ -326,7 +327,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                     "Update Category",
                     $"Cập nhật thất bại - Không tìm thấy danh mục ID: {updatedCategory.CategoryID}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return false;
             }
@@ -343,7 +344,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Update Category",
                 $"Cập nhật thành công danh mục: {category.CategoryName}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             return true;
@@ -356,7 +357,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Update Category",
                 $"Lỗi khi cập nhật danh mục: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return false;
         }
@@ -374,7 +375,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Delete Category",
                 $"Đang xóa danh mục ID: {categoryId}",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             var category = await _dbContext.Categories
@@ -388,7 +389,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                     "Delete Category",
                     $"Xóa thất bại - Không tìm thấy danh mục ID: {categoryId}",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return (false, "Không tìm thấy loại sản phẩm này.");
             }
@@ -400,7 +401,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                     "Delete Category",
                     $"Xóa thất bại - Danh mục {category.CategoryName} đang có sản phẩm",
                     "Error",
-                    "Admin"
+                    GetUserName.GetCurrentUsername()
                 );
                 return (false, "Không thể xóa loại sản phẩm này vì đang có sản phẩm thuộc loại này.");
             }
@@ -416,7 +417,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Delete Category",
                 $"Xóa thành công danh mục: {category.CategoryName}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             return (true, "Xóa loại sản phẩm thành công.");
@@ -429,7 +430,7 @@ public partial class CategoriesViewModel : ObservableObject, IPaginatedViewModel
                 "Delete Category",
                 $"Lỗi khi xóa danh mục: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
             return (false, "Có lỗi xảy ra khi xóa loại sản phẩm.");
         }

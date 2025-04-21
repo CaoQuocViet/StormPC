@@ -11,6 +11,7 @@ using StormPC.Core.Contracts.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using StormPC.Core.Helpers;
 
 namespace StormPC.ViewModels.Dashboard;
 
@@ -84,7 +85,7 @@ public partial class RevenueReportViewModel : ObservableObject
                 "Refresh",
                 "Đang làm mới dữ liệu báo cáo doanh thu",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             await LoadDataAsync();
@@ -94,7 +95,7 @@ public partial class RevenueReportViewModel : ObservableObject
                 "Refresh",
                 "Làm mới dữ liệu báo cáo doanh thu thành công",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -104,7 +105,7 @@ public partial class RevenueReportViewModel : ObservableObject
                 "Refresh",
                 $"Lỗi khi làm mới dữ liệu: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
     }
@@ -121,7 +122,7 @@ public partial class RevenueReportViewModel : ObservableObject
                 "Load Data",
                 "Đang tải dữ liệu báo cáo doanh thu",
                 "Info",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
 
             RevenueData = await _revenueReportService.GetRevenueDataAsync(StartDate, EndDate);
@@ -211,7 +212,7 @@ public partial class RevenueReportViewModel : ObservableObject
                 "Load Data",
                 $"Tải thành công dữ liệu báo cáo doanh thu từ {StartDate:dd/MM/yyyy} đến {EndDate:dd/MM/yyyy}",
                 "Success",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
         catch (Exception ex)
@@ -221,7 +222,7 @@ public partial class RevenueReportViewModel : ObservableObject
                 "Load Data",
                 $"Lỗi khi tải dữ liệu báo cáo: {ex.Message}",
                 "Error",
-                "Admin"
+                GetUserName.GetCurrentUsername()
             );
         }
     }

@@ -13,7 +13,7 @@
   <Identity
     Name="24968ded-e121-45e2-8b21-a7a582615327"
     Publisher="CN=vietc"
-    Version="1.0.5.2" />
+    Version="1.0.8.2" />
     
   <mp:PhoneIdentity PhoneProductId="24968ded-e121-45e2-8b21-a7a582615327" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     

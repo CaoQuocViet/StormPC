@@ -217,4 +217,9 @@ public class AuthenticationService
         if (_currentSession == null) return false;
         return _currentSession.ExpiresAt > DateTime.UtcNow;
     }
+
+    public string GetCurrentUsername()
+    {
+        return _currentSession?.Username ?? "System";
+    }
 } 
