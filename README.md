@@ -1,39 +1,47 @@
+<p align="right">
+  <a href="README.vi.md"><img src="https://img.shields.io/badge/🇻🇳-Tiếng_Việt-blue?style=flat-square" alt="Vietnamese" /></a>
+  &nbsp;|&nbsp;
+  <a href="README.md"><img src="https://img.shields.io/badge/🇺🇸-English-lightgrey?style=flat-square" alt="English" /></a>
+</p>
+
 # STORMPC 2024
 
-## Video Demo và Hướng Dẫn
-- Demo chi tiết tính năng: [YouTube - Demo StormPC](https://youtu.be/dRkxu4bkW9A)
-- Hướng dẫn cài đặt ứng dụng vào máy: Xem video trong thư mục `/output_stormpc/Final_QL2_release.mp4`
+![demo](Resources/demo_img/default.png)
 
-## A. Cài Đặt Từ Installer
-1. Vào thư mục `/output_stormpc/StormPC_1.0.6.2_Debug_Test`
-2. xem hướng dẫn chi tiết từ video đính kèm
+## Video Demo and Tutorial
+- Detailed feature demo: [YouTube - Demo StormPC](https://youtu.be/dRkxu4bkW9A)
+- Application installation guide: See video in `/output_stormpc/Final_QL2_release.mp4` folder
 
-## B. Chạy Từ Source Code
+## A. Installation from Installer
+1. Navigate to `/output_stormpc/StormPC_1.0.6.2_Debug_Test` folder
+2. See detailed instructions from the attached video
 
-### 1. Yêu Cầu Hệ Thống
+## B. Running from Source Code
+
+### 1. System Requirements
 - Windows 10/11
 - .NET 8.0 SDK
 - Docker Desktop
 - Visual Studio 2022
 
-### 2. Khởi Động PostgreSQL Database
-1. Mở Command Prompt hoặc PowerShell
-2. Chuyển đến thư mục dự án:  
+### 2. Starting PostgreSQL Database
+1. Open Command Prompt or PowerShell
+2. Navigate to project directory:  
    ```
-   cd đường-dẫn\DoAn_UDQL2\DataBase
+   cd path\DoAn_UDQL2\DataBase
    ```
-3. Chạy lệnh Docker Compose:  
+3. Run Docker Compose command:  
    ```
    docker-compose -f docker-compose.yml up -d
    ```
-4. Kiểm tra container đã chạy thành công:
+4. Verify container is running successfully:
    ```
    docker ps
    ```
-   (Thấy container có tên `stormpc_container` đang chạy)
+   (You should see container named `stormpc_container` running)
 
-### 3. Cấu Hình Kết Nối Database
-1. Trong thư mục `StormPC/StormPC.Core`, kiểm tra file `.env` với cấu hình sau:
+### 3. Database Connection Configuration
+1. In the `StormPC/StormPC.Core` folder, check the `.env` file with the following configuration:
    ```
    DB_PROVIDER=postgresql
    DB_HOST=localhost
@@ -42,60 +50,113 @@
    DB_USER=vietcq
    DB_PASSWORD=123456789000
    ```
-2. Nếu chưa có file `.env`, hãy tạo mới từ file `.env.example`
+2. If the `.env` file doesn't exist, create a new one from the `.env.example` file
 
-### 4. Khởi Tạo Dữ Liệu Mẫu
-1. Mở terminal tại thư mục `DataBase`
-2. Chạy lệnh để tạo cấu trúc database:
+### 4. Initialize Sample Data
+1. Open terminal in the `DataBase` folder
+2. Run command to create database structure:
    ```
    npx sequelize-cli db:migrate
    ```
-3. Chạy lệnh để thêm dữ liệu mẫu:
+3. Run command to add sample data:
    ```
    npx sequelize-cli db:seed:all
    ```
-> ⚠️ **Lưu ý:** Đảm bảo môi trường chạy lệnh có nodejs để chạy Sequelize CLI
+> ⚠️ **Note:** Ensure the environment has nodejs to run Sequelize CLI
 
-### 5. Khởi Chạy Ứng Dụng (Debug Mode)
-1. Mở file solution `StormPC.sln` bằng Visual Studio 2022
-2. Đặt `StormPC` làm Startup Project (chuột phải > Set as Startup Project)
-3. Chọn cấu hình Debug và nền tảng x64
-4. Nhấn `F5` hoặc nút `Start` để chạy ứng dụng
-5. Trong lần chạy đầu tiên sẽ được yêu cầu thiết lập tài khoản admin
+### 5. Launch Application (Debug Mode)
+1. Open the solution file `StormPC.sln` with Visual Studio 2022
+2. Set `StormPC` as Startup Project (right-click > Set as Startup Project)
+3. Select Debug configuration and x64 platform
+4. Press `F5` or click `Start` button to run the application
+5. On first run, you will be prompted to set up an admin account
 
-## C. Xử Lý Sự Cố
+## C. Troubleshooting
 
-### Lỗi Kết Nối Database
-1. Kiểm tra Docker đang chạy
-2. Xác nhận container database đang hoạt động:
+### Database Connection Errors
+1. Check if Docker is running
+2. Verify database container is active:
    ```
    docker ps | findstr stormpc
    ```
-3. Kiểm tra thông tin kết nối trong `.env` trùng khớp với `docker-compose.yml`
-4. Nếu cần, khởi động lại container:
+3. Check connection information in `.env` matches `docker-compose.yml`
+4. If needed, restart container:
    ```
    docker-compose -f docker-compose.yml down
    docker-compose -f docker-compose.yml up -d
    ```
 
-### Lỗi Khởi Động Ứng Dụng
-1. Đảm bảo đã cài đặt .NET 8.0 SDK
-2. Làm sạch và rebuild solution:
+### Application Startup Errors
+1. Ensure .NET 8.0 SDK is installed
+2. Clean and rebuild solution:
    ```
    dotnet clean StormPC.sln
    dotnet build StormPC.sln
    ```
-3. Kiểm tra log lỗi trong Output window của Visual Studio
+3. Check error logs in Visual Studio Output window
 
-## D. Tính Năng Chính
-- Đăng nhập bảo mật với Argon2id
-- Dashboard tổng quan hệ thống
-- Quản lý sản phẩm (laptop) với thông số kỹ thuật chi tiết
-- Quản lý đơn hàng và thanh toán
-- Báo cáo thống kê doanh thu và tồn kho
-- Quản lý khách hàng và phân loại theo nhóm
-- Tìm kiếm nâng cao đa tiêu chí
-- Sao lưu và khôi phục dữ liệu
-- Giao diện responsive với hỗ trợ dark mode
+## D. Main Features
+- Secure login with Argon2id encryption
+- System overview dashboard
+- Product management (laptops) with detailed technical specifications
+- Order management and payment processing
+- Revenue and inventory statistical reports
+- Customer management and group classification
+- Advanced multi-criteria search
+- Data backup and restore
+- Responsive interface with dark mode support
 
-> ⚠️ **Lưu ý:** Chạy ứng dụng ở chế độ Debug sẽ đảm bảo hoạt động đầy đủ các tính năng. Bản release có thể gặp một số hạn chế do môi trường Windows. Chưa fix được các lỗi runtime cho môi trường production.
+> ⚠️ **Note:** Running the application in Debug mode ensures full functionality. The release version may have some limitations due to the Windows environment. Runtime errors for production environment have not been fixed yet.
+
+
+## 🖥️ Interface and Feature Demo
+
+### 1. Interface Settings (Dark Mode)
+![Dark Mode Settings](Resources/demo_img/1-setting-dark.png)  
+*Settings page with dark mode, allowing users to customize the interface according to their preferences*
+
+### 2. Activity Log
+![Activity Log](Resources/demo_img/2-activitylog-dark.png)  
+*Track and record all user activities in the system*
+
+### 3. Product Management
+![Product Management](Resources/demo_img/3-product-dark.png)  
+*Laptop management interface with detailed information and CRUD operations*
+
+### 4. Category Management
+![Category Management](Resources/demo_img/4-category-dark.png)  
+*Manage product categories, classifying laptops by groups*
+
+### 5. Order List
+![Order List](Resources/demo_img/5-orderlist-dark.png)  
+*Display all orders with status and overview information*
+
+### 6. Order Details
+![Order Details](Resources/demo_img/6-orderdetails-dark.png)  
+*View order details including products, quantities, prices, and customer information*
+
+### 7. Customer Report
+![Customer Report](Resources/demo_img/7-customerreport-light.png)  
+*Statistical reports about customers with visual charts*
+
+### 8. Customer Report Table
+![Customer Report Table](Resources/demo_img/8-customerreporttable-light.png)  
+*Detailed data table about customer information and purchasing activities*
+
+### 9. Revenue Report
+![Revenue Report](Resources/demo_img/9-revenuereport-light.png)  
+*Revenue statistics charts over time with multiple display formats*
+
+### 10. Inventory Report
+![Inventory Report](Resources/demo_img/10-inventoryreport-light.png)  
+*Inventory status report with analytical charts*
+
+### 11. Inventory Report Table
+![Inventory Report Table](Resources/demo_img/11-inventoryreporttable-light.png)  
+*Detailed data table about inventory quantities for each product*
+
+### 12. Advanced Search
+![Advanced Search](Resources/demo_img/12-advancedsearch-light.png)  
+*Multi-criteria search functionality with detailed filters*
+
+---
